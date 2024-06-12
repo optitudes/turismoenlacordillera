@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import Checkbox from '@/Components/Checkbox';
+import Background from "@/Assets/Backgrounds/greenBorder.png";
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -27,7 +28,14 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout
+            style={{ 
+                    backgroundImage: `url(${Background})`, 
+                    backgroundSize: 'cover', 
+                    backgroundPosition: 'center', 
+                    backgroundRepeat: 'no-repeat' 
+                }}
+        >
             <Head title="Log in" />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}

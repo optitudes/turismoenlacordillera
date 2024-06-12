@@ -7,7 +7,7 @@ export default function ApplicationLogo(props) {
         <img 
         src={Logo}  
         className="w-full h-full rounded-lg" 
-        style={{ backgroundColor: Colors.primarydark }} 
+        style={{ backgroundColor: Colors.primaryDark }} 
     />
     );
 }
