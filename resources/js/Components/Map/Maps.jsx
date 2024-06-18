@@ -1,56 +1,55 @@
-import React from 'react';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import React from 'react'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
-class MyMap extends React.Component {
- constructor(props) {
-   super(props);
-   this.state = {
-     markers: [],
-   };
- }
-
- handleMapClick = (mapProps, map, clickEvent) => {
-  const { latLng } = clickEvent;
-  const lat = latLng.lat();
-  const lng = latLng.lng();
-  
-  // Solo permite un marcador
-  this.setState({
-    markers: [{ lat, lng }],
-  });
-
-  // Llama a la función que se encarga de enviar las coordenadas a la otra clase
-  this.props.onCoordinateChange({ lat, lng });
+const center = {
+ lat: 4.513485168350246,
+ lng: -75.69575415741261
 };
 
- render() {
-   const { markers } = this.state;
-   return (
-     <Map
-       google={this.props.google}
-       onClick={this.handleMapClick}
-       zoom={16}
-       style={{
-        height: "180px",
-        width: "100%",
-        border: "1px solid #ddd",
-        borderRadius: "5px",
-        marginBottom: "20px"
-      }}
-      containerStyle={{
-        height: "180px",
-        width: "42%"
-      }}
-       initialCenter={{ lat: 4.2064090536419805, lng: -75.79095993096395 }}
-     >
-       {markers.map((marker, index) => (
-         <Marker key={index} position={marker} />
-       ))}
-     </Map>
-   );
- }
+function MyMap({style,updatePositions}) {
+
+  const { isLoaded } = useJsApiLoader({
+      id: 'google-map-script',
+      googleMapsApiKey: "AIzaSyBDaeWicvigtP9xPv919E-RNoxfvC-Hqik"
+  })
+
+  const [markerPosition, setMarkerPosition] = React.useState(null);
+
+  const [map, setMap] = React.useState(null)
+
+  const updatePosition = React.useCallback((event) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      console.log({ lat, lng });
+      setMarkerPosition({ lat, lng });
+      updatePositions({lat,lng});
+  }, []);
+
+  const onLoad = React.useCallback(function callback(map) {
+    const bounds = new window.google.maps.LatLngBounds();
+    map.fitBounds(bounds);
+    setMap(map)
+  }, [])
+
+  const onUnmount = React.useCallback(function callback(map) {
+   setMap(null)
+  }, [])
+
+ return isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={style}
+      center={center}
+      zoom={10}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      onDblClick={updatePosition}
+      >
+        {markerPosition && (
+            <Marker position={markerPosition} />
+          )}
+    <></>
+    </GoogleMap>
+  ) : <></>
 }
 
-const apiKey = 'AIzaSyCPETmShIY1_-8WP0veLfpCsW_uGxFKzhA';
-
-export default GoogleApiWrapper({apiKey,})(MyMap);
+export default React.memo(MyMap)

@@ -1,22 +1,45 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Background from "@/Assets/Backgrounds/greenBorder.png";
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
+import Checkbox from '@/Components/Checkbox';
+import MyMap from '@/Components/Map/Maps'
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
         ventureInfo: {
-            ventureName: ""
+            ventureName: "",
+            address: "",
+            description: "",
+            mapLatitude: "",
+            mapLongitude: "",
         },
+        micrositeInfo:{
+            name: "",
+            description: ""
+        },
+        userInfo: {
+            email: "",
+            password: "",
+            password_confirmation: '',
+
+        },
+        profileInfo: {
+            name: "",
+            lastNames: "",
+            address: "",
+            idNumber: "",
+            phoneNumber: "",
+            phonePrefix: "+57",
+            pictureUrl: "",
+        }
     });
+    const [isEntrepreneur, setIsEntrepreneur] = useState(false);
+    const [ventureMapPosition,setVentureMapPosition] = useState(null);
 
     useEffect(() => {
         return () => {
@@ -26,11 +49,23 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
+        if(ventureMapPosition != null){
+            data.ventureInfo.mapLongitude = ventureMapPosition.lng;
+            data.ventureInfo.mapLatitude = ventureMapPosition.lat;
+        }
 
         //post(route('register'));
         console.log(data);
     };
+    const updatePositions = (positions) => {
+        setVentureMapPosition(positions);
+    }
 
+    const handleCheckboxIsEntrepreneurChange = (event) => {
+        const checked = event.target.checked;
+        setIsEntrepreneur(checked);
+        console.log(checked ? 'Eres emprendedora?' : 'No eres emprendedora.');
+    };
     return (
 
         <GuestLayout  
@@ -45,8 +80,7 @@ export default function Register() {
             <div className='bg-slate-200  rounded-lg shadow-lg w-full max-w-md '>
 
                 <form onSubmit={submit} className='m-14'>
-
-                    <div>
+                    <div className='mt-4'>
                         <InputLabel htmlFor="name" value="Nombre" />
                         <TextInput
                             id="name"
@@ -55,12 +89,42 @@ export default function Register() {
                             className="mt-1 block w-full"
                             autoComplete="name"
                             isFocused={true}
-                            onChange={(e) => setData('name', e.target.value)}
+                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, name: e.target.value })}
                             required
                         />
                         <InputError message={errors.name} className="mt-2" />
                     </div>
+                    <div className="mt-4">
+                        <InputLabel htmlFor="lastNames" value="Apellidos del usuario" />
 
+                        <TextInput
+                            id="lastNames"
+                            type="text"
+                            name="lastNames"
+                            value={data.profileInfo.lastNames}
+                            className="mt-1 block w-full"
+                            autoComplete="lastNames"
+                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, lastNames: e.target.value })}
+                            required
+                        />
+
+                        <InputError message={errors.lastNames} className="mt-2" />
+                    </div>
+                    <div className="mt-4">
+                        <InputLabel htmlFor="phoneNumber" value="Número de teléfono" />
+
+                        <TextInput
+                            id="phoneNumber"
+                            type="text"
+                            name="phoneNumber"
+                            value={data.profileInfo.phoneNumber}
+                            className="mt-1 block w-full"
+                            autoComplete="phoneNumber"
+                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, phoneNumber: e.target.value })}
+                        />
+
+                        <InputError message={errors.lastNames} className="mt-2" />
+                    </div>
                     <div className="mt-4">
                         <InputLabel htmlFor="email" value="Email" />
 
@@ -71,7 +135,7 @@ export default function Register() {
                             value={data.email}
                             className="mt-1 block w-full"
                             autoComplete="username"
-                            onChange={(e) => setData('email', e.target.value)}
+                            onChange={(e) => setData('userInfo', { ...data.userInfo, email: e.target.value })}
                             required
                         />
 
@@ -79,7 +143,7 @@ export default function Register() {
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="password" value="Password" />
+                        <InputLabel htmlFor="password" value="Contraseña" />
 
                         <TextInput
                             id="password"
@@ -88,7 +152,7 @@ export default function Register() {
                             value={data.password}
                             className="mt-1 block w-full"
                             autoComplete="new-password"
-                            onChange={(e) => setData('password', e.target.value)}
+                            onChange={(e) => setData('userInfo', { ...data.userInfo, password: e.target.value })}
                             required
                         />
 
@@ -96,7 +160,7 @@ export default function Register() {
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                        <InputLabel htmlFor="password_confirmation" value="Confirma la contraseña" />
 
                         <TextInput
                             id="password_confirmation"
@@ -105,15 +169,75 @@ export default function Register() {
                             value={data.password_confirmation}
                             className="mt-1 block w-full"
                             autoComplete="new-password"
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                            onChange={(e) => setData('userInfo', { ...data.userInfo, password_confirmation: e.target.value })}
                             required
                         />
 
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>
+                    <div className="mt-4">
+                        <InputLabel htmlFor="profileAddress" value="Dirección del usuario" />
 
+                        <TextInput
+                            id="profileAddress"
+                            type="text"
+                            name="profileAddress"
+                            value={data.profileInfo.address}
+                            className="mt-1 block w-full"
+                            autoComplete="profileAddress"
+                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, address: e.target.value })}
+                        />
 
+                        <InputError message={errors.password_confirmation} className="mt-2" />
+                    </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="idNumber" value="Cédula del usuario" />
+
+                        <TextInput
+                            id="idNumber"
+                            type="text"
+                            name="idNumber"
+                            value={data.profileInfo.idNumber}
+                            className="mt-1 block w-full"
+                            autoComplete="idNumber"
+                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, idNumber: e.target.value })}
+                            required
+                        />
+
+                        <InputError message={errors.idNumber} className="mt-2" />
+                    </div>
+                    
+
+                    <div className="p-4">
+                        <label className="inline-flex items-center">
+                            <Checkbox
+                                checked={isEntrepreneur}
+                                onChange={handleCheckboxIsEntrepreneurChange}
+                                className="form-checkbox text-indigo-600 h-5 w-5"
+                            />
+                            <span className="ml-2 text-gray-700">Eres emprendedora?</span>
+                        </label>
+                    </div>
+                    {isEntrepreneur?
                     <div>
+                        <div>
+                            <InputLabel htmlFor="micrositeName" value="Nombre del micrositio" />
+
+                            <TextInput
+                                id="micrositeName"
+                                name="micrositeName"
+                                value={data.micrositeInfo.name}
+                                className="mt-1 block w-full"
+                                autoComplete="name"
+                                isFocused={true}
+                                onChange={(e) => setData('micrositeInfo', { ...data.micrositeInfo, name: e.target.value })}
+                                required
+                            />
+
+                            <InputError message={errors.micrositeName} className="mt-2" />
+                        </div>
+                      
                         <div>
                             <InputLabel htmlFor="ventureName" value="Nombre de la empresa" />
 
@@ -130,18 +254,46 @@ export default function Register() {
 
                             <InputError message={errors.ventureName} className="mt-2" />
                         </div>
-                    </div>
+                        <div>
+                            <InputLabel htmlFor="ventureAddress" value="Dirección de la empresa" />
+
+                            <TextInput
+                                id="ventureAddress"
+                                name="ventureAddress"
+                                value={data.ventureInfo.address}
+                                className="mt-1 block w-full"
+                                autoComplete="name"
+                                isFocused={true}
+                                onChange={(e) => setData('ventureInfo', { ...data.ventureInfo, address: e.target.value })}
+                                required
+                            />
+
+                            <InputError message={errors.ventureAddress} className="mt-2" />
+                        </div>
+                        
+                        <div className='mt-1 block w-full py-2'>
+                            <InputLabel value="Ubicación de la empresa (opcional) " />
+                            <MyMap
+                                style={{ 
+                                    height: '250px'
+                                }}
+                                updatePositions={updatePositions}
+                             />
+                        </div>
+
+                    </div>:<></>
+                    }
 
                     <div className="flex items-center justify-end mt-4">
                         <Link
                             href={route('login')}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Already registered?
+                            Ya estás registrad@?
                         </Link>
 
                         <PrimaryButton className="ms-4" disabled={processing}>
-                            Register
+                           Registrarse 
                         </PrimaryButton>
                     </div>
                 </form>

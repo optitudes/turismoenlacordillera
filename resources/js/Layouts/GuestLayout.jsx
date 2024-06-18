@@ -5,12 +5,12 @@ import Colors from "@/Constants/Colors.js"
 
 export default function Guest({ children,style}) {
     return (
-         <div className="min-h-screen bg-gray-100 " style={style}>
-            <nav className="bg-white border-b border-gray-100 " style={{ backgroundColor: Colors.primaryDark }}>
-                    <div className="flex  justify-around">
+         <div className="min-h-screen  " style={style}>
+            <nav className="border-b border-black   h-full" style={{ backgroundColor: Colors.primaryDark }}>
+                    <div className="flex  justify-around items-center ">
                         <div className="shrink-0 flex items-center block  w-auto fill-current ">
-                            <Link href="/" className=' h-16 w-full'>
-                                <ApplicationLogo />
+                            <Link href="/" className=' h-16 w-full py-2'>
+                                <ApplicationLogo className=' items-center h-16 w-full' />
                             </Link>
                         </div>
                         <div className='flex  justify-center'>
