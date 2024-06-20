@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("idNumber");
             $table->string("lastNames");
             $table->string("names");
-            $table->integer("phoneNumber")->nullable();
+            $table->bigInteger("phoneNumber")->nullable();
             //hace referencia al prefijo del pais
             $table->string("phonePrefix")->nullable();
             $table->string("pictureUrl")->nullable();

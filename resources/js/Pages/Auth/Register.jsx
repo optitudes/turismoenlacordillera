@@ -8,11 +8,13 @@ import MyMap from '@/Components/Map/Maps'
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import httpClient from "@/Utils/httpClient";
+
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         ventureInfo: {
-            ventureName: "",
+            name: "",
             address: "",
             description: "",
             mapLatitude: "",
@@ -29,7 +31,7 @@ export default function Register() {
 
         },
         profileInfo: {
-            name: "",
+            names: "",
             lastNames: "",
             address: "",
             idNumber: "",
@@ -47,18 +49,32 @@ export default function Register() {
         };
     }, []);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         if(ventureMapPosition != null){
             data.ventureInfo.mapLongitude = ventureMapPosition.lng;
             data.ventureInfo.mapLatitude = ventureMapPosition.lat;
         }
-
+        if(!isEntrepreneur){
+            data.ventureInfo =null;
+            data.micrositeInfo = null;
+        }
+        try {
+            const response = await httpClient.post("auth/register",data);
+            if (response.data.success) {
+                console.log(response.data);
+            } else {
+                console.log(response.data);
+            }
+        } catch (error) {
+            console.error('Error al hacer la solicitud:', error);
+        }
         //post(route('register'));
         console.log(data);
     };
     const updatePositions = (positions) => {
         setVentureMapPosition(positions);
+        alert('¡Hola! Esta es una alerta en React.');
     }
 
     const handleCheckboxIsEntrepreneurChange = (event) => {
@@ -89,7 +105,7 @@ export default function Register() {
                             className="mt-1 block w-full"
                             autoComplete="name"
                             isFocused={true}
-                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, name: e.target.value })}
+                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, names: e.target.value })}
                             required
                         />
                         <InputError message={errors.name} className="mt-2" />
@@ -244,11 +260,11 @@ export default function Register() {
                             <TextInput
                                 id="ventureName"
                                 name="ventureName"
-                                value={data.ventureInfo.ventureName}
+                                value={data.ventureInfo.name}
                                 className="mt-1 block w-full"
                                 autoComplete="name"
                                 isFocused={true}
-                                onChange={(e) => setData('ventureInfo', { ...data.ventureInfo, ventureName: e.target.value })}
+                                onChange={(e) => setData('ventureInfo', { ...data.ventureInfo, name: e.target.value })}
                                 required
                             />
 

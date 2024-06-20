@@ -15,7 +15,7 @@ return new class extends Migration
             //atributos de la tabla
             $table->id();
             $table->string('rol')->unique();
-            $table->string('name')->unique();
+            $table->string('code')->unique();
             $table->string('description')->nullable();
             //comportamientos
             $table->timestamps();
