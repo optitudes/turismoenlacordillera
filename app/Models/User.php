@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; 
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -44,5 +45,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public static function getAdminsEmails(){
+        return DB::table('users', 'user')
+                    ->where('user.deleted_at', null)
+                    ->join('roles as rol', 'rol.id', '=', 'user.role_id')
+                    ->where('rol.code',"1001")
+                    ->pluck('user.email')
+                    ->toArray();
     }
 }

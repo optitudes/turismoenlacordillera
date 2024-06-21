@@ -63,8 +63,10 @@ export default function Register() {
             const response = await httpClient.post("auth/register",data);
             if (response.data.success) {
                 console.log(response.data);
+                alert(response.data.message);
             } else {
                 console.log(response.data);
+                alert(response.data.message);
             }
         } catch (error) {
             console.error('Error al hacer la solicitud:', error);
@@ -74,7 +76,6 @@ export default function Register() {
     };
     const updatePositions = (positions) => {
         setVentureMapPosition(positions);
-        alert('¡Hola! Esta es una alerta en React.');
     }
 
     const handleCheckboxIsEntrepreneurChange = (event) => {

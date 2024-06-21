@@ -10,23 +10,6 @@ use App\Models\Profile;
 use App\Models\Venture;
 use App\Models\Microsite;
 use App\Models\MicrositeSolicitude;
-/*
-use App\Models\Role;
-use App\Models\ProductiveUnit;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\UpdatePasswordRequest;
-use App\Http\Controllers\Api\BaseController as BaseController;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Support\Facades\Password;
-use Validator;
-*/
 
 class AuthService {
 
@@ -38,7 +21,6 @@ class AuthService {
     public function createUser($userInfo){
         $user = new User;
         $user->fill($userInfo);
-        $user->password = Hash::make($user->password);
         $user->isActive = true;
         $user->role_id = 4;
         $user->save();
@@ -105,10 +87,11 @@ class AuthService {
 
             //creacion de la solicitud de micrositio
             $micrositeSolicitude = $this->createMicrositeSolicitude("PENDIENTE",$user->id,$venture->id,$microsite->id);
-
+            $this->mailService->sendNewMicroSiteSolicitudeToAdmin($profile->names,$microsite->name,$venture->name);
             $msg = $msg . ", los administradores pronto validarán su petición de micrositio";
         }
-        $user->sendVerificationEmailNotification();
+
+        $user->sendEmailVerificationNotification();
 
         return ['msg' => $msg,'success'=>true];
     }

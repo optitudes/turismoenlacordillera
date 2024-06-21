@@ -13,12 +13,14 @@ class SendNewMicrositeSolicitudeToAdmin extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private $solicitudeInfo = [];
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($userNames,$micrositeName,$ventureName)
     {
-        //
+        $this->solicitudeInfo = ['userName'=>$userNames,'micrositeName'=>$micrositeName,'ventureName'=>$ventureName];
     }
 
     /**
@@ -27,7 +29,7 @@ class SendNewMicrositeSolicitudeToAdmin extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send New Microsite Solicitude To Admin',
+            subject: 'Solicitud de micrositio',
         );
     }
 
@@ -38,7 +40,7 @@ class SendNewMicrositeSolicitudeToAdmin extends Mailable
     {
         return new Content(
             view: 'Mail.MicrositeSolicitude.newMicrositeSolicitudeToAdmin',
-            with: ['userName'=>'pablito','micrositeName'=>'microname','ventureName'=>'venturenamesi']
+            with: $this->solicitudeInfo
         );
     }
     /**
