@@ -85,12 +85,12 @@ export default function Register() {
     };
     return (
 
-        <GuestLayout  
-         style={{ 
-            backgroundImage: `url(${Background})`, 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center', 
-            backgroundRepeat: 'no-repeat' 
+        <GuestLayout
+         style={{
+            backgroundImage: `url(${Background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
             }}
         >
             <Head title="Registro" />
