@@ -10,7 +10,8 @@ instance.interceptors.request.use(
  function(config) {
   const token = getUserToken(); 
   if (token != null) {
-    config.headers["Authorization"] = token;
+    config.headers["Authorization"] = "Bearer "+token;
+    console.log("configurando header");
   }
   return config;
  },
@@ -26,9 +27,10 @@ instance.interceptors.response.use(
     function(error) {
 
       if (error.response.status === 401) {
-        clearLocalStorage();
+        //clearLocalStorage();
         // Ejecutar la función de redirección cuando ocurra un error 401
         window.location.href = "/login";
+        console.log("error 401")
       }
       return Promise.reject(error);
     }

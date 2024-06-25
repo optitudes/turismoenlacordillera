@@ -1,18 +1,26 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import GuestLayout from '@/Layouts/GuestLayout';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import CustomSidebar from '@/Pages/Panel/Partials/CustomSidebar';
+import Background from "@/Assets/Backgrounds/greenBorder.png";
 import { Head } from '@inertiajs/react';
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>}
+        <GuestLayout
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Perfil</h2>}
+            style={{
+                backgroundImage: `url(${Background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+                }}
         >
-            <Head title="Profile" />
+            <Head title="Dashboard" />
+            <CustomSidebar></CustomSidebar>
 
-            <div className="py-12">
+            <div className="w-full h-full justify-center items-center">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <UpdateProfileInformationForm
@@ -31,6 +39,6 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </GuestLayout>
     );
 }

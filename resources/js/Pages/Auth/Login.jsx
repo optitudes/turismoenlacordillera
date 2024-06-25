@@ -3,7 +3,6 @@ import Checkbox from '@/Components/Checkbox';
 import Background from "@/Assets/Backgrounds/greenBorder.png";
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -23,8 +22,12 @@ export default function Login({ status, canResetPassword }) {
 
     const submit = (e) => {
         e.preventDefault();
-
-        post(route('login'));
+        //TODO: refactorizar ya que el window.location es necesario como dependencia de GuestLayout.jsx, 
+         post(route('login'), {
+            onSuccess: () => {
+            window.location.href = route('dashboard');
+            },
+    });
     };
 
     return (
@@ -42,7 +45,7 @@ export default function Login({ status, canResetPassword }) {
                 <form onSubmit={submit} className='m-14' >
 
                     <div  >
-                        <p class="text-zinc-950 text-opacity-100">Correo</p>
+                        <p className="text-zinc-950 text-opacity-100">Correo</p>
 
                         <TextInput
                             id="email"
@@ -60,7 +63,7 @@ export default function Login({ status, canResetPassword }) {
                         <InputError message={errors.email} className="mt-2" />
                     </div>
 
-                    <div className="mt-4"><p class="text-zinc-950 text-opacity-100">Contracena</p>
+                    <div className="mt-4"><p className="text-zinc-950 text-opacity-100">Contracena</p>
 
                         <TextInput
                             id="password"

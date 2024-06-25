@@ -2,12 +2,21 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\UserController;
 
 Route::get('/', function (Request $request) {
     return "conected to backend";
 });
+
+
+
+Route::prefix('users')->group(function() {
+    //permite obtener toda la informacion del usuario en sesion
+    Route::get('/getSessionUserInfo', [UserController::class, 'getSessionUserInfo'])->middleware('auth:sanctum');
+});
+
 
 // authentication routes
 Route::prefix('auth')->group(function() {
@@ -21,9 +30,11 @@ Route::prefix('auth')->group(function() {
     //allows user to  reset his password
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
     // Parties routes
+    */
     Route::middleware(['auth:sanctum'])->group(function () {
         //allows user to logout removing token
         Route::post('logout', [AuthController::class, 'logout']);
+        /*
         //responses true if the email was verified, false if it doesnt
         Route::get('verify-email', [AuthController::class, 'getEmailVerificationStatus']);
         //allow to verify the email using id and hash TODO: check if there are some better throttle that returns api responses
@@ -34,8 +45,8 @@ Route::prefix('auth')->group(function() {
         Route::post('confirm-password', [AuthController::class, 'confirmPassword']);
         //allows to update users password
         Route::put('update-password', [AuthController::class, 'updatePassword']);
+        */
 
     });
-    */
 
 });

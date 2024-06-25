@@ -1,21 +1,43 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+
+import {useEffect} from 'react';
+import Panel from "@/Assets/panel.png";
+import CustomSidebar from '@/Pages/Panel/Partials/CustomSidebar';
+import Background from "@/Assets/Backgrounds/greenBorder.png";
+import {setUserInfo, setUserToken,} from "@/LocalStorage/localStorage";
+import GuestLayout from '@/Layouts/GuestLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth,token,userInfo}) {
+
+    useEffect(() => {
+        setUserToken(token);
+        setUserInfo(userInfo);
+    }, [token]);
+
+
     return (
-        <AuthenticatedLayout
-            user={auth.user}
+        <GuestLayout
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+            style={{
+                backgroundImage: `url(${Background})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+                }}
         >
             <Head title="Dashboard" />
+            <CustomSidebar></CustomSidebar>
+            <div className='w-full  justify-center items-center '>
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
+            <img 
+                    src={Panel} 
+                    alt="Panel" 
+                    className="mx-auto my-auto block" 
+                    style={{ width: '1000px', height: 'auto' }}
+                />
+
+           
+            </div> 
+        </GuestLayout>
     );
 }

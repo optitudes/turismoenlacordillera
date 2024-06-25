@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Services\AuthService;
 use App\Http\Requests\Auth\RegisterRequest;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 
@@ -43,18 +44,18 @@ class AuthController extends BaseController
             return $this->sendError('Error al registrar el usuario.', ['error'=>$e->getMessage()]);
         }
     }
-    /*
     //metodo que deslogea un usuario usando solo el bearer token de autenticacion
     public function logout(Request $request)
     {
         try{
-            $this->authService->logoutApi();
+            $this->authService->logout($request);
             return $this->sendResponse(true, 'Cierre de sesión exitoso');
         }catch(\Throwable $e){
-            return $this->sendError('Error al registrar el usuario.', ['error'=>$e->getMessage()]);
+            return $this->sendError($e->getMessage());
         }
     }
 
+    /*
     //metodo que envia un correo con un link de recuperacion al usuario para que pueda recuperar
     //la contrasenia
     public function forgotPassword(Request $request){

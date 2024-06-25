@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; 
 use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable,HasApiTokens ;
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +46,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function profile(){
+        return $this->hasOne(Profile::class,'userId');
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class,'role_id');
+    }
+
+
+
     public static function getAdminsEmails(){
         return DB::table('users', 'user')
                     ->where('user.deleted_at', null)

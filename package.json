@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@phosphor-icons/react": "2.1.5",
-        "@react-google-maps/api": "2.19.3"
+        "@react-google-maps/api": "2.19.3",
+        "react-pro-sidebar": "1.1.0"
     }
 }

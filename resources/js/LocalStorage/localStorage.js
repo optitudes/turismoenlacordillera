@@ -15,15 +15,15 @@ export function setUserToken(token){
 }
 export function getUserInfo(){
     try{
-        const item = window.localStorage.getItem("username");
+        const item = window.localStorage.getItem("userInfo");
         return item ? JSON.parse(item) : null;     
     }catch (error){
         console.log(error);
     }
 }
-export function setUserInfo(token){
+export function setUserInfo(userInfo){
     try {
-        window.localStorage.setItem("username", JSON.stringify(token));
+        window.localStorage.setItem("userInfo", JSON.stringify(userInfo));
     } catch (error) {
         console.error(error);
     }

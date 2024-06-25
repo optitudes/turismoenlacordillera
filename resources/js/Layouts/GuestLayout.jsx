@@ -1,9 +1,43 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import { Link , useForm} from '@inertiajs/react';
+import {useState,useEffect} from 'react';
+import {clearLocalStorage, getUserToken,} from "@/LocalStorage/localStorage";
 import NavLink from '@/Components/NavLink';
-import Colors from "@/Constants/Colors.js"
-
+import Colors from "@/Constants/Colors.js";
+import httpClient from "@/Utils/httpClient";
 export default function Guest({ children,style}) {
+    const { post} = useForm({});
+
+
+    const [isSessionUser, setIsSessionUser] = useState(null);
+
+     useEffect(() => {
+        if (getUserToken() != null ){
+            setIsSessionUser(true);
+        }else{
+            setIsSessionUser(false);
+        }
+    }, []);
+
+    const logout = async () =>{
+        try {
+            const response = await httpClient.post("auth/logout");
+            if (response.data.success) {
+                console.log(response.data);
+                clearLocalStorage();
+                setIsSessionUser(false);
+                post(route('logout'))
+                
+            } else {
+                console.log(response.data);
+                alert(response.data.message);
+            }
+        } catch (error) {
+            console.log( error);
+        }
+
+    }
     return (
          <div className="min-h-screen  " style={style}>
             <nav className="border-b border-black   h-full" style={{ backgroundColor: Colors.primaryDark }}>
@@ -15,24 +49,48 @@ export default function Guest({ children,style}) {
                         </div>
                         <div className='flex  justify-center'>
                             <div className="grid grid-cols-3  md:grid-cols-3 lg:grid-cols-6 gap-4 text-white">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('dashboard')} active={route().current('home')}>
                                     Inicio 
                                 </NavLink>
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('dashboard')} active={route().current('blogs')}>
                                     Blogs 
                                 </NavLink>
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('dashboard')} active={route().current('ventures')}>
                                     Empresas 
                                 </NavLink>
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={route('dashboard')} active={route().current('tourisRoutes')}>
                                     Rutas Turísticas 
                                 </NavLink>
-                                <NavLink href={route('login')} active={route().current('dashboard')}>
-                                    Ingresar 
-                                </NavLink>
-                                <NavLink href={route('register')} active={route().current('dashboard')}>
-                                    Registrarse 
-                                </NavLink>
+                                {isSessionUser != null?
+                                <>
+                                    {(isSessionUser)?
+                                    <>
+                                        <NavLink href={route('login')} active={route().current('panel')}>
+                                            Panel 
+                                        </NavLink>
+
+                                        <ResponsiveNavLink
+                                            as="button"
+                                            onClick={logout}
+                                        >
+                                            Salir 
+                                        </ResponsiveNavLink>
+                                        
+                                    </>:
+                                    <>
+                                        <NavLink href={route('login')} active={route().current('login')}>
+                                            Ingresar 
+                                        </NavLink>
+                                        <NavLink href={route('register')} active={route().current('register')}>
+                                            Registrarse 
+                                        </NavLink>
+                                    </>}
+                                </>
+                                :
+                                <>
+                                </>
+                                }
+                                
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,8 @@ use App\Models\Profile;
 use App\Models\Venture;
 use App\Models\Microsite;
 use App\Models\MicrositeSolicitude;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthService {
 
@@ -95,10 +97,11 @@ class AuthService {
 
         return ['msg' => $msg,'success'=>true];
     }
-    /*
-    public function logoutApi(){
-        Auth::user()->tokens()->delete();
+    public function logout(Request $request){
+            Auth::user()->tokens()->delete();
     }
+
+    /*
     public function sendPasswordRecoveryEmail($email = ""){
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
