@@ -12,6 +12,16 @@ class MicrositeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \DB::table('microsites')->insert([
+            [
+                'description' => 'Ruralidad y belleza',
+                'name' => 'viajes_agradables',
+                'experiences' => null,
+                'isActive' => true,
+                'isPublish' => true,
+                'ventureId' => 1
+            ],
+        ]);
+ 
     }
 }

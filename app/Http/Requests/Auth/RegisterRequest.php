@@ -24,13 +24,15 @@ class RegisterRequest extends FormRequest
         $rules = [
             'userInfo.email' => 'required|string|email|max:255|unique:users,email',
             'userInfo.password' => 'required|string|min:8|confirmed',
-            'profileInfo.names' => 'required|string|max:50|min:4',
-            'profileInfo.lastNames' => 'required|string|max:50|min:4',
+            'profileInfo.names' => 'required|string|max:50|min:3',
+            'profileInfo.lastNames' => 'required|string|max:50|min:3',
             'profileInfo.address' => 'nullable|string|max:50',
             'profileInfo.idNumber' => 'required|string|max:255|min:4|unique:profiles,idNumber',
             'profileInfo.pictureUrl' => 'nullable|string|max:255',
             'profileInfo.phoneNumber' => 'nullable|numeric|min:0',
-            'profileInfo.phonePrefix' => 'nullable|string|max:5',
+            'profileInfo.phonePrefix' => 'nullable|string|max:7',
+            'profileInfo.municipality' => 'nullable|string|min:3',
+            'profileInfo.department' => 'nullable|string|max:3',
         ];
 
         if ($this->filled('ventureInfo') || $this->filled('micrositeInfo')) {

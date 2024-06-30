@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             //atributos de la tabla
             $table->id();
-            $table->string("address")->nullable();
             $table->string("idNumber");
             $table->string("lastNames");
             $table->string("names");
@@ -22,6 +21,8 @@ return new class extends Migration
             //hace referencia al prefijo del pais
             $table->string("phonePrefix")->nullable();
             $table->string("pictureUrl")->nullable();
+            $table->string("municipality")->nullable();
+            $table->string("department")->nullable();
 
             //relaciones
             $table->foreignId('userId')->constrained('users');

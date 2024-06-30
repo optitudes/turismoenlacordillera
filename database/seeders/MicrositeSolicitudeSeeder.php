@@ -12,6 +12,15 @@ class MicrositeSolicitudeSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        \DB::table('microsite_solicitudes')->insert([
+            [
+                'comment' => '[29 de jun 21:16]  El micrositio cuenta con todos los papeles al dia',
+                'status' => 'APROVADO',
+                'adminId' => 2,
+                'userId' => 3,
+                'ventureId' =>1,
+                'micrositeId' =>1
+            ]
+        ]);
     }
 }
