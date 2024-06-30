@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\MicrositeController;
+
+use App\Http\Middleware\HasRoles;
 
 Route::get('/', function (Request $request) {
     return "conected to backend";
@@ -16,6 +19,22 @@ Route::prefix('users')->group(function() {
     //permite obtener toda la informacion del usuario en sesion
     Route::get('/getSessionUserInfo', [UserController::class, 'getSessionUserInfo'])->middleware('auth:sanctum');
 });
+
+Route::prefix('microsites')->group(function() {
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+
+        //rutas accessibles como admin o root
+        Route::middleware(HasRoles::class.":". config('constants.ROLES_ID.ROOT'). "-" .config('constants.ROLES_ID.ADMIN'))->group(function () {
+
+        //permite obtener la lista de solicitudes 
+            Route::get('/solicitudes', [MicrositeController::class, 'getMicrositesSolicitudes']);
+        });
+    });
+});
+
+
+
 
 
 // authentication routes
