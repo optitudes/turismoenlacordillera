@@ -33,7 +33,6 @@ export default function Register() {
         profileInfo: {
             names: "",
             lastNames: "",
-            address: "",
             idNumber: "",
             phoneNumber: "",
             phonePrefix: "+57",
@@ -85,14 +84,7 @@ export default function Register() {
     };
     return (
 
-        <GuestLayout
-         style={{
-            backgroundImage: `url(${Background})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-            }}
-        >
+        <>
             <Head title="Registro" />
             <div className='bg-slate-200  rounded-lg shadow-lg w-full max-w-md '>
 
@@ -192,22 +184,6 @@ export default function Register() {
 
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>
-                    <div className="mt-4">
-                        <InputLabel htmlFor="profileAddress" value="Dirección del usuario" />
-
-                        <TextInput
-                            id="profileAddress"
-                            type="text"
-                            name="profileAddress"
-                            value={data.profileInfo.address}
-                            className="mt-1 block w-full"
-                            autoComplete="profileAddress"
-                            onChange={(e) => setData('profileInfo', { ...data.profileInfo, address: e.target.value })}
-                        />
-
-                        <InputError message={errors.password_confirmation} className="mt-2" />
-                    </div>
-
                     <div className="mt-4">
                         <InputLabel htmlFor="idNumber" value="Cédula del usuario" />
 
@@ -315,6 +291,6 @@ export default function Register() {
                     </div>
                 </form>
             </div>
-        </GuestLayout>
+        </>
     );
 }

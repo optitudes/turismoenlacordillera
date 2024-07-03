@@ -3,6 +3,7 @@ import {Gear, List, User,UserCircleGear,Desktop,UserList,
         House, ArchiveBox,PlusCircle,Mountains, SignOut,
         FloppyDiskBack,MapPin,ArrowLeft,ArrowRight } from '@phosphor-icons/react';
 import  Colors from "@/Constants/Colors";
+import { Link } from '@inertiajs/react';
 
 import { Sidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
 
@@ -22,9 +23,20 @@ const CustomSidebar = () => {
       collapsed = {toggled}
     >
     <Menu>
-      <MenuItem  icon={<House/>} href={route('dashboard')} > Inicio </MenuItem>
+      <MenuItem
+        icon={<House/>}  
+        component={<Link href={route('dashboard')} className='h-16 w-full py-2' />}
+        >
+            Inicio 
+       </MenuItem>
       <SubMenu icon={<Gear/>} label="Ajustes">
-        <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<User/>} href={route('profile.edit')} > Perfil </MenuItem>
+        <MenuItem 
+          rootStyles={{backgroundColor:Colors.primarySoft}}
+          icon={<User/>}  
+          component={<Link href={route('profile.edit')} className='h-16 w-full py-2' />}
+        >
+          Perfil 
+         </MenuItem>
       </SubMenu>
 
       <SubMenu icon={<UserCircleGear/>} label="Administrador">
@@ -35,7 +47,13 @@ const CustomSidebar = () => {
         </SubMenu>
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Desktop/>}label="Micrositios">
             <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<List/>} >  Lista </MenuItem>
-            <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<ArchiveBox/>} onClick={() => console.log("solicitudes de micro site")}> Solicitudes </MenuItem>
+            <MenuItem
+              rootStyles={{backgroundColor:Colors.primarySoft}}
+              icon={<ArchiveBox/>}
+              component={<Link href={route('microsites.admin.solicitudes')} className='h-16 w-full py-2' />}
+               >
+                Solicitudes
+            </MenuItem>
             <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Gear/>}> Ajustes </MenuItem>
         </SubMenu>
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<MapPin/>} label="Rutas turísticas">

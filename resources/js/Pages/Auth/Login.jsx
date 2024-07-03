@@ -31,15 +31,8 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <GuestLayout
-         style={{
-             backgroundImage: `url(${Background})`,
-             backgroundSize: 'cover',
-             backgroundPosition: 'center',
-             backgroundRepeat: 'no-repeat'
-             }}
-        >
-            <Head title="Log in" />
+        <>
+           <Head title="Log in" />
             <div className='bg-slate-200  rounded-lg shadow-lg w-full max-w-md '>
 
                 <form onSubmit={submit} className='m-14' >
@@ -105,6 +98,6 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                 </form>
             </div>
-        </GuestLayout>
+            </>
     );
 }

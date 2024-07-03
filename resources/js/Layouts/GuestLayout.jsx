@@ -1,4 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import BackgroundImage from '@/Assets/Backgrounds/greenBorder.png'
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link , useForm} from '@inertiajs/react';
 import {useState,useEffect} from 'react';
@@ -6,7 +7,7 @@ import {clearLocalStorage, getUserToken,} from "@/LocalStorage/localStorage";
 import NavLink from '@/Components/NavLink';
 import Colors from "@/Constants/Colors.js";
 import httpClient from "@/Utils/httpClient";
-export default function Guest({ children,style}) {
+export default function GuestLayout({auth, children,style}) {
     const { post} = useForm({});
 
 
@@ -39,7 +40,14 @@ export default function Guest({ children,style}) {
 
     }
     return (
-         <div className="min-h-screen  " style={style}>
+         <div className="min-h-screen  " 
+          style={{
+                backgroundImage: `url(${BackgroundImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+                }}
+         >
             <nav className="border-b border-black   h-full" style={{ backgroundColor: Colors.primaryDark }}>
                     <div className="flex  justify-around items-center ">
                         <div className="shrink-0 flex items-center block  w-auto fill-current ">

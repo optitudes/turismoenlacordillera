@@ -4,17 +4,10 @@ import Background from "@/Assets/Backgrounds/greenBorder.png";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
-        <GuestLayout
-         style={{
-             backgroundImage: `url(${Background})`,
-             backgroundSize: 'cover',
-             backgroundPosition: 'center',
-             backgroundRepeat: 'no-repeat'
-             }}
-        >
-            <Head title="Log in" />
-            
-            Hopla
-        </GuestLayout>
+           <div>
+            work in progress
+
+           </div> 
+       
     );
 }

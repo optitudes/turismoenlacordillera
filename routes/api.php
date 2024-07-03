@@ -26,9 +26,8 @@ Route::prefix('microsites')->group(function() {
 
         //rutas accessibles como admin o root
         Route::middleware(HasRoles::class.":". config('constants.ROLES_ID.ROOT'). "-" .config('constants.ROLES_ID.ADMIN'))->group(function () {
-
-        //permite obtener la lista de solicitudes 
-            Route::get('/solicitudes', [MicrositeController::class, 'getMicrositesSolicitudes']);
+            //permite obtener la lista de solicitudes 
+            Route::get('/solicitudes/{filter?}', [MicrositeController::class, 'getMicrositesSolicitudes']);
         });
     });
 });
