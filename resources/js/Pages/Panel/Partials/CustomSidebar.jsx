@@ -17,7 +17,7 @@ const CustomSidebar = () => {
   return (
 
     <Sidebar
-      backgroundColor={Colors.primarySoft}
+      backgroundColor={Colors.pinkSoft}
       rtl={false}
       style={{ height: "145vh" }}
       collapsed = {toggled}
@@ -50,7 +50,7 @@ const CustomSidebar = () => {
             <MenuItem
               rootStyles={{backgroundColor:Colors.primarySoft}}
               icon={<ArchiveBox/>}
-              component={<Link href={route('microsites.admin.solicitudes')} className='h-16 w-full py-2' />}
+              component={<Link href={route('panel.admin.microsites.solicitudes')} className='h-16 w-full py-2' />}
                >
                 Solicitudes
             </MenuItem>

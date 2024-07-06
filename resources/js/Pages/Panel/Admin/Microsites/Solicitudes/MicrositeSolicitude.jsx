@@ -1,5 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import CustomSidebar from '@/Pages/Panel/Partials/CustomSidebar';
+import MicrositeDetails from "@/Pages/Panel/Admin/Microsites/Solicitudes/Components/MicrositeSolicitudeDetails";
+import MicrositeSolicitudeEditForm from "@/Pages/Panel/Admin/Microsites/Solicitudes/Components/MicrositeSolicitudeEditForm";
+import  Colors from "@/Constants/Colors";
+import { Head } from '@inertiajs/react';
 import httpClient from "@/Utils/httpClient";
 
 const ITEMS_PER_PAGE = 3;
@@ -7,6 +10,7 @@ const ITEMS_PER_PAGE = 3;
 const MicrositeSolicitude = () => {
   const [microsites, setMicrosites] = useState([]);
   const [selectedMicrosite, setSelectedMicrosite] = useState(null);
+  const [selectedMicrositeToChangeStatus, setSelectedMicrositeToChangeStatus] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(null);
 
@@ -15,18 +19,7 @@ const MicrositeSolicitude = () => {
   const showApplicationMicrosite = async () => {
   try {
     const response = await httpClient.get("microsites/solicitudes/");
-    const newMicrosites = response.data.payload;
-    setMicrosites(prevMicrosites => {
-      // Verifica si el id ya existe en la lista
-      const hasId = prevMicrosites.some(microsite => newMicrosites.some(newMicrosite => newMicrosite.id === microsite.id));
-      if (hasId) {
-        // Si el id ya existe, no agrega el nuevo micrositio
-        return prevMicrosites;
-      } else {
-        // Si el id no existe, agrega el nuevo micrositio
-        return [...prevMicrosites, ...newMicrosites];
-      }
-    });
+    setMicrosites(response.data.payload );
   } catch (error) {
     console.error(error);
   }
@@ -36,20 +29,26 @@ const MicrositeSolicitude = () => {
   showApplicationMicrosite();
  },[]);
 
- const handleStatusChange = async (microsite, status) => {
-  const updatedMicrosites = microsites.map((m) =>
+
+ const showEditMicrositeSolicitudeModal = (microsite) => {
+    setSelectedMicrositeToChangeStatus(microsite);
+ }
+
+ const handleStatusChange = async (microsite, status,comment) => {
+    // Actualizar el estado local
+    const updatedMicrosites = microsites.map((m) =>
       m.id === microsite.id ? { ...m, status } : m
     );
-    console.log(status);
-    // Actualizar el estado local
     setMicrosites(updatedMicrosites);
+    //TODO sanitizar del lado del fron el commentario
     // Actualizar el estado en el servidor
     try {
     const response = await httpClient.post("microsite/admin/updateSolicitudeStatus", {
       "id": microsite.id,
       "status": status,
-      "comment": "Se han cumplido casi todos los requisitos"
+      "comment": comment 
     });
+
     if (!response.ok) {
       throw new Error("Failed to update status");
     }
@@ -63,16 +62,29 @@ const MicrositeSolicitude = () => {
   setSelectedMicrosite(microsite);
   };
 
- const handleCloseModal = () => {
+  const handleDeleteSolicitude = () => {
+    console.log("implementing");
+ };
+
+ const handleCloseDetailsModal = () => {
   setSelectedMicrosite(null);
+ };
+const handleCloseEditModal = () => {
+  setSelectedMicrositeToChangeStatus(null);
  };
 
  const handlePageChange = (page) => {
   setCurrentPage(page);
  };
 
- const handleFilterChange = (newFilter) => {
+ const handleFilterChange = async (newFilter) => {
   setFilter(newFilter);
+  try {
+    const response = await httpClient.get("microsites/solicitudes"+((newFilter != null && newFilter != "TODOS")?"/"+newFilter+"/":"/"));
+    setMicrosites(response.data.payload);
+  } catch (error) {
+    console.error(error);
+  }
   setCurrentPage(1); // Resetear la página actual al cambiar el filtro
  };
 
@@ -91,16 +103,15 @@ const MicrositeSolicitude = () => {
   }
  };
 
- const filteredMicrosites = useMemo(() => filter === 'TODOS' || filter === null ? microsites : microsites.filter((m) => m.status === filter), [microsites, filter]);
- const paginatedMicrosites = useMemo(() => filteredMicrosites.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE), [filteredMicrosites, currentPage]);
+ const paginatedMicrosites = useMemo(() => microsites.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE), [microsites, currentPage]);
  
   return (
     <>
-<CustomSidebar />
-    <div className="w-full bg-[#f0f0f0] pt-8 pr-16 pl-16 pb-8 mt-4 mr-16 ml-16 mb-4 rounded-md shadow-md">
-      <h1 className="text-3xl font-semibold mb-4 text-gray-800">Micrositios</h1>
+    <Head title="Solicitudes" />
+    <div className=" w-full bg-[#f0f0f0]  rounded-md shadow-md">
+      <h1 className="  text-3xl font-semibold  text-gray-800">Solicitudes de micrositios</h1>
       {/* Selector de filtro */}
-      <div className="mb-4">
+      <div className="mb-4 mx-3">
         <label htmlFor="filter" className="mr-2 font-semibold text-gray-800">
           Filtrar por Estado:
         </label>
@@ -125,44 +136,31 @@ const MicrositeSolicitude = () => {
         {paginatedMicrosites.map((microsite) => (
           <li
             key={microsite.id}
-            className="mb-4 p-4 bg-white bg-opacity-80 rounded transition transform hover:scale-105 border-b border-[#08403E]"
+            className="mx-3 bg-white bg-opacity-80 rounded  border-b border-[#08403E]"
           >
-            <div className="flex justify-between items-center border-b pb-2">
-              <span className="font-semibold text-gray-800">{microsite.micrositeName}</span>
-              <div className="flex space-x-2 items-center">
-                <span className={`text-sm font-semibold ${getStatusColor(microsite.status)}`}>
+            <div className="flex justify-between items-center border-b pb-2 grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-2">
+              <span className="flex font-semibold text-gray-800 mx-3 ">{microsite.micrositeName}</span>
+              <div className='flex items-end flex-col px-3' >
+                <span className={` flex   text-right text-sm font-semibold ${getStatusColor(microsite.status)}`}>
                   Estado: {microsite.status.charAt(0).toUpperCase() + microsite.status.slice(1)}
                 </span>
-                <div className="flex space-x-2">
-                  {(microsite.status === 'PENDIENTE' || microsite.status === 'RECHAZADO' || microsite.status === 'EN_PROCESO') && (
-                    <>
-                      <button
-                        onClick={() => handleStatusChange(microsite, 'APROBADO')}
-                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition duration-300"
-                      >
-                        Aprobar
-                      </button>
-                    </>
-                  )}
-                  {(microsite.status === 'PENDIENTE' || microsite.status === 'EN_PROCESO' || microsite.status === 'APROBADO') && (
-                    <button
-                      onClick={() => handleStatusChange(microsite, 'RECHAZADO')}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300"
-                    >
-                      Rechazar
-                    </button>
-                  )}
-                  {(microsite.status === 'PENDIENTE' || microsite.status === 'RECHAZADO' || microsite.status === 'APROBADO') && (
-                    <button
-                      onClick={() => handleStatusChange(microsite, 'EN_PROCESO')}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300"
-                    >
-                      En proceso
-                    </button>
-                  )}
+
+                <div className='flex justify-around ' >
                   <button
+                      onClick={() => showEditMicrositeSolicitudeModal(microsite)}
+                      className="flex bg-yellow-500 text-white mx-3 px-3 py-1 rounded hover:bg-green-600 transition duration-300"
+                    >
+                     Editar estado 
+                    </button>
+                    <button
+                      onClick={() => handleDeleteSolicitude(microsite)}
+                      className="flex bg-red-500 text-white mx-3 px-3 py-1 rounded hover:bg-red-700 transition duration-300"
+                    >
+                     Eliminar solicitud 
+                    </button>
+                 <button
                     onClick={() => handleViewDetails(microsite)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-300"
+                    className="flex bg-blue-500 text-white mx-1 px-3 py-1 rounded hover:bg-blue-600 transition duration-300"
                   >
                     Ver más
                   </button>
@@ -199,44 +197,22 @@ const MicrositeSolicitude = () => {
 
       {/* Detalles del micrositio seleccionado */}
       {selectedMicrosite && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-md shadow-md max-w-md">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">
-              {selectedMicrosite.comment} Detalles
-            </h2>
-            <p className={`text-gray-800 mb-2 ${getStatusColor(selectedMicrosite.status)}`}>
-              Estado Actual: {selectedMicrosite.status}
-            </p>
-            <p>Nombre del Usuario: {selectedMicrosite.userName} {selectedMicrosite.userLastName}</p>
-            <div className="flex space-x-2 mt-4">
-              {(selectedMicrosite.status === 'PENDIENTE' || selectedMicrosite.status === 'RECHAZADO' || selectedMicrosite.status === 'EN_PROCESO') && (
-                <>
-                  <button
-                    onClick={() => handleStatusChange(selectedMicrosite, 'APROBADO')}
-                    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition duration-300"
-                  >
-                    Aprobar
-                  </button>
-                </>
-              )}
-              {(selectedMicrosite.status === 'PENDIENTE' || selectedMicrosite.status === 'EN_PROCESO' || selectedMicrosite.status === 'APROBADO') && (
-                <button
-                  onClick={() => handleStatusChange(selectedMicrosite, 'RECHAZADO')}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300"
-                >
-                  Rechazar
-                </button>
-              )}
-              <button
-                onClick={handleCloseModal}
-                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-300"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
+        <MicrositeDetails 
+          selectedMicrosite={selectedMicrosite}
+          handleCloseModal={handleCloseDetailsModal}
+          getStatusColor={getStatusColor}
+        />
       )}
+
+     {selectedMicrositeToChangeStatus && (
+      <MicrositeSolicitudeEditForm 
+          selectedMicrosite={selectedMicrositeToChangeStatus}
+          handleStatusChange={handleStatusChange}
+          handleCloseModal={handleCloseEditModal}
+          getStatusColor={getStatusColor}
+        />
+     )}
+      
     </div>
 
     </>

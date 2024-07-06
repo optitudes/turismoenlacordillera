@@ -1,16 +1,12 @@
-import GuestLayout from '@/Layouts/GuestLayout';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
-import CustomSidebar from '@/Pages/Panel/Partials/CustomSidebar';
-import Background from "@/Assets/Backgrounds/greenBorder.png";
 import { Head } from '@inertiajs/react';
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
         <>
-            <Head title="Dashboard" />
-            <CustomSidebar></CustomSidebar>
+            <Head title="Editar perfil" />
 
             <div className="w-full h-full  justify-center items-center">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
