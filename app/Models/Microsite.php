@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Microsite extends Model
 {
@@ -18,4 +19,11 @@ class Microsite extends Model
         'description',
         'experiences'
     ];
+
+    public static function updateActive($micrositeId = -1,$isActive=false){
+        return DB::table('microsites')
+            ->where('id', $micrositeId)
+            ->update(['isActive' => $isActive]);
+
+    }
 }

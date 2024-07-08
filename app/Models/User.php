@@ -65,4 +65,10 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->pluck('user.email')
                     ->toArray();
     }
+    public static function updateUserRole($userId = -1,$roleId=-1){
+        return DB::table('users')
+            ->where('id', $userId)
+            ->update(['role_id' => $roleId]);
+
+    }
 }
