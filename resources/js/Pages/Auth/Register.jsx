@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import Background from "@/Assets/Backgrounds/greenBorder.png";
-import GuestLayout from '@/Layouts/GuestLayout';
+import { useEffect, useState,Fragment} from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import Checkbox from '@/Components/Checkbox';
 import MyMap from '@/Components/Map/Maps'
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import QuestionPopup from '@/Components/QuestionPopup';
 import { Head, Link, useForm } from '@inertiajs/react';
 import httpClient from "@/Utils/httpClient";
 import usePasswordToggle from '@/CustomHooks/usePasswordToggle';
@@ -14,7 +13,6 @@ import Select from '@/Components/Select'
 
 
 export default function Register() {
-
     const { data, setData, post, processing, errors, reset } = useForm({
         ventureInfo: {
             name: "",
@@ -55,6 +53,12 @@ export default function Register() {
 
     const [selectedProvince, setSelectedProvince] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
+
+    
+    const [isOpenPopup, setIsOpenPopup] = useState(false);
+    const [onCancelPopup, setOnCancelPopup] = useState();
+    const [onAcceptPopup, setOnAcceptPopup] = useState();
+    const [popupMessage,setPopupMessage] = useState("");
 
     const handleSelectProvince = (value) => {
         // Here, value stores the province's id
@@ -112,13 +116,18 @@ export default function Register() {
             const response = await httpClient.post("auth/register",data);
             if (response.data.success) {
                 console.log(response.data);
-                alert(response.data.message);
             } else {
                 console.log(response.data);
-                alert(response.data.message);
             }
+            setPopupMessage(response.data.message);
+            setOnAcceptPopup(() => ()=> {window.location.href = "/";});
+            setOnCancelPopup(() => ()=> {setIsOpenPopup(false);});
+            setIsOpenPopup(true);
         } catch (error) {
-            console.error('Error al hacer la solicitud:', error);
+            setPopupMessage(JSON.parse(error.request.response).message);
+            setOnAcceptPopup(() => () => { setIsOpenPopup(false) });
+            setOnCancelPopup(() => () => { setIsOpenPopup(false) });
+            setIsOpenPopup(true);
         }
         //post(route('register'));
         console.log(data);
@@ -136,6 +145,7 @@ export default function Register() {
 
         <>
             <Head title="Registro" />
+    
             <div className='bg-slate-200  rounded-lg shadow-lg w-full max-w-md '>
 
                 <form onSubmit={submit} className='m-14'>
@@ -339,6 +349,12 @@ export default function Register() {
                     </div>
                 </form>
             </div>
+            <QuestionPopup
+            isOpen = {isOpenPopup}
+            question= {popupMessage}
+            onAccept={onAcceptPopup}
+            onCancel={onCancelPopup}
+            />
         </>
     );
 }

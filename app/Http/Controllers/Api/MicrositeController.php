@@ -30,8 +30,10 @@ class MicrositeController extends BaseController
     public function updateMicrositeSolicitude(UpdateMicrositeSolicitudeRequest $request)
         {
             try {
-                $solicitudes = $this->micrositeSolicitudeService->updateMicrositeSolicitude($request);
-                return $this->sendResponse($solicitudes, 'Estado del micrositio actualizado correctamente, se notificará al usuario por correo');
+                $status = $this->micrositeSolicitudeService->updateMicrositeSolicitude($request);
+                if($status['success'])
+                    return $this->sendResponse(null,$status['msg'] );
+                return $this->sendError($status['msg']);
 
             } catch (\Throwable $th) {
                 return $this->sendError($th->getMessage());

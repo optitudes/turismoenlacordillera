@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
 class MicrositeSolicitude extends Model
 {
     use HasFactory;
 
+    public function microsite(){
+        return $this->belongsTo(Microsite::class,'micrositeId');
+    }
+    public function user(){
+        return $this->belongsTo(User::class,'userId');
+    }
 
 
     public static function getMicrositeSolicitudes($filter = null){

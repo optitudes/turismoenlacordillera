@@ -56,10 +56,10 @@ class MicrositeSolicitudeService {
       $micrositeSolicitude->save();
 
       //seccion para enviar los correos y la informacion
+      $this->mailService->sendMicrositeSolicitudeStatusUpdateToClient($request->status,$micrositeSolicitude->microsite->name,$request->comment,$micrositeSolicitude->user->email);
 
+      return ['success'=>true,'msg'=> 'Solicitud actualizada a '.$request->status.'. El usuario relacionado a la petición recibirá un correo de notificación'];
 
-
-      return $micrositeSolicitude;
 
     }
     public function formatMicrositeSolicitudeComment($comment){

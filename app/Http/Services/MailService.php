@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Mail\SendNewMicrositeSolicitudeToAdmin;
+use App\Mail\SendMicrositeSolicitudeStatusUpdatedToClient;
 
 class MailService {
 
@@ -28,6 +29,18 @@ class MailService {
           }
 
         }
+    }
+    public function sendMicrositeSolicitudeStatusUpdateToClient($newStatus = "", $micrositeName = "", $comment = "",$email = ""){
+          try{
+            Mail::to($email)->send(new SendMicrositeSolicitudeStatusUpdatedToClient($newStatus,$micrositeName,$comment));
+          }catch(\Throwable $e){
+            //TODO: create a table to save all emails failures
+            Log::error('Error al enviar el correo', [
+                'email' => $email,
+                'micrositeName' => $micrositeName,
+                'exception' => $e
+            ]);
+          }
     }
 }
 

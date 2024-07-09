@@ -4,6 +4,7 @@ import MicrositeSolicitudeEditForm from "@/Pages/Panel/Admin/Microsites/Solicitu
 import  Colors from "@/Constants/Colors";
 import { Head } from '@inertiajs/react';
 import httpClient from "@/Utils/httpClient";
+import QuestionPopup from '@/Components/QuestionPopup';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -15,6 +16,14 @@ const MicrositeSolicitude = () => {
   const [filter, setFilter] = useState(null);
 
   const totalPages = useMemo(() => Math.ceil(microsites.length / ITEMS_PER_PAGE), [microsites]);
+
+  //useStates relacionados al popup
+    const [isOpenPopup, setIsOpenPopup] = useState(false);
+    const [onCancelPopup, setOnCancelPopup] = useState(undefined);
+    const [onAcceptPopup, setOnAcceptPopup] = useState(undefined);
+    const [popupMessage,setPopupMessage] = useState("");
+
+
 
   const showApplicationMicrosite = async () => {
   try {
@@ -43,19 +52,24 @@ const MicrositeSolicitude = () => {
     //TODO sanitizar del lado del fron el commentario
     // Actualizar el estado en el servidor
     try {
-    const response = await httpClient.post("microsites/solicitudes/updateStatus", {
-      "id": microsite.id,
-      "status": status,
-      "comment": comment 
-    });
 
-    if (!response.data.status!= true) {
-      throw new Error("Failed to update status");
-    }
+      setSelectedMicrositeToChangeStatus(null);
+      const response = await httpClient.post("microsites/solicitudes/updateStatus", {
+        "id": microsite.id,
+        "status": status,
+        "comment": comment 
+      });
+
+      setPopupMessage(response.data.message);
+      setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+      setIsOpenPopup(true);
+
+    
     } catch (error) {
-    console.error(error);
+      setPopupMessage(JSON.parse(error.request.response).message);
+      setOnAcceptPopup(() => () => { setIsOpenPopup(false) });
+      setIsOpenPopup(true);
     }
-    setSelectedMicrosite(null);
     handleFilterChange("TODOS");
   }; 
 
@@ -214,8 +228,13 @@ const handleCloseEditModal = () => {
         />
      )}
     </div>
-
-    </>
+      <QuestionPopup
+          isOpen = {isOpenPopup}
+          question= {popupMessage}
+          onAccept={onAcceptPopup}
+          onCancel={onCancelPopup}
+          />
+  </>
   );
 };
 export default MicrositeSolicitude;
