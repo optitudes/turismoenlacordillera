@@ -4,6 +4,9 @@ import { clearLocalStorage,getUserToken } from "@/LocalStorage/localStorage";
 const instance = axios.create({
    baseURL: 'http://localhost:8000/api/',
    timeout: 30000,
+   headers: {
+     'Accept': 'application/json'
+   }
 });
 
 instance.interceptors.request.use(

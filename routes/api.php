@@ -28,6 +28,7 @@ Route::prefix('microsites')->group(function() {
         Route::middleware(HasRoles::class.":". config('constants.ROLES_ID.ROOT'). "-" .config('constants.ROLES_ID.ADMIN'))->group(function () {
             //permite obtener la lista de solicitudes 
             Route::get('/solicitudes/{filter?}', [MicrositeController::class, 'getMicrositesSolicitudes']);
+            Route::post('/solicitudes/updateStatus', [MicrositeController::class, 'updateMicrositeSolicitude']);
         });
     });
 });

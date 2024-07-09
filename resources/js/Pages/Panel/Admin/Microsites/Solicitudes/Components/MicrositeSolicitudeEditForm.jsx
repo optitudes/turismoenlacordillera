@@ -8,7 +8,7 @@ export default function MicrositeSolicitudeEditForm({selectedMicrosite, handleSt
     <div className=" z-50 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <div className="bg-white p-6 rounded-md shadow-md max-w-md">
           <h2 className="text-xl font-semibold mb-4 text-gray-800">
-            {selectedMicrosite.comment}Editar una solicitud de micrositio 
+            Editar una solicitud de micrositio 
           </h2>
           <p className={`text-gray-800 mb-2 ${getStatusColor(selectedMicrosite.status)}`}>
             Estado Actual: {selectedMicrosite.status}

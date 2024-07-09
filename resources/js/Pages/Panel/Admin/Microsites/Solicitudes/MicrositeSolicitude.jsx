@@ -43,19 +43,20 @@ const MicrositeSolicitude = () => {
     //TODO sanitizar del lado del fron el commentario
     // Actualizar el estado en el servidor
     try {
-    const response = await httpClient.post("microsite/admin/updateSolicitudeStatus", {
+    const response = await httpClient.post("microsites/solicitudes/updateStatus", {
       "id": microsite.id,
       "status": status,
       "comment": comment 
     });
 
-    if (!response.ok) {
+    if (!response.data.status!= true) {
       throw new Error("Failed to update status");
     }
     } catch (error) {
     console.error(error);
     }
     setSelectedMicrosite(null);
+    handleFilterChange("TODOS");
   }; 
 
   const handleViewDetails = (microsite) => {
@@ -148,7 +149,7 @@ const handleCloseEditModal = () => {
                 <div className='flex justify-around ' >
                   <button
                       onClick={() => showEditMicrositeSolicitudeModal(microsite)}
-                      className="flex bg-yellow-500 text-white mx-3 px-3 py-1 rounded hover:bg-green-600 transition duration-300"
+                      className="flex bg-yellow-500 text-white mx-3 px-3 py-1 rounded hover:bg-yellow-800 transition duration-300"
                     >
                      Editar estado 
                     </button>
@@ -212,7 +213,6 @@ const handleCloseEditModal = () => {
           getStatusColor={getStatusColor}
         />
      )}
-      
     </div>
 
     </>
