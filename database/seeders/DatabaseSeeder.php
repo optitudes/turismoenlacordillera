@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
          $this->call(ProfileSeeder::class);
          $this->call(VentureSeeder::class);
          $this->call(MicrositeSeeder::class);
+         $this->call(MicrositeSolicitudeSeeder::class);
     }
 }
