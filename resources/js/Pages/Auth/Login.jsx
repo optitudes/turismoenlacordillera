@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import usePasswordToggle from '@/CustomHooks/usePasswordToggle';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,6 +14,8 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+
+    const [passwordInputType, toggleIcon] = usePasswordToggle();
 
     useEffect(() => {
         return () => {
@@ -43,7 +46,6 @@ export default function Login({ status, canResetPassword }) {
                         <TextInput
                             id="email"
                             type="email"
-
                             name="email"
                             clas
                             value={data.email}
@@ -56,17 +58,18 @@ export default function Login({ status, canResetPassword }) {
                         <InputError message={errors.email} className="mt-2" />
                     </div>
 
-                    <div className="mt-4"><p className="text-zinc-950 text-opacity-100">Contraseña</p>
+                    <div className="mt-4 relative"><p className="text-zinc-950 text-opacity-100">Contraseña</p>
 
                         <TextInput
                             id="password"
-                            type="password"
+                            type={passwordInputType}
                             name="password"
                             value={data.password}
-                            className="mt-1 block w-full"
+                            className="mt-1 w-full"
                             autoComplete="current-password"
                             onChange={(e) => setData('password', e.target.value)}
                         />
+                        <span className='absolute inset-y-0 right-0 flex items-center pr-3 ps-3 mt-1 pt-6 cursor-pointer'>{toggleIcon}</span>
 
                         <InputError message={errors.password} className="mt-2" />
                     </div>
@@ -78,7 +81,7 @@ export default function Login({ status, canResetPassword }) {
                                 checked={data.remember}
                                 onChange={(e) => setData('remember', e.target.checked)}
                             />
-                            <span className="ms-2 text-sm text-zinc-950">Mantener sesión activa </span >
+                            <span className="ms-2 text-sm text-zinc-950">Remember me </span >
                         </label>
                     </div>
 
@@ -88,12 +91,12 @@ export default function Login({ status, canResetPassword }) {
                                 href={route('password.request')}
                                 className="underline text-sm text-zinc-950 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                Olvidaste tú contraseña?
+                                Forgot your password?
                             </Link>
                         )}
 
                         <PrimaryButton className="ms-4" disabled={processing}>
-                           Iniciar sesión 
+                            Log in
                         </PrimaryButton>
                     </div>
                 </form>
