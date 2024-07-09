@@ -15,7 +15,7 @@ class MicrositeSolicitudeSeeder extends Seeder
         \DB::table('microsite_solicitudes')->insert([
             [
                 'comment' => '[29 de jun 21:16]  El micrositio cuenta con todos los papeles al dia',
-                'status' => 'APROVADO',
+                'status' => 'APROBADO',
                 'adminId' => 2,
                 'userId' => 3,
                 'ventureId' =>1,

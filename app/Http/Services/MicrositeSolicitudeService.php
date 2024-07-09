@@ -45,7 +45,7 @@ class MicrositeSolicitudeService {
 
       if($request->status === "APROBADO" && in_array($currentStatus,["PENDIENTE","EN_PROCESO","RECHAZADO"])){
 
-          User::updateUserRole($micrositeSolicitude->userId,config('constants.ROLES_ID.ADMIN'));
+          User::updateUserRole($micrositeSolicitude->userId,config('constants.ROLES_ID.ENTREPRENEUR'));
           Microsite::updateActive($micrositeSolicitude->micrositeId,true);
           Venture::updateActive($micrositeSolicitude->ventureId,true);
 
