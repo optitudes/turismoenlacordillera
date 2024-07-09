@@ -11,7 +11,6 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import httpClient from "@/Utils/httpClient";
 import usePasswordToggle from '@/CustomHooks/usePasswordToggle';
 import Select from '@/Components/Select'
-import axios from 'axios';
 
 
 export default function Register() {
@@ -62,7 +61,7 @@ export default function Register() {
         setSelectedProvince(value);
 
         // With this id, we get the cities list
-        axios.get(`https://api-colombia.com/api/v1/Department/${value}/cities`)
+        httpClient.get(`https://api-colombia.com/api/v1/Department/${value}/cities`)
             .then(response => {setCities(response.data)})
             .catch(error => console.log(error));
     };
@@ -73,7 +72,7 @@ export default function Register() {
     };
 
     useEffect(() => {
-        axios.get('https://api-colombia.com/api/v1/Department')
+        httpClient.get('https://api-colombia.com/api/v1/Department')
             .then(response => setProvinces(response.data))
             .catch(error => console.log(error));
 
@@ -90,11 +89,11 @@ export default function Register() {
         }
 
         // Save province and city values by their respective names instead of id's
-        axios.get(`https://api-colombia.com/api/v1/Department/${selectedProvince}`)
+        httpClient.get(`https://api-colombia.com/api/v1/Department/${selectedProvince}`)
             .then(response => data.profileInfo.province = response.data.name)
             .catch(error => console.log(error));
 
-        axios.get(`https://api-colombia.com/api/v1/City/${selectedCity}`)
+        httpClient.get(`https://api-colombia.com/api/v1/City/${selectedCity}`)
             .then(response => data.profileInfo.city = response.data.name)
             .catch(error => console.log(error));
 
