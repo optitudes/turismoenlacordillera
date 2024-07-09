@@ -9,9 +9,13 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import httpClient from "@/Utils/httpClient";
+import usePasswordToggle from '@/CustomHooks/usePasswordToggle';
+import Select from '@/Components/Select'
+import axios from 'axios';
 
 
 export default function Register() {
+
     const { data, setData, post, processing, errors, reset } = useForm({
         ventureInfo: {
             name: "",
@@ -38,12 +42,42 @@ export default function Register() {
             phoneNumber: "",
             phonePrefix: "+57",
             pictureUrl: "",
+            province: "",
+            city: "",
         }
     });
+
     const [isEntrepreneur, setIsEntrepreneur] = useState(false);
     const [ventureMapPosition,setVentureMapPosition] = useState(null);
+    const [passwordInputType, toggleIcon] = usePasswordToggle();
+    const [passwordConfirmationInputType, toggleIconConfirmation] = usePasswordToggle();
+
+    const [provinces, setProvinces] = useState([]);
+    const [cities, setCities] = useState([]);
+
+    const [selectedProvince, setSelectedProvince] = useState('');
+    const [selectedCity, setSelectedCity] = useState('');
+
+    const handleSelectProvince = (value) => {
+        // Here, value stores the province's id
+        setSelectedProvince(value);
+
+        // With this id, we get the cities list
+        axios.get(`https://api-colombia.com/api/v1/Department/${value}/cities`)
+            .then(response => {setCities(response.data)})
+            .catch(error => console.log(error));
+    };
+
+    const handleSelectCity = (value) => {
+        // value stores the city's id
+        setSelectedCity(value);
+    };
 
     useEffect(() => {
+        axios.get('https://api-colombia.com/api/v1/Department')
+            .then(response => setProvinces(response.data))
+            .catch(error => console.log(error));
+
         return () => {
             reset('password', 'password_confirmation');
         };
@@ -51,6 +85,23 @@ export default function Register() {
 
     const submit = async (e) => {
         e.preventDefault();
+        
+        if(data.ventureInfo !== null && data.ventureInfo.name !== "") {
+            data.micrositeInfo.name = data.ventureInfo.name;
+        }
+
+        // Save province and city values by their respective names instead of id's
+        axios.get(`https://api-colombia.com/api/v1/Department/${selectedProvince}`)
+            .then(response => data.profileInfo.province = response.data.name)
+            .catch(error => console.log(error));
+
+        axios.get(`https://api-colombia.com/api/v1/City/${selectedCity}`)
+            .then(response => data.profileInfo.city = response.data.name)
+            .catch(error => console.log(error));
+
+        
+        data.profileInfo.city = selectedCity;
+
         if(ventureMapPosition != null){
             data.ventureInfo.mapLongitude = ventureMapPosition.lng;
             data.ventureInfo.mapLatitude = ventureMapPosition.lat;
@@ -159,36 +210,38 @@ export default function Register() {
                         <InputError message={errors.email} className="mt-2" />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 relative">
                         <InputLabel htmlFor="password" value="Contraseña" />
 
                         <TextInput
                             id="password"
-                            type="password"
+                            type={passwordInputType}
                             name="password"
                             value={data.password}
-                            className="mt-1 block w-full"
+                            className="mt-1 w-full"
                             autoComplete="new-password"
                             onChange={(e) => setData('userInfo', { ...data.userInfo, password: e.target.value })}
                             required
                         />
+                        <span className='absolute inset-y-0 right-0 flex items-center pr-3 ps-3 mt-1 pt-6 cursor-pointer'>{toggleIcon}</span>
 
                         <InputError message={errors.password} className="mt-2" />
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 relative">
                         <InputLabel htmlFor="password_confirmation" value="Confirma la contraseña" />
 
                         <TextInput
                             id="password_confirmation"
-                            type="password"
+                            type={passwordConfirmationInputType}
                             name="password_confirmation"
                             value={data.password_confirmation}
-                            className="mt-1 block w-full"
+                            className="mt-1 w-full"
                             autoComplete="new-password"
                             onChange={(e) => setData('userInfo', { ...data.userInfo, password_confirmation: e.target.value })}
                             required
                         />
+                        <span className='absolute inset-y-0 right-0 flex items-center pr-3 ps-3 mt-1 pt-6 cursor-pointer'>{toggleIconConfirmation}</span>
 
                         <InputError message={errors.password_confirmation} className="mt-2" />
                     </div>
@@ -224,6 +277,18 @@ export default function Register() {
 
                         <InputError message={errors.idNumber} className="mt-2" />
                     </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="province" value="Departamento"  />
+                        
+                        <Select id="province" options={provinces} onSelect={handleSelectProvince} />
+                    </div>
+
+                    <div className="mt-4">
+                        <InputLabel htmlFor="city" value="Municipio"  />
+                        
+                        <Select id="city" options={cities} onSelect={handleSelectCity} />
+                    </div>
                     
 
                     <div className="p-4">
@@ -233,34 +298,17 @@ export default function Register() {
                                 onChange={handleCheckboxIsEntrepreneurChange}
                                 className="form-checkbox text-indigo-600 h-5 w-5"
                             />
-                            <span className="ml-2 text-gray-700">Eres emprendedora?</span>
+                            <span className="ml-2 text-gray-700">Eres emprendedor(a)?</span>
                         </label>
                     </div>
                     {isEntrepreneur?
                     <div>
                         <div>
-                            <InputLabel htmlFor="micrositeName" value="Nombre del micrositio" />
+                            <InputLabel htmlFor="micrositeName" value="Nombre del micrositio (emprendimiento)" />
 
                             <TextInput
                                 id="micrositeName"
                                 name="micrositeName"
-                                value={data.micrositeInfo.name}
-                                className="mt-1 block w-full"
-                                autoComplete="name"
-                                isFocused={true}
-                                onChange={(e) => setData('micrositeInfo', { ...data.micrositeInfo, name: e.target.value })}
-                                required
-                            />
-
-                            <InputError message={errors.micrositeName} className="mt-2" />
-                        </div>
-                      
-                        <div>
-                            <InputLabel htmlFor="ventureName" value="Nombre de la empresa" />
-
-                            <TextInput
-                                id="ventureName"
-                                name="ventureName"
                                 value={data.ventureInfo.name}
                                 className="mt-1 block w-full"
                                 autoComplete="name"
@@ -269,8 +317,9 @@ export default function Register() {
                                 required
                             />
 
-                            <InputError message={errors.ventureName} className="mt-2" />
+                            <InputError message={errors.micrositeName} className="mt-2" />
                         </div>
+                      
                         <div>
                             <InputLabel htmlFor="ventureAddress" value="Dirección de la empresa" />
 
