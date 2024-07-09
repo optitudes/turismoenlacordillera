@@ -1,5 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import BackgroundImage from '@/Assets/Backgrounds/greenBorder.png'
+import CustomSidebar from '@/Pages/Panel/Partials/CustomSidebar';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link , useForm} from '@inertiajs/react';
 import {useState,useEffect} from 'react';
@@ -7,7 +8,8 @@ import {clearLocalStorage, getUserToken,} from "@/LocalStorage/localStorage";
 import NavLink from '@/Components/NavLink';
 import Colors from "@/Constants/Colors.js";
 import httpClient from "@/Utils/httpClient";
-export default function GuestLayout({auth, children,style}) {
+
+export default function PanelLayout({ children}) {
     const { post} = useForm({});
 
 
@@ -103,7 +105,8 @@ export default function GuestLayout({auth, children,style}) {
                         </div>
                     </div>
             </nav>
-            <main className='flex justify-center items-center min-h-screen'>
+            <main className='flex justify-start'>
+                <CustomSidebar></CustomSidebar>
                 {children}
             </main>
         </div>

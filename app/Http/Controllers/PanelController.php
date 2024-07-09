@@ -19,7 +19,7 @@ class PanelController extends Controller
     {
         $token = Auth::user()->createToken(env('APP_KEY'))->plainTextToken;
         $userInfo = $this->userService->getSessionUserInfo();
-        return Inertia::render('Dashboard',['token'=>$token,'userInfo'=>$userInfo]);
+        return Inertia::render('Panel/Dashboard',['token'=>$token,'userInfo'=>$userInfo]);
    }
 
 }
