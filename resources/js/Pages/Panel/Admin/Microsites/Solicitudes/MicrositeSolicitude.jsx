@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import MicrositeDetails from "@/Pages/Panel/Admin/Microsites/Solicitudes/Components/MicrositeSolicitudeDetails";
 import MicrositeSolicitudeEditForm from "@/Pages/Panel/Admin/Microsites/Solicitudes/Components/MicrositeSolicitudeEditForm";
-import  Colors from "@/Constants/Colors";
 import { Head } from '@inertiajs/react';
 import httpClient from "@/Utils/httpClient";
 import QuestionPopup from '@/Components/QuestionPopup';
+import Loader from '@/Components/Loader';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -14,6 +14,7 @@ const MicrositeSolicitude = () => {
   const [selectedMicrositeToChangeStatus, setSelectedMicrositeToChangeStatus] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(null);
+  const [isLoading,setIsLoading] = useState(false);
 
   const totalPages = useMemo(() => Math.ceil(microsites.length / ITEMS_PER_PAGE), [microsites]);
 
@@ -53,6 +54,7 @@ const MicrositeSolicitude = () => {
     // Actualizar el estado en el servidor
     try {
 
+      setIsLoading(true);
       setSelectedMicrositeToChangeStatus(null);
       const response = await httpClient.post("microsites/solicitudes/updateStatus", {
         "id": microsite.id,
@@ -71,6 +73,7 @@ const MicrositeSolicitude = () => {
       setIsOpenPopup(true);
     }
     handleFilterChange("TODOS");
+    setIsLoading(false);
   }; 
 
   const handleViewDetails = (microsite) => {
@@ -233,7 +236,8 @@ const handleCloseEditModal = () => {
           question= {popupMessage}
           onAccept={onAcceptPopup}
           onCancel={onCancelPopup}
-          />
+      />
+      {isLoading?<Loader/>:<></>}
   </>
   );
 };
