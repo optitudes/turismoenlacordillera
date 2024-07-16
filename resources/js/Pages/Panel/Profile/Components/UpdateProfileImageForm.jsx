@@ -13,7 +13,6 @@ export default function UpdateProfileImageForm({ mustVerifyEmail, status, classN
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aquí puedes manejar la lógica para subir la imagen
   };
 
   const handleIconClick = () => {
