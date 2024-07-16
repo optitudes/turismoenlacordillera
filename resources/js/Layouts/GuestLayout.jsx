@@ -103,7 +103,7 @@ export default function GuestLayout({auth, children,style}) {
                         </div>
                     </div>
             </nav>
-            <main className='flex justify-center items-center min-h-screen'>
+            <main className='flex flex-col justify-center items-center min-h-screen'>
                 {children}
             </main>
         </div>

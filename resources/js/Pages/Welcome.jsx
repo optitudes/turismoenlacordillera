@@ -1,12 +1,20 @@
 import { Link, Head } from '@inertiajs/react';
-import GuestLayout from '@/Layouts/GuestLayout';
-import Background from "@/Assets/Backgrounds/greenBorder.png";
+import HeroSection from './Home/HeroSection';
+import Services from './Home/Services';
+import TopDestination from './Home/TopDestination';
+import BookingSteps from './Home/BookingSteps';
+import Testimonials from './Home/Testimonials';
+import NewsLetter from './Home/NewsLetter';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
-           <div>
-            work in progress
-           </div> 
-       
+        <>
+           <Head title="Inicio" />
+            <HeroSection/>
+            <Services />
+            <TopDestination />
+            <BookingSteps />
+            <NewsLetter />
+        </>
     );
 }

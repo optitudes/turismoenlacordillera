@@ -1,0 +1,18 @@
+/* Contenedor principal para centrar el contenido */
+.container-pages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+/*Contenedor interno que separa el navbar y el footer*/
+.container-internal-pages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 50px 0 10px 0;
+}
