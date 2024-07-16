@@ -14,6 +14,20 @@ const CustomSidebar = () => {
   const toggle = () => {
     setToggled(!toggled);
   }
+const [isLargeScreen, setIsLargeScreen] = useState(
+  window.innerWidth < 768 ? false : true 
+);
+
+const handleResize = () => {
+  setIsLargeScreen(window.innerWidth < 768 ? false : true);
+};
+
+useEffect(() => {
+  window.addEventListener("resize", handleResize);
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
 
 
   return (
@@ -91,13 +105,17 @@ const CustomSidebar = () => {
 
       </SubMenu>
   :<></>}
-      {toggled?
 
-      <MenuItem onClick={toggle} > <ArrowRight/> </MenuItem>
-      :
-      
-      <MenuItem onClick={toggle} > <ArrowLeft/> </MenuItem>
-      }
+    {isLargeScreen ? (
+      toggled ? (
+        <MenuItem onClick={toggle}><ArrowRight/></MenuItem>
+      ) : (
+        <MenuItem onClick={toggle}><ArrowLeft/></MenuItem>
+      )
+    ) : (
+      <></>
+    )}
+
     </Menu>
   </Sidebar>
   
