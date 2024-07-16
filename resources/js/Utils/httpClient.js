@@ -14,7 +14,6 @@ instance.interceptors.request.use(
   const token = getUserToken(); 
   if (token != null) {
     config.headers["Authorization"] = "Bearer "+token;
-    console.log("configurando header");
   }
   return config;
  },

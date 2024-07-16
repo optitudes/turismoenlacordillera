@@ -1,6 +1,6 @@
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import DeleteUserForm from '@/Pages/Panel/Profile/Components/DeleteUserForm';
+import UpdatePasswordForm from '@/Pages/Panel/Profile/Components/UpdatePasswordForm';
+import UpdateProfileInformationForm from '@/Pages/Panel/Profile/Components/UpdateProfileInformationForm';
 import { Head } from '@inertiajs/react';
 
 export default function Edit({ auth, mustVerifyEmail, status }) {

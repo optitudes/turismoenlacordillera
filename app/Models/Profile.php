@@ -21,6 +21,8 @@ class Profile extends Model
         'pictureUrl',
         'phoneNumber',
         'phonePrefix',
+        'department',
+        'municipality',
     ];
 
 

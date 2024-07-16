@@ -16,13 +16,13 @@ export default function MicrositeSolicitudeEditForm({selectedMicrosite, handleSt
           <p>Nombre del Usuario: {selectedMicrosite.userName} {selectedMicrosite.userLastName}</p>
 
 
-          <div class="mb-4 py-3">
-            <p class="font-medium mb-2">Comentario justificando el cambio de estado:</p>
+          <div className="mb-4 py-3">
+            <p className="font-medium mb-2">Comentario justificando el cambio de estado:</p>
             <textarea 
                 ref={commentRef}
-                class="w-full h-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="w-full h-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Ingresa tu comentario aquí..."
-                maxlength="600"
+                maxLength="600"
                  ></textarea>
            </div>
 

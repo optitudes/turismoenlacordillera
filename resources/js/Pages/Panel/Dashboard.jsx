@@ -4,13 +4,20 @@ import Panel from "@/Assets/panel.png";
 import {setUserInfo, setUserToken,} from "@/LocalStorage/localStorage";
 import { Head } from '@inertiajs/react';
 
+import { useUserInfo } from '@/Pages/Panel/Context/UserInfoContext';
+
 export default function Dashboard({ auth,token,userInfo}) {
+    const {updateRoleInfo,updateUserInfo } = useUserInfo();
 
     useEffect(() => {
+        console.log(token);
+        //almacenamiento en el localStorage
         setUserToken(token);
         setUserInfo(userInfo);
+        //guardado de info en el context
+        updateUserInfo(userInfo);
+        updateRoleInfo(userInfo.role);
     }, [token]);
-
 
     return (
             <>

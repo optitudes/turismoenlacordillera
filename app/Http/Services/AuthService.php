@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Services\MailService;
 use App\Models\User;
 use App\Models\Profile;
@@ -16,7 +17,8 @@ use Illuminate\Support\Facades\Auth;
 class AuthService {
 
     public function __construct(
-        private MailService $mailService
+        private MailService $mailService,
+        private UserService $userService
      ){}
     
     //funcion que crea un usuario, le da por defecto el rol de cliente y lo retorna
@@ -101,6 +103,19 @@ class AuthService {
             Auth::user()->tokens()->delete();
     }
 
+
+       //metodo que permite hacer login de un usuario usando tokens de laravel sanctum
+       public function loginApi(LoginRequest $loginRequest){
+
+        $loginRequest->authenticate();
+        $authUser = Auth::user();
+        if($authUser->email_verified_at){
+            $success['token'] =  $authUser->createToken(env('APP_KEY'))->plainTextToken;
+            $success['userInfo'] =  $this->userService->getSessionUserInfo();
+            return $success;
+        }
+        return null;
+    }
     /*
     public function sendPasswordRecoveryEmail($email = ""){
         // We will send the password reset link to this user. Once we have attempted

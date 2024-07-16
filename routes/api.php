@@ -43,6 +43,7 @@ Route::prefix('auth')->group(function() {
     //Route::post('login', [AuthController::class, 'login']);
     //allows user to register
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
     /*
     //allows user to send a mail with the recovery password token
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);

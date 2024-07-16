@@ -6,7 +6,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
            <div>
             work in progress
-
            </div> 
        
     );

@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import Checkbox from '@/Components/Checkbox';
-import Background from "@/Assets/Backgrounds/greenBorder.png";
-import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import usePasswordToggle from '@/CustomHooks/usePasswordToggle';
+import {setUserInfo, setUserToken} from "@/LocalStorage/localStorage";
+import httpClient from "@/Utils/httpClient";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,14 +23,30 @@ export default function Login({ status, canResetPassword }) {
         };
     }, []);
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
         //TODO: refactorizar ya que el window.location es necesario como dependencia de GuestLayout.jsx, 
-         post(route('login'), {
-            onSuccess: () => {
-            window.location.href = route('dashboard');
-            },
-    });
+
+         try {
+            const response = await httpClient.post("auth/login",data);
+            if (response.data.success) {
+                setUserToken(response.data.payload.token);
+                setUserInfo(response.data.payload.userInfo);
+                setUserInfo(response.data.payload.userInfo);
+                post(route('login'), {
+                    onSuccess: () => {
+                    window.location.href = route('dashboard');
+                    },
+                });
+                
+            } else {
+                console.log(response.data);
+                alert(response.data.message);
+            }
+        } catch (error) {
+            console.log( error);
+        }
+         
     };
 
     return (

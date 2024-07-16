@@ -1,19 +1,21 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import {Gear, List, User,UserCircleGear,Desktop,UserList, 
         House, ArchiveBox,PlusCircle,Mountains, SignOut,
         FloppyDiskBack,MapPin,ArrowLeft,ArrowRight } from '@phosphor-icons/react';
+
 import  Colors from "@/Constants/Colors";
 import { Link } from '@inertiajs/react';
-
 import { Sidebar, Menu, MenuItem, SubMenu} from 'react-pro-sidebar';
-
+import { useUserInfo } from '@/Pages/Panel/Context/UserInfoContext';
 
 const CustomSidebar = () => {
   const [toggled, setToggled] = useState(true);
-
+    const { roleInfo } = useUserInfo();
   const toggle = () => {
     setToggled(!toggled);
   }
+
+
   return (
 
     <Sidebar
@@ -39,6 +41,7 @@ const CustomSidebar = () => {
          </MenuItem>
       </SubMenu>
 
+  {(roleInfo && (roleInfo.rol == "admin" || roleInfo.rol == "root") )?
       <SubMenu icon={<UserCircleGear/>} label="Administrador">
 
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<User/>} label="Usuarios">
@@ -63,6 +66,9 @@ const CustomSidebar = () => {
         </SubMenu>
 
       </SubMenu>
+  :<></>}
+
+  {(roleInfo  && roleInfo.rol == "emprendedor")?
       <SubMenu icon={<Desktop/>} label="Micrositio">
 
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} label="Contenido">
@@ -84,6 +90,7 @@ const CustomSidebar = () => {
         </SubMenu>
 
       </SubMenu>
+  :<></>}
       {toggled?
 
       <MenuItem onClick={toggle} > <ArrowRight/> </MenuItem>

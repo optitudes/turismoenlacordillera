@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Services\AuthService;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
@@ -15,7 +16,6 @@ class AuthController extends BaseController
     public function __construct( private AuthService $authService ){}
 
 
-    /*
 
     public function login(LoginRequest $loginRequest)
     {
@@ -24,13 +24,12 @@ class AuthController extends BaseController
             if ($response){
                 return $this->sendResponse($response, 'Usuario logeado correctamente');
             }
-            return $this->sendError('Unauthorised.', ['error'=>'Error, el usuario debe verificar el email']);
+            return $this->sendError('Error, el usuario debe verificar el email o revisar las credenciales');
             
         } catch (\Throwable $th) {
             return $this->sendError('Unauthorised.', ['error'=>$th->getMessage()]);
         }
     }
-        */
     //metodo que crea un usuario
     public function register(RegisterRequest $request)
     {

@@ -94,11 +94,11 @@ export default function Register() {
 
         // Save province and city values by their respective names instead of id's
         httpClient.get(`https://api-colombia.com/api/v1/Department/${selectedProvince}`)
-            .then(response => data.profileInfo.province = response.data.name)
+            .then(response => data.profileInfo.department = response.data.name)
             .catch(error => console.log(error));
 
         httpClient.get(`https://api-colombia.com/api/v1/City/${selectedCity}`)
-            .then(response => data.profileInfo.city = response.data.name)
+            .then(response => data.profileInfo.municipality = response.data.name)
             .catch(error => console.log(error));
 
         

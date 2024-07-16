@@ -1,6 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import BackgroundImage from '@/Assets/Backgrounds/greenBorder.png'
-import CustomSidebar from '@/Pages/Panel/Partials/CustomSidebar';
+import CustomSidebar from '@/Pages/Panel/Components/CustomSidebar';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link , useForm} from '@inertiajs/react';
 import {useState,useEffect} from 'react';
@@ -8,6 +8,7 @@ import {clearLocalStorage, getUserToken,} from "@/LocalStorage/localStorage";
 import NavLink from '@/Components/NavLink';
 import Colors from "@/Constants/Colors.js";
 import httpClient from "@/Utils/httpClient";
+import { UserInfoProvider } from '@/Pages/Panel/Context/UserInfoContext';
 
 export default function PanelLayout({ children}) {
     const { post} = useForm({});
@@ -105,10 +106,12 @@ export default function PanelLayout({ children}) {
                         </div>
                     </div>
             </nav>
-            <main className='flex justify-start'>
-                <CustomSidebar></CustomSidebar>
-                {children}
-            </main>
+            <UserInfoProvider>
+                <main className='flex justify-start'>
+                    <CustomSidebar/>
+                    {children}
+                </main>
+            </UserInfoProvider>
         </div>
     );
 }
