@@ -30,10 +30,10 @@ const Services = () => {
         <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-24 md:px-20 px-6">
             <Image image={GroupOfPlus} alt="Vector" className="absolute top-0 right-4 lg:h-36 h-24" />
             <main className="w-full pt-32 flex flex-col gap-3 items-center justify-center">
-                <Text  className="font-light text-base text-color3/80 tracking-widest">
+                <Text  className="font-light text-base text-white tracking-widest">
                     <Fade>{ServiceTexts.firstText}</Fade>
                 </Text>
-                <Text  className="md:text-4xl text-2xl font-medium capitalize text-color3">
+                <Text  className="md:text-4xl text-2xl font-medium capitalize text-white">
                     <Fade>{ServiceTexts.secondText}</Fade>
                 </Text>
 

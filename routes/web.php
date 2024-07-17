@@ -31,7 +31,15 @@ Route::prefix('panel')->group(function() {
         //ruta para obtener la vista de dashboard
         Route::get('/dashboard', [PanelController::class, 'dashboard'])->name('dashboard');
         //rutas relacionadas a la administracion del micrositio
+        Route::prefix('settings')->group(function() {
+
+            Route::middleware(HasWebRole::class.":". config('constants.ROLES_ID.ROOT'). "-" .config('constants.ROLES_ID.ADMIN'))->group(function () {
+                    Route::get('/mainpage', [PanelController::class, 'mainpage'])->name('panel.settings.mainpage');
+            });
+
+        });
         Route::prefix('admin')->group(function() {
+
             Route::prefix('microsites')->group(function() {
                 Route::middleware(HasWebRole::class.":". config('constants.ROLES_ID.ROOT'). "-" .config('constants.ROLES_ID.ADMIN'))->group(function () {
                     Route::get('/solicitudes', [MicrositeController::class, 'solicitudes'])->name('panel.admin.microsites.solicitudes');

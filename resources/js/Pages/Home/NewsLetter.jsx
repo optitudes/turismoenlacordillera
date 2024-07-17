@@ -11,7 +11,7 @@ const NewsLetter = () => {
             <div className="bg-color3/10 w-[30%] h-[70%] rounded-l-xl"></div>
             <div className="w-full bg-color3/5 h-[100%] absolute flex flex-col items-center
             justify-center md:gap-16 gap-10 px-5">
-                <Text as="h1" className="lg:text-3xl md:text-2xl text-xl text-center text-color3/70 lg:w-3/5 w-full">
+                <Text as="h1" className="lg:text-3xl md:text-2xl text-xl text-center text-white lg:w-3/5 w-full">
                     {NewsletterTexts.firstText}
                 </Text>
                 <SubscribeForm />

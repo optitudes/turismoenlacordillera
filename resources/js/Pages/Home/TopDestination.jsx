@@ -56,10 +56,10 @@ const TopDestination = () => {
   return (
     <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-24 md:px-20 px-6 my-20">
 
-<Text as="p" className="font-light text-base text-color3/80 tracking-widest">
+<Text as="p" className="font-light text-base text-white tracking-widest">
         {TopDestinationTexts.firstText}
       </Text>
-      <Text as="h2" className="md:text-4xl text-2xl font-medium capitalize text-color3 py-2">
+      <Text as="h2" className="md:text-4xl text-2xl font-medium capitalize text-white py-2">
         {TopDestinationTexts.secondText}
       </Text>
 
@@ -88,7 +88,7 @@ const TopDestination = () => {
                       // Agrega más estilos según tus necesidades
                     }}
                   >
-                    <ArrowCircleLeft size={40} color={Colors.primarydark2} weight="fill" />
+                    <ArrowCircleLeft size={40} color={Colors.primarydark} weight="fill" />
 
                   </button>
                 )
@@ -108,7 +108,7 @@ const TopDestination = () => {
                       // Agrega más estilos según tus necesidades
                     }}
                   >
-                    <ArrowCircleRight size={40} color={Colors.primarydark2} weight="fill" />
+                    <ArrowCircleRight size={40} color={Colors.primarydark} weight="fill" />
 
                   </button>
                 )
@@ -118,24 +118,24 @@ const TopDestination = () => {
     {TopDestinationTexts.cards.map((card, index) => (
           <div key={index} className=" px-6 w-100">
             <Card
-              cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group"
+              cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group border border-white"
               imageAlt={card.country}
               imageSrc={renderCities(index)}
               imageWrapperClass="w-full h-[250px] overflow-hidden"
               cover="group-hover:scale-125 transition duration-500 ease"
               textWrapperClass="flex flex-col gap-4 w-full px-5 py-5"
             >
-             <div className="flex justify-between items-center">
-                <Text as="h4" className="text-base font-medium text-color3">
+             <div className="flex justify-between items-center ">
+                <Text as="h4" className="text-base font-medium text-white">
                   {card.country}
                 </Text>
-                <Text as="small" className="text-color3 font-light text-sm">
+                <Text as="small" className="text-white font-light text-sm">
                   {card.price}
                 </Text>
               </div>
-              <div className="w-full flex gap-4 items-center text-color3">
+              <div className="w-full flex gap-4 items-center text-white">
                 <AirplaneTilt size={20} color="currentColor" weight="fill" />
-                <Text as="p" className="text-color3 font-light text-base">
+                <Text as="p" className="text-white font-light text-base">
                   {card.duration}
                 </Text>
               </div>

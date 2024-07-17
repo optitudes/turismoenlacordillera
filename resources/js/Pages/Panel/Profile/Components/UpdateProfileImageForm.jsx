@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { PencilSimple } from '@phosphor-icons/react';
+import { useUserInfo } from '@/Pages/Panel/Context/UserInfoContext';
 
 export default function UpdateProfileImageForm({ mustVerifyEmail, status, className = '' }) {
   const [selectedImage, setSelectedImage] = useState(null);
+    const { userInfo } = useUserInfo();
   const fileInputRef = React.useRef(null);
 
   const handleImageChange = (event) => {
@@ -13,7 +15,11 @@ export default function UpdateProfileImageForm({ mustVerifyEmail, status, classN
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(userInfo);
   };
+    useEffect(() => {
+      setSelectedImage(userInfo?.profile?.pictureUrl || null);
+    }, []);
 
   const handleIconClick = () => {
     fileInputRef.current.click();

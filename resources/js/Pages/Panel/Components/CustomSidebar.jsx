@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react';
 import {Gear, List, User,UserCircleGear,Desktop,UserList, 
-        House, ArchiveBox,PlusCircle,Mountains, SignOut,
+        House, ArchiveBox,PlusCircle,Mountains, Browser,
         FloppyDiskBack,MapPin,ArrowLeft,ArrowRight } from '@phosphor-icons/react';
 
 import  Colors from "@/Constants/Colors";
@@ -46,6 +46,7 @@ useEffect(() => {
             Inicio 
        </MenuItem>
       <SubMenu icon={<Gear/>} label="Ajustes">
+
         <MenuItem 
           rootStyles={{backgroundColor:Colors.primarySoft}}
           icon={<User/>}  
@@ -53,6 +54,16 @@ useEffect(() => {
         >
           Perfil 
          </MenuItem>
+
+        {(roleInfo && (roleInfo.rol == "admin" || roleInfo.rol == "root") )?
+            <MenuItem 
+              rootStyles={{backgroundColor:Colors.primarySoft}}
+              icon={<Browser/>}  
+              component={<Link href={route('panel.settings.mainpage')} className='h-16 w-full py-2' />}
+            >
+              Página Principal 
+            </MenuItem>
+         :<></>}
       </SubMenu>
 
   {(roleInfo && (roleInfo.rol == "admin" || roleInfo.rol == "root") )?

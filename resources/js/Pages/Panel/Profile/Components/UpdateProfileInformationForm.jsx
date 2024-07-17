@@ -8,10 +8,11 @@ import { Transition } from '@headlessui/react';
 import Select from '@/Components/Select'
 import httpClient from "@/Utils/httpClient";
 import { useUserInfo } from '@/Pages/Panel/Context/UserInfoContext';
+import { setUserInfo } from '@/LocalStorage/localStorage';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
 
-    const { userInfo, fetchUserInfo } = useUserInfo();
+    const { userInfo, updateUserInfo,fetchUserInfo } = useUserInfo();
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         names: userInfo?.profile.names || "" ,
@@ -31,9 +32,26 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
     const submit = (e) => {
         e.preventDefault();
-        console.log("printing ");
-        console.log(data);
-        patch(route('profile.update'));
+        patch(route('profile.update'), {
+            onSuccess: (response) => {
+                // Actualiza el estado del formulario con los nuevos datos recibidos
+                const updatedProfile = response.props.auth.user;
+                console.log(updatedProfile);
+                /*
+                setData('names', updatedProfile.names);
+                setData('lastNames', updatedProfile.lastNames);
+                setData('idNumber', updatedProfile.idNumber);
+                setData('phoneNumber', updatedProfile.phoneNumber);
+                setData('phonePrefix', updatedProfile.phonePrefix);
+                setData('pictureUrl', updatedProfile.pictureUrl);
+                setData('department', updatedProfile.department);
+                setData('municipality', updatedProfile.municipality);
+                updateUserInfo(response.props.auth.user);
+                setUserInfo(response.props.auth.user);
+                */
+                fetchUserInfo();
+            }
+        });
 
 
 
