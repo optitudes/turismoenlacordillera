@@ -1,28 +1,78 @@
 import React, { useState,useEffect } from 'react';
 import { PencilSimple } from '@phosphor-icons/react';
 import { useUserInfo } from '@/Pages/Panel/Context/UserInfoContext';
+import httpClient from "@/Utils/httpClient";
+import {validateImage} from "@/Validators/validator";
+import QuestionPopup from '@/Components/QuestionPopup';
+import Loader from '@/Components/Loader';
+
 
 export default function UpdateProfileImageForm({ mustVerifyEmail, status, className = '' }) {
+
   const [selectedImage, setSelectedImage] = useState(null);
-    const { userInfo } = useUserInfo();
-  const fileInputRef = React.useRef(null);
+  const [selectedImageObject, setSelectedImageObject] = useState(null);
+  const { userInfo,fetchUserInfo } = useUserInfo();
+  const newImage = React.useRef(null);
+  const [isLoading,setIsLoading] = useState(false);
+
+  //popup states
+
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [onCancelPopup, setOnCancelPopup] = useState(undefined);
+  const [onAcceptPopup, setOnAcceptPopup] = useState(undefined);
+  const [popupMessage,setPopupMessage] = useState("");
 
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedImage(URL.createObjectURL(event.target.files[0]));
+      setSelectedImageObject(event.target.files[0]);
+
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(userInfo);
+    let validation = validateImage(selectedImageObject);
+    if(validation.success){
+        setIsLoading(true);
+
+         // Crear un objeto FormData
+        const formData = new FormData();
+        formData.append('image', selectedImageObject);
+        formData.append('userId', userInfo.id);
+        //se hace la peticio[n
+        httpClient.post("panel/profile/update/profileImage", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            setPopupMessage(response.data.message);
+            setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+            setIsOpenPopup(true);
+            fetchUserInfo();
+          })
+          .catch(error =>{
+            const msg = JSON.parse(error?.request?.response).message || error.message;
+            setPopupMessage(msg);
+            setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+            setIsOpenPopup(true);
+          }).finally(() => {setIsLoading(false)});
+
+    }else{
+      setPopupMessage(validation.msg);
+      setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+      setIsOpenPopup(true);
+
+    }
+
   };
     useEffect(() => {
       setSelectedImage(userInfo?.profile?.pictureUrl || null);
     }, []);
 
   const handleIconClick = () => {
-    fileInputRef.current.click();
+    newImage.current.click();
   };
 
   return (
@@ -49,7 +99,7 @@ export default function UpdateProfileImageForm({ mustVerifyEmail, status, classN
             type="file" 
             accept="image/*" 
             onChange={handleImageChange} 
-            ref={fileInputRef}
+            ref={newImage}
             className="hidden"
           />
         </div>
@@ -62,6 +112,14 @@ export default function UpdateProfileImageForm({ mustVerifyEmail, status, classN
           </button>
         </div>
       </form>
+      <QuestionPopup
+          isOpen = {isOpenPopup}
+          question= {popupMessage}
+          onAccept={onAcceptPopup}
+          onCancel={onCancelPopup}
+      />
+      {isLoading?<Loader/>:<></>}
     </div>
+
   );
 }

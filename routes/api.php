@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MicrositeController;
+use App\Http\Controllers\Api\ProfileController;
+
 
 use App\Http\Middleware\HasRoles;
 
@@ -34,8 +36,17 @@ Route::prefix('microsites')->group(function() {
 });
 
 
+// authentication routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('panel')->group(function() {
+        Route::prefix('profile')->group(function() {
+            Route::prefix('update')->group(function() {
+                Route::post('profileImage', [ProfileController::class, 'updateProfileImage']);
+            });
+        });
+    });
 
-
+});
 
 // authentication routes
 Route::prefix('auth')->group(function() {
