@@ -4,11 +4,11 @@ import Card from "@/Components/Card"
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import Hero1 from "@/Assets/hero1.jpg";
-import City2 from "@/Assets/gallery2.jpeg";
-import City3 from "@/Assets/gallery3.jpeg";
-import City4 from "@/Assets/gallery4.jpeg";
-import City5 from "@/Assets/gallery5.jpeg";
-import City6 from "@/Assets/gallery6.jpeg";
+import City2 from "@/Assets/hero2.jpg";
+import City3 from "@/Assets/hero3.jpg";
+import City4 from "@/Assets/hero4.jpg";
+import City5 from "@/Assets/hero5.jpg";
+import City6 from "@/Assets/hero6.jpg";
 
 
 const HeroSection = () => {
@@ -53,7 +53,7 @@ const HeroSection = () => {
         {TopDestinationTexts.cards.map((card, index) => (
               <div key={index}>
                 <Card
-                  cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group relative"
+                  cardClass="overflow-hidden shadow-md  cursor-pointer group relative"
                   imageAlt={card.country}
                   imageSrc={renderCities(index)}
                   imageWrapperClass="w-full h-[600px] overflow-hidden"

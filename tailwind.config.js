@@ -15,7 +15,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
-        },
+        colors: {
+            'salmon':'#d59688',
+        }
+        }
     },
 
     plugins: [forms],

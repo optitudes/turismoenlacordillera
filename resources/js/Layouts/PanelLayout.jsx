@@ -1,7 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import BackgroundImage from '@/Assets/Backgrounds/greenBorder.png'
 import CustomSidebar from '@/Pages/Panel/Components/CustomSidebar';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link , useForm} from '@inertiajs/react';
 import {useState,useEffect} from 'react';
 import {clearLocalStorage, getUserToken,} from "@/LocalStorage/localStorage";
@@ -76,17 +75,14 @@ export default function PanelLayout({ children}) {
                                 <>
                                     {(isSessionUser)?
                                     <>
-                                        <NavLink href={route('login')} active={route().current('panel')}>
+                                        <NavLink href={route('login')} active={route().current('dashboard')}>
                                             Panel 
                                         </NavLink>
 
-                                        <ResponsiveNavLink
-                                            as="button"
-                                            onClick={logout}
-                                        >
+                                        <NavLink onClick={logout} active={route().current('logout')}>
                                             Salir 
-                                        </ResponsiveNavLink>
-                                        
+                                        </NavLink>
+                                       
                                     </>:
                                     <>
                                         <NavLink href={route('login')} active={route().current('login')}>
