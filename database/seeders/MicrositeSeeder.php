@@ -15,6 +15,7 @@ class MicrositeSeeder extends Seeder
         \DB::table('microsites')->insert([
             [
                 'description' => 'Ruralidad y belleza',
+                'smallImageUrl' => 'https://cdn.pixabay.com/photo/2019/11/13/03/44/village-4622441_960_720.jpg',
                 'name' => 'viajes_agradables',
                 'experiences' => null,
                 'isActive' => true,

@@ -1,7 +1,9 @@
 import {useState,useEffect} from 'react';
+
 import {Gear, List, User,UserCircleGear,Desktop,UserList, 
         House, ArchiveBox,PlusCircle,Mountains, Browser,
-        FloppyDiskBack,MapPin,ArrowLeft,ArrowRight } from '@phosphor-icons/react';
+        FloppyDiskBack,MapPin,ArrowLeft,ArrowRight,
+        Wrench } from '@phosphor-icons/react';
 
 import  Colors from "@/Constants/Colors";
 import { Link } from '@inertiajs/react';
@@ -96,11 +98,15 @@ useEffect(() => {
   {(roleInfo  && roleInfo.rol == "emprendedor")?
       <SubMenu icon={<Desktop/>} label="Micrositio">
 
-        <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} label="Contenido">
-            <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<List/>}> Lista </MenuItem>
-            <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Gear/>}> Ajustes </MenuItem>
-            <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<FloppyDiskBack/>}> Backup </MenuItem>
-        </SubMenu>
+        <MenuItem 
+          rootStyles={{backgroundColor:Colors.primarySoft}}
+          icon={<Wrench/>}
+          component={<Link href={route('panel.microsite.settings')} className='h-16 w-full py-2' />}
+         >
+           Ajustes  
+         </MenuItem>
+
+
 
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Mountains/>} label="Sitios de interés">
             <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<List/>}> Lista </MenuItem>

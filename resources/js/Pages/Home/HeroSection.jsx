@@ -56,7 +56,7 @@ const HeroSection = () => {
                   cardClass="overflow-hidden shadow-md  cursor-pointer group relative"
                   imageAlt={card.country}
                   imageSrc={renderCities(index)}
-                  imageWrapperClass="w-full h-[600px] overflow-hidden"
+                  imageWrapperClass="w-full h-[300px] overflow-hidden sm:h-[600px]"
                   textWrapperClass="flex flex-col gap-4 w-full px-5 py-5"
                 >
                   <div className="absolute bottom-10 left-0 p-4 text-white ">

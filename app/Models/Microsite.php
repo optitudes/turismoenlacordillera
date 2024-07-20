@@ -24,6 +24,13 @@ class Microsite extends Model
         return DB::table('microsites')
             ->where('id', $micrositeId)
             ->update(['isActive' => $isActive]);
-
+    }
+    public static function getMicrositeBasicInfoByUserId($userId=-1){
+        return DB::table('microsites as microsite')
+            ->where('microsite.isActive', true)
+            ->join('ventures as ven', 'ven.id', '=', 'microsite.ventureId')
+            ->where('ven.userId',$userId)
+            ->select("microsite.*")
+            ->first();
     }
 }

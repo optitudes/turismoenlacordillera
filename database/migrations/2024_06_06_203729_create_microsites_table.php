@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('microsites', function (Blueprint $table) {
             //atributos de la tabla
             $table->id();
+            $table->string("smallImageUrl")->nullable();
             $table->string("description")->nullable();
             $table->string("name")->unique();
             $table->string("experiences")->nullable();

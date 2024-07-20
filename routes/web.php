@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\MicrositeController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,11 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::prefix('home')->group(function() {
+        Route::get('/micrositios', [MicrositeController::class, 'microsites'])->name('microsites');
+        Route::get('/blogs', [BlogController::class, 'blogs'])->name('blogs');
 });
 
 Route::prefix('panel')->group(function() {
@@ -46,6 +52,12 @@ Route::prefix('panel')->group(function() {
                 });
             });
         });
+        Route::prefix('microsite')->group(function() {
+                Route::middleware(HasWebRole::class.":". config('constants.ROLES_ID.ENTREPRENEUR'))->group(function () {
+                    Route::get('/settings', [MicrositeController::class, 'entrepreneurSettings'])->name('panel.microsite.settings');
+                });
+        });
+
     });
 
 });
