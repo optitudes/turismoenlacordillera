@@ -17,6 +17,7 @@ export default {
             },
         colors: {
             'salmon':'#d59688',
+            'redwine': '#520120',
         }
         }
     },
