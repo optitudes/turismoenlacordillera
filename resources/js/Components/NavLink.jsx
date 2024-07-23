@@ -7,7 +7,7 @@ export default function NavLink({ active = false, className = '', children, ...p
             className={
                 'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none ' +
                 (active
-                    ? `border-salmon text-[#fa8072] focus:border-salmon  `
+                    ? `border-salmon text-[#f9536b] focus:border-salmon  `
                     : `border-transparent text-white hover:text-salmon hover:border-gray-300 focus:text-text-orange-500 focus:border-gray-300 `) +
                 className
             }

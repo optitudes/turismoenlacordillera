@@ -6,6 +6,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import General from '@/Pages/Panel/Microsite/Settings/Components/General';
 
 
 export default function Settings({micrositeInfo}) {
@@ -22,26 +23,28 @@ export default function Settings({micrositeInfo}) {
             <>
             <Head title="Ajustes de micrositio" />
 
- <Box className="bg-white w-full" sx={{ maxWidth: { xs: 300, sm: '100%' } }}>
+ <Box className="w-full " sx={{ maxWidth: { xs: 300, sm: '100%' } }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList 
-            className='text-salmon'
+            className='text-white bg-salmon   border-white  '
             onChange={handleChange} 
             variant="scrollable"
             scrollButtons="auto"
             textColor="inherit"
-            indicatorColor="secondary"
+            indicatorColor="primary"
             allowScrollButtonsMobile
             >
             <Tab label="General" value="1" />
-            <Tab label="Experiencias" value="2" />
-            <Tab label="Rutas Túristicas" value="3" />
-            <Tab label="Sitios de intere's" value="4" />
-            <Tab label="Sitios de intere's" value="5" />
+            <Tab label="Documentos" value="2" />
+            <Tab label="Tema" value="3" />
+            <Tab label="Configuracion avanzada" value="4" />
+            <Tab label="Propiedad del micrositio" value="5" />
           </TabList>
         </Box>
-        <TabPanel value="1">General</TabPanel>
+        <TabPanel value="1" className='bg-white'>
+          <General />
+        </TabPanel>
         <TabPanel value="2">Experiencas</TabPanel>
         <TabPanel value="3">turs</TabPanel>
         <TabPanel value="4">Sitios de interes interesantes</TabPanel>

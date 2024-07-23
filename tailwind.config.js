@@ -17,7 +17,10 @@ export default {
             },
         colors: {
             'salmon':'#d59688',
-            'redwine': '#520120',
+            'redwinee':'#520120',
+            'aquadark':'#217976',
+            'mediumseagreen':'#3cb371',
+            'springgreen':'#00ff7f',
         }
         }
     },

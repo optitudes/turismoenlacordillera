@@ -15,7 +15,6 @@ return new class extends Migration
             //atributos de la tabla
             $table->id();
             $table->string("address")->nullable();
-            $table->string("description")->nullable();
             $table->string("name")->unique();
 
             $table->boolean('isActive');

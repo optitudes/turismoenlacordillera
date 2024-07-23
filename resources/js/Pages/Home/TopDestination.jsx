@@ -88,7 +88,7 @@ const TopDestination = () => {
                       // Agrega más estilos según tus necesidades
                     }}
                   >
-                    <ArrowCircleLeft size={40} color={Colors.primarydark} weight="fill" />
+                    <ArrowCircleLeft className="text-mediumseagreen" size={40}  weight="fill" />
 
                   </button>
                 )
@@ -108,7 +108,7 @@ const TopDestination = () => {
                       // Agrega más estilos según tus necesidades
                     }}
                   >
-                    <ArrowCircleRight size={40} color={Colors.primarydark} weight="fill" />
+                    <ArrowCircleRight className="text-mediumseagreen" size={40}  weight="fill" />
 
                   </button>
                 )
@@ -118,7 +118,7 @@ const TopDestination = () => {
     {TopDestinationTexts.cards.map((card, index) => (
           <div key={index} className=" px-6 w-100">
             <Card
-              cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group border border-white"
+              cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group border border-springgreen border-dashed bg-aquadark"
               imageAlt={card.country}
               imageSrc={renderCities(index)}
               imageWrapperClass="w-full h-[250px] overflow-hidden"
@@ -134,7 +134,7 @@ const TopDestination = () => {
                 </Text>
               </div>
               <div className="w-full flex gap-4 items-center text-white">
-                <AirplaneTilt size={20} color="currentColor" weight="fill" />
+                <AirplaneTilt size={20} className=" text-[#98fb98]" weight="fill" />
                 <Text as="p" className="text-white font-light text-base">
                   {card.duration}
                 </Text>

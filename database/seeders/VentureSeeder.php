@@ -15,7 +15,6 @@ class VentureSeeder extends Seeder
          \DB::table('ventures')->insert([
             [
                 'address' => 'Génova - Quindío  calle 34 n 66',
-                'description' => 'viajes SAS es una empresa dedicada a los viajes seguros',
                 'name' => 'viajes agradables',
                 'isActive' => true,
                 'isPublish' => true,
