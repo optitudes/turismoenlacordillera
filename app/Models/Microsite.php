@@ -20,10 +20,24 @@ class Microsite extends Model
         'experiences'
     ];
 
+    public function venture(){
+        return $this->belongsTo(Venture::class,'ventureId');
+    }
+
     public static function updateActive($micrositeId = -1,$isActive=false){
         return DB::table('microsites')
             ->where('id', $micrositeId)
             ->update(['isActive' => $isActive]);
+    }
+    public static function updatePublish($micrositeId = -1,$isPublish=false){
+        return DB::table('microsites')
+            ->where('id', $micrositeId)
+            ->update(['isPublish' => $isPublish]);
+    }
+    public static function updateDescription($micrositeId = -1,$description=""){
+        return DB::table('microsites')
+            ->where('id', $micrositeId)
+            ->update(['description' => $description]);
     }
     public static function getMicrositeBasicInfoByUserId($userId=-1){
         return DB::table('microsites as microsite')

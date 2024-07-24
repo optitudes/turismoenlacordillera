@@ -2,21 +2,51 @@ import {useState} from 'react';
 import RichText from '@/Components/RichText';
 import { useMicrositeInfo } from '@/Context/MicrositeInfoContext';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
-
+import QuestionPopup from '@/Components/QuestionPopup';
+import httpClient from "@/Utils/httpClient";
 
 export default function General() {
   const {micrositeInfo,setMicrositeInfo } = useMicrositeInfo();
   const[description, setDescription] = useState(micrositeInfo?.description || "");
-  const [state, setState] = useState('Publico');
+  const [state, setState] = useState('public');
+
+  //popup
+
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [onCancelPopup] = useState(undefined);
+  const [onAcceptPopup, setOnAcceptPopup] = useState(undefined);
+  const [popupMessage,setPopupMessage] = useState("");
 
    const updateMicrositeDescription = () => {
+
       console.log('Descripción:', description);
+      let oldDescription = micrositeInfo.description;
       var newMicrositeInfo = micrositeInfo;
       newMicrositeInfo.description = description;
       setMicrositeInfo(newMicrositeInfo);
+
+      httpClient.post("panel/microsite/update/description", {
+        micrositeId:micrositeInfo.id,
+        description:description
+        })
+        .catch(error =>{
+          //revertir cambios visuales y en context
+          setDescription(oldDescription);
+          newMicrositeInfo.description =  oldDescription;
+          setMicrositeInfo(newMicrositeInfo);
+          //mostrar el popup con el mensaje de error
+          const msg = JSON.parse(error?.request?.response).message || error.message;
+          setPopupMessage(msg);
+          setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+          setIsOpenPopup(true);
+        });
+
     };
+
+
   const onStateUpdated = (newState) => {
     var newMicrositeInfo = micrositeInfo;
+    let oldIsPublish =  micrositeInfo.isPublish;
     if(newState == "public")
       newMicrositeInfo.isPublish = 1;
     else {
@@ -25,18 +55,33 @@ export default function General() {
     setState(newState);
     setMicrositeInfo(newMicrositeInfo);
 
+    httpClient.post("panel/microsite/update/isPublic", {
+        micrositeId:micrositeInfo.id,
+        isPublic:(newState=="public"?"true":"false")
+        })
+        .catch(error =>{
+          //revertir cambios visuales y en context
+          setState( (oldIsPublish==1?"private":"public") );
+          newMicrositeInfo.isPublish =  oldIsPublish;
+          setMicrositeInfo(newMicrositeInfo);
+          //mostrar el popup con el mensaje de error
+          const msg = JSON.parse(error?.request?.response).message || error.message;
+          setPopupMessage(msg);
+          setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+          setIsOpenPopup(true);
+        });
   }
   const getIsPublicCard = (isPublic) => {
     console.log(isPublic);
     return isPublic ? (
       <div className="flex items-center space-x-2 text-green-500">
         <Eye size={24} />
-        <span>Es Público</span>
+        <span>Visible al público</span>
       </div>
     ) : (
       <div className="flex items-center space-x-2 text-red-500">
         <EyeSlash size={24} />
-        <span>No es Público</span>
+        <span>No visible al público</span>
       </div>
     );
   };
@@ -60,8 +105,8 @@ export default function General() {
           onChange={(e) => onStateUpdated(e.target.value)}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
-          <option value="public">Público</option>
-          <option value="private">No Público</option>
+          <option value="public">Visible al público</option>
+          <option value="private">No visible al público</option>
         </select>
       </div>
       <div className="mb-4">
@@ -79,6 +124,12 @@ export default function General() {
           Actualizar descripción
         </button>
       </div>
+      <QuestionPopup
+          isOpen = {isOpenPopup}
+          question= {popupMessage}
+          onAccept={onAcceptPopup}
+          onCancel={onCancelPopup}
+      />
     </form>
   );
 }

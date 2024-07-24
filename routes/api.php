@@ -36,12 +36,18 @@ Route::prefix('microsites')->group(function() {
 });
 
 
-// authentication routes
+// authenticated routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('panel')->group(function() {
         Route::prefix('profile')->group(function() {
             Route::prefix('update')->group(function() {
                 Route::post('profileImage', [ProfileController::class, 'updateProfileImage']);
+            });
+        });
+        Route::prefix('microsite')->group(function() {
+            Route::prefix('update')->group(function() {
+                Route::post('isPublic', [MicrositeController::class, 'updateIsPublic']);
+                Route::post('description', [MicrositeController::class, 'updateDescription']);
             });
         });
     });

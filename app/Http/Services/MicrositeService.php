@@ -2,6 +2,8 @@
 
 namespace App\Http\Services;
 
+use App\Http\Requests\UpdateMicositeIsPublicRequest;
+use App\Http\Requests\UpdateMicositeDescriptionRequest;
 use App\Models\Microsite;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,5 +23,36 @@ class MicrositeService {
             return ['status'=>true,'microsite'=>Microsite::getMicrositeBasicInfoByUserId(Auth::user()->id),'msg'=>'Micrositio obtenido con éxito'] ;
         }
 
+    }
+
+    public function updateIsPublic(UpdateMicositeIsPublicRequest $request){
+        $newIsPublic = $request->isPublic =="true";
+        Microsite::updatePublish($request->micrositeId,$newIsPublic);
+        return ['success'=>true,"msg"=>"Se ha actualizado la visibilidad al público"];
+    }
+    public function updateDescription(UpdateMicositeDescriptionRequest $request){
+
+        $descriptionCleared = $this->clearDescription($request->description);
+
+        Microsite::updateDescription($request->micrositeId,$descriptionCleared);
+        return ['success'=>true,"msg"=>"Se ha actualizado la descripción del micrositio"];
+    }
+    public function clearDescription($description = ""){
+        // Elimina las etiquetas <script> y su contenido
+        $description = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $description);
+
+        // Elimina los atributos de eventos JavaScript
+        $description = preg_replace('/on\w+="[^"]*"/i', '', $description);
+        $description = preg_replace("/on\w+='[^']*'/i", '', $description);
+        $description = preg_replace('/on\w+=\w+/i', '', $description);
+
+        // Elimina otros elementos relacionados con JavaScript como `javascript:` en href o src
+        $description = preg_replace('/href\s*=\s*"javascript:[^"]*"/i', '', $description);
+        $description = preg_replace("/href\s*=\s*'javascript:[^']*'/i", '', $description);
+        $description = preg_replace('/href\s*=\s*javascript:[^"]+/i', '', $description);
+        $description = preg_replace('/src\s*=\s*"javascript:[^"]*"/i', '', $description);
+        $description = preg_replace("/src\s*=\s*'javascript:[^']*'/i", '', $description);
+        $description = preg_replace('/src\s*=\s*javascript:[^"]+/i', '', $description);
+        return $description;
     }
 }
