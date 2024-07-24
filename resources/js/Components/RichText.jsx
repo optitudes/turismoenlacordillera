@@ -24,8 +24,8 @@ const toolbarOptions = [
   ['clean']                                         // remove formatting button
 ];
 
-export default function RichText({onChange}) {
-  const [value, setValue] = useState('');
+export default function RichText({onChange, initialText}) {
+  const [value, setValue] = useState(initialText??"");
   
   const modules = {
     toolbar: toolbarOptions,

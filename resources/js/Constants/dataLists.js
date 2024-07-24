@@ -93,52 +93,52 @@ export const TopDestinationTexts = {
   firstText: "Lo más buscado",
   secondText: "Top micro sitios",
   cards: [
-      {
-          country: "Rome, Italy",
-          price: "5.42k",
-          duration: "10 days trip"
+    {
+        country: "El Paraíso, Colombia",
+        price: "5.42k",
+        duration: "accesible desde un Willys"
       },
       {
-          country: "London, UK",
-          price: "4.2k",
-          duration: "12 days trip"
+        country: "La Esperanza, Colombia",
+        price: "4.2k",
+        duration: "accesible desde un Zastava"
       },
       {
-          country: "Paris, France",
-          price: "15k",
-          duration: "26 days trip"
+        country: "Los Cafetales, Colombia",
+        price: "15k",
+        duration: "accesible desde un Renault 4"
       },
       {
-          country: "New York, USA",
-          price: "4.5k",
-          duration: "8 days trip"
+        country: "El Edén, Colombia",
+        price: "4.5k",
+        duration: "accesible desde un Simca"
       },
       {
-          country: "Warsaw, Poland",
-          price: "3.9k",
-          duration: "14 days trip"
+        country: "Las Palmas, Colombia",
+        price: "3.9k",
+        duration: "accesible desde un Austin"
       },
       {
-          country: "Dubai, UAE",
-          price: "9.2k",
-          duration: "17 days trip"
+        country: "La Cumbre, Colombia",
+        price: "9.2k",
+        duration: "accesible desde un Jeep"
       },
   ]
 }
 
 export const BookingStepsTexts = {
   firstText: "Fácil y rápido",
-  secondText: "Crea un micro sitio y comparte rutas turisticas, noticias y experiencias",
+  secondText: "Visita micrositios y conoce los emprendimientos de Génova, descubre rutas turísticas, noticias y experiencias únicas.",
   listOfSteps: [
-      {
-          text: "Crea una cuenta como emprendedora y llena los datos de tu emprendimiento"
-      },
-      {
-          text: "Cuando el sitio sea aprobado recibirás un correo"
-      },
-      {
-          text: "Entra al panel de emprendedora y comienza a customizar tú sitio!"
-      }
+    {
+      text: "Explora los diferentes micrositios de los emprendimientos locales"
+    },
+    {
+      text: "Conoce la historia y ofertas especiales de cada emprendimiento"
+    },
+    {
+      text: "Planifica tu visita y disfruta de una experiencia auténtica"
+    }
   ],
   cardOne:
   {
@@ -179,13 +179,11 @@ export const TestimonialTexts = {
     location: "Montenegro, Quindío, Colombia"      
   },
 ],}
-
 export const NewsletterTexts = {
-  firstText: "Subscribe to get information, latest news and other interesting offers about Jadoo.",
-  placeholderText: "Your email",
-  buttonText: "Subscribe"
-}
-
+    firstText: "Suscríbete para obtener información, las últimas noticias y otras ofertas interesantes sobre el turismo en la cordillera.",
+    placeholderText: "Tu correo electrónico",
+    buttonText: "Suscribirse"
+  }
 export const FooterTexts = {
   underLogoText: "Turismo en la cordillera es una empresa colombiana",
   quickLinks: {
