@@ -4,6 +4,8 @@ namespace App\Http\Services;
 
 use App\Http\Requests\UpdateMicositeIsPublicRequest;
 use App\Http\Requests\UpdateMicositeDescriptionRequest;
+use App\Http\Requests\UpdateMicrositeImageRequest;
+
 use App\Models\Microsite;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +39,55 @@ class MicrositeService {
         Microsite::updateDescription($request->micrositeId,$descriptionCleared);
         return ['success'=>true,"msg"=>"Se ha actualizado la descripción del micrositio"];
     }
+
+    public function updateSmallImage(UpdateMicrositeImageRequest $request){
+        $microsite = Microsite::findOrFail ($request->micrositeId);
+        $image = $request->file('image');
+ 
+        // Obtener la extensión original del archivo
+        $extension = $image->getClientOriginalExtension();
+
+        // Nombre deseado para la imagen con la extensión
+        $imageName = 'smallImage.'. $extension;
+
+        // Guardar la imagen y obtener su ruta en el servidor
+        $path = $image->storeAs('microsites/'.$microsite->name.'/media/pictures', $imageName, 'public');
+        $fullImagePath = url("/")."/storage/".$path;
+        $microsite->smallImageUrl = $fullImagePath;
+        $microsite->save();
+        return ["success"=>true,"msg"=>"Imagen actualizada correctamente  ".$fullImagePath];
+
+    }
+
+    public function updateBannerImage(UpdateMicrositeImageRequest $request){
+        $microsite = Microsite::findOrFail ($request->micrositeId);
+        $image = $request->file('image');
+ 
+        // Obtener la extensión original del archivo
+        $extension = $image->getClientOriginalExtension();
+
+        // Nombre deseado para la imagen con la extensión
+        $imageName = 'bannerImage.'. $extension;
+
+        // Guardar la imagen y obtener su ruta en el servidor
+        $path = $image->storeAs('microsites/'.$microsite->name.'/media/pictures', $imageName, 'public');
+        $fullImagePath = url("/")."/storage/".$path;
+        $microsite->bannerImageUrl = $fullImagePath;
+        $microsite->save();
+        return ["success"=>true,"msg"=>"Imagen actualizada correctamente  ".$fullImagePath];
+
+    }
+
+
+
+
+
+
+
+
+
+
+    
     public function clearDescription($description = ""){
         // Elimina las etiquetas <script> y su contenido
         $description = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $description);

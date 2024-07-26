@@ -16,6 +16,7 @@ class MicrositeSeeder extends Seeder
             [
                 'description' => '<h1>Ruralidad y belleza</h1>',
                 'smallImageUrl' => 'https://cdn.pixabay.com/photo/2019/11/13/03/44/village-4622441_960_720.jpg',
+                'bannerImageUrl'=> 'https://img.freepik.com/vector-gratis/plantilla-banner-horizontal-plano-celebracion-cinco-mayo_23-2150310269.jpg',
                 'name' => 'viajes_agradables',
                 'experiences' => null,
                 'isActive' => true,

@@ -1,7 +1,9 @@
-import {useState} from 'react';
+import {useState,useRef,useEffect} from 'react';
 import RichText from '@/Components/RichText';
+import { PencilSimple } from '@phosphor-icons/react';
 import { useMicrositeInfo } from '@/Context/MicrositeInfoContext';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
+import {validateImage} from "@/Validators/validator";
 import QuestionPopup from '@/Components/QuestionPopup';
 import httpClient from "@/Utils/httpClient";
 
@@ -10,12 +12,101 @@ export default function General() {
   const[description, setDescription] = useState(micrositeInfo?.description || "");
   const [state, setState] = useState('public');
 
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedBannerImage, setSelectedBannerImage] = useState(null);
+  const newImage = useRef(null);
+  const newBannerImage = useRef(null);
+
+
   //popup
 
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [onCancelPopup] = useState(undefined);
   const [onAcceptPopup, setOnAcceptPopup] = useState(undefined);
   const [popupMessage,setPopupMessage] = useState("");
+
+  //funciones
+
+  useEffect(() => {
+        setSelectedImage(micrositeInfo?.smallImageUrl || null);
+        setSelectedBannerImage(micrositeInfo?.bannerImageUrl || null);
+        console.log(micrositeInfo);
+  }, []);
+
+  const updateSmallImage = (event) => {
+    if (event.target.files && event.target.files[0]  ) {
+       let validation = validateImage(event.target.files[0]);
+       if(validation.success){
+          // Crear un objeto FormData
+        const formData = new FormData();
+        formData.append('image', event.target.files[0]);
+        formData.append('micrositeId', micrositeInfo?.id || -1);
+        //se hace la peticio[n
+        httpClient.post("panel/microsite/update/smallImage", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            if(response.data.success){
+              setSelectedImage(URL.createObjectURL(event.target.files[0]));
+            }else{
+              setPopupMessage(response.data.message);
+              setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+              setIsOpenPopup(true);
+              }
+          })
+          .catch(error =>{
+            const msg = JSON.parse(error?.request?.response).message || error.message;
+            setPopupMessage(msg);
+            setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+            setIsOpenPopup(true);
+          });
+      }else{
+        setPopupMessage(validation.msg);
+        setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+        setIsOpenPopup(true);
+      }
+    }
+  };
+
+  const updateBannerImage = (event) => {
+    if (event.target.files && event.target.files[0]  ) {
+       let validation = validateImage(event.target.files[0]);
+       if(validation.success){
+          // Crear un objeto FormData
+        const formData = new FormData();
+        formData.append('image', event.target.files[0]);
+        formData.append('micrositeId', micrositeInfo?.id || -1);
+        //se hace la peticio[n
+        httpClient.post("panel/microsite/update/bannerImage", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            if(response.data.success){
+              setSelectedBannerImage(URL.createObjectURL(event.target.files[0]));
+            }else{
+              setPopupMessage(response.data.message);
+              setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+              setIsOpenPopup(true);
+              }
+          })
+          .catch(error =>{
+            const msg = JSON.parse(error?.request?.response).message || error.message;
+            setPopupMessage(msg);
+            setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+            setIsOpenPopup(true);
+          });
+      }else{
+        setPopupMessage(validation.msg);
+        setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+        setIsOpenPopup(true);
+      }
+    }
+
+  }
 
    const updateMicrositeDescription = () => {
 
@@ -109,6 +200,64 @@ export default function General() {
           <option value="private">No visible al público</option>
         </select>
       </div>
+      <div className='flex flex-col md:flex-row justify-around'>
+        <div className="flex flex-col items-start ">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="estado-select">
+            Imagen pequeña (960 × 644 ) : 
+            </label>
+            <div className="w-32 h-32 bg-gray-200 rounded-lg overflow-hidden mb-4 relative">
+              {selectedImage ? (
+                <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  Sin imagen
+                </div>
+              )}
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
+                onClick={() => {newImage.current.click();}}
+              >
+                <PencilSimple size={32} className="text-white" />
+              </div>
+            </div>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={updateSmallImage} 
+              ref={newImage}
+              className="hidden"
+            />
+          </div>
+
+          <div className="flex flex-col items-start ">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="estado-select">
+              Imagen banner (1280 × 853 ) : 
+            </label>
+
+            <div className="w-52 h-32 bg-gray-200 rounded-lg overflow-hidden mb-4 relative">
+              {selectedBannerImage ? (
+                <img src={selectedBannerImage} alt="Selected" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  Sin imagen
+                </div>
+              )}
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"
+                onClick={() => {newBannerImage.current.click();}}
+              >
+                <PencilSimple size={32} className="text-white" />
+              </div>
+            </div>
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={updateBannerImage} 
+              ref={newBannerImage}
+              className="hidden"
+            />
+          </div>
+        </div>
       <div className="mb-4">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="descripcion">
           Descripción

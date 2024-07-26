@@ -15,6 +15,7 @@ return new class extends Migration
             //atributos de la tabla
             $table->id();
             $table->string("smallImageUrl")->nullable();
+            $table->string("bannerImageUrl")->nullable();
             $table->text("description")->nullable();
             $table->string("name")->unique();
             $table->string("experiences")->nullable();

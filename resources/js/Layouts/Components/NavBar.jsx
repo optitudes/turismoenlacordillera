@@ -26,13 +26,11 @@ export default function NavBar() {
         try {
             const response = await httpClient.post("auth/logout");
             if (response.data.success) {
-                console.log(response.data);
                 clearLocalStorage();
                 setIsSessionUser(false);
                 post(route('logout'))
                 
             } else {
-                console.log(response.data);
                 alert(response.data.message);
             }
         } catch (error) {

@@ -40,7 +40,6 @@ export default function Login({ status, canResetPassword }) {
                 });
                 
             } else {
-                console.log(response.data);
                 alert(response.data.message);
             }
         } catch (error) {

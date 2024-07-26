@@ -129,8 +129,7 @@ export default function Register() {
             setOnCancelPopup(() => () => { setIsOpenPopup(false) });
             setIsOpenPopup(true);
         }
-        //post(route('register'));
-        console.log(data);
+       
     };
     const updatePositions = (positions) => {
         setVentureMapPosition(positions);

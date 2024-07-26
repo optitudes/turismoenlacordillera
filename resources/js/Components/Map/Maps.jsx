@@ -20,7 +20,6 @@ function MyMap({style,updatePositions}) {
   const updatePosition = React.useCallback((event) => {
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
-      console.log({ lat, lng });
       setMarkerPosition({ lat, lng });
       updatePositions({lat,lng});
   }, []);

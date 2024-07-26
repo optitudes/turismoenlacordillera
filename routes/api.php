@@ -48,6 +48,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::prefix('update')->group(function() {
                 Route::post('isPublic', [MicrositeController::class, 'updateIsPublic']);
                 Route::post('description', [MicrositeController::class, 'updateDescription']);
+                Route::post('smallImage', [MicrositeController::class, 'updateSmallImage']);
+                Route::post('bannerImage', [MicrositeController::class, 'updateBannerImage']);
             });
         });
     });
