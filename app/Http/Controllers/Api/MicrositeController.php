@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateMicrositeImageRequest;
 use App\Http\Services\MicrositeSolicitudeService;
 use App\Http\Services\MicrositeService;
 use App\Models\MicrositeSolicitude;
+use App\Models\Microsite;
 
 
 
@@ -94,6 +95,18 @@ class MicrositeController extends BaseController
             }
         }
 
+    public function search($filter = null)
+        {
+            try {
+                $microsites = Microsite::basicInfoSearch($filter);
+                return $this->sendResponse($microsites,"Micrositios filtrados con exito".$filter);
+
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+
     }
+
 
     

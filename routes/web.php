@@ -26,8 +26,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('home')->group(function() {
-        Route::get('/micrositios', [MicrositeController::class, 'microsites'])->name('microsites');
         Route::get('/blogs', [BlogController::class, 'blogs'])->name('blogs');
+
+        Route::prefix('microsites')->group(function() {
+            Route::get('/', [MicrositeController::class, 'microsites'])->name('microsites');
+            Route::get('/view/{name}', [MicrositeController::class, 'viewMicrosite'])->name('viewMicrosite');
+        });
 });
 
 Route::prefix('panel')->group(function() {

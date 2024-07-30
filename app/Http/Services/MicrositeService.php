@@ -80,13 +80,6 @@ class MicrositeService {
 
 
 
-
-
-
-
-
-
-
     
     public function clearDescription($description = ""){
         // Elimina las etiquetas <script> y su contenido

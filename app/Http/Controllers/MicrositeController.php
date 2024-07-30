@@ -25,12 +25,19 @@ class MicrositeController extends Controller
     public function microsites(Request $request)
     {
         return Inertia::render('Home/Microsites/Search');
-   }
+    }
     public function entrepreneurSettings(Request $request){
         $info = $this->micrositeService->getMicrositeBasicInfo();
         if($info['status'])
             return Inertia::render('Panel/Microsite/Settings/Settings',['micrositeInfo'=>$info['microsite']]);
         return Redirect::route('dashboard');
+    }
+    /**
+     * Display the microsites view as client.
+     */
+    public function viewMicrosite($name=null,Request $request)
+    {
+        return Inertia::render('Home/Microsites/View/View',['microname'=>$name]);
     }
 
 }

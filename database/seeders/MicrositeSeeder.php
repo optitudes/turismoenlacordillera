@@ -21,7 +21,9 @@ class MicrositeSeeder extends Seeder
                 'experiences' => null,
                 'isActive' => true,
                 'isPublish' => true,
-                'ventureId' => 1
+                'ventureId' => 1,
+                'created_at' => now()
+
             ],
         ]);
  

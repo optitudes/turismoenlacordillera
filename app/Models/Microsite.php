@@ -47,4 +47,16 @@ class Microsite extends Model
             ->select("microsite.*")
             ->first();
     }
+    public static function basicInfoSearch($filter = null){
+        return DB::table('microsites', 'microsite')
+                    ->where('microsite.deleted_at', null)
+                    ->when($filter, function($query,$filter){
+                        return $query->where('microsite.name', 'like', "%{$filter}%");
+                    })
+                    ->join('ventures as ven','ven.id','=','microsite.ventureId')
+                    ->join('profiles as profile','profile.userId','=','ven.userId')
+                    ->select('microsite.id','microsite.name as micrositeName','ven.name','microsite.smallImageUrl','microsite.created_at as date',
+                            'profile.names as entrepreneurName','profile.lastNames as entrepreneurLastNames')
+                    ->get();
+    }
 }
