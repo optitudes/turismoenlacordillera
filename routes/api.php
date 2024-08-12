@@ -24,6 +24,7 @@ Route::prefix('users')->group(function() {
 
 Route::prefix('microsites')->group(function() {
     Route::get('/search/{filter?}', [MicrositeController::class, 'search']);
+    Route::get('/themes', [MicrositeController::class, 'getThemes']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
 

@@ -15,14 +15,29 @@ class MicrositeService {
     {
         if($micrositeId){
             $userRole = Auth::user()->role_id; 
-            $isAbleToUpdatePicture = $userRole == config('constants.ROLES_ID.ADMIN') || $userRole == config('constants.ROLES_ID.ROOT'); 
-            if($isAbleToUpdatePicture){
-                return ['status'=>true,'microsite'=>Microsite::findOrFail($micrositeId),'msg'=>'Micrositio obtenido con éxito'] ;
+            $isAbleToMakeChanges = $userRole == config('constants.ROLES_ID.ADMIN') || $userRole == config('constants.ROLES_ID.ROOT'); 
+            if($isAbleToMakeChanges){
+                $microsite = Microsite::findOrFail($micrositeId);
+                $microsite->theme;
+                $microsite->venture;
+                $microsite->user;
+                $microsite->images;
+                $microsite->videos;
+                return ['status'=>true,'microsite'=>$microsite,'msg'=>'Micrositio obtenido con éxito'] ;
             }else{
                 return ['status'=>false,'microsite'=>null,'msg'=>'El usuario no tiene los permisos necesarios'];
             }
         }else{
-            return ['status'=>true,'microsite'=>Microsite::getMicrositeBasicInfoByUserId(Auth::user()->id),'msg'=>'Micrositio obtenido con éxito'] ;
+                $microsite = Microsite::where('userId',Auth::user()->id)->where("isActive",true)->whereNull("deleted_at")->first();
+                if($microsite){
+                    $microsite->theme;
+                    $microsite->venture;
+                    $microsite->user;
+                    $microsite->images;
+                    $microsite->videos;
+                    return ['status'=>true,'microsite'=>$microsite,'msg'=>'Micrositio obtenido con éxito'] ;
+                }
+                return ['status'=>false,'microsite'=>null,'msg'=>'Error al obtener el micrositio'] ;
         }
 
     }
@@ -77,6 +92,16 @@ class MicrositeService {
         return ["success"=>true,"msg"=>"Imagen actualizada correctamente  ".$fullImagePath];
 
     }
+    public function getMicrositeViewInfo($name){
+        $info['microsite']  = Microsite::where('name',$name)->where('isActive',true)->where('isPublish',true)->whereNull('deleted_at')->first();
+        $info['theme'] = $info['microsite']->theme;
+        $info['venture'] = $info['microsite']->venture;
+        $info['user'] = $info['microsite']->user;
+        $info['images'] = $info['microsite']->images;
+        $info['videos'] = $info['microsite']->videos;
+        return $info;
+    }
+
 
 
 

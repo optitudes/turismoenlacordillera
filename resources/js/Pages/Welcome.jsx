@@ -10,8 +10,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
         <>
            <Head title="Inicio" />
             <HeroSection/>
-            <Services />
             <TopDestination />
+            <Services />
             <BookingSteps />
             <NewsLetter />
         </>

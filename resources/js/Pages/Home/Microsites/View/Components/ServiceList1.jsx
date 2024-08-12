@@ -1,6 +1,5 @@
 import {useState,useEffect, useCallback } from "react";
 import Text from "@/Components/Text"
-import { TopDestinationTexts } from "@/Constants/dataLists"
 import { ArrowCircleRight } from "@phosphor-icons/react";
 import { ArrowCircleLeft } from "@phosphor-icons/react";
 import Card from "@/Components/Card"
@@ -15,7 +14,51 @@ import City4 from "@/Assets/gallery4.jpeg";
 import City5 from "@/Assets/gallery5.jpeg";
 import City6 from "@/Assets/gallery6.jpeg";
 
-const TopDestination = () => {
+const ServiceList1 = () => {
+
+
+  const TopDestinationTexts = {
+    title: "Nuestras experiencias",
+    cards: [
+      {
+        name: "Ruta del Café en El Paraíso",
+        price: "5.42k",
+        shortComment: "Disfruta del mejor café de la región.",
+        imageUrl: "https://img.freepik.com/foto-gratis/delicioso-cafe-organico-naturaleza-muerta_23-2151762390.jpg",
+      },
+      {
+        name: "Senderismo en La Esperanza",
+        price: "4.2k",
+        shortComment: "Explora paisajes montañosos únicos",
+        imageUrl: "https://img.freepik.com/fotos-premium/vista-trasera-mujer-caminando-arboles_1048944-527721.jpg",
+      },
+      {
+        name: "Aventura en Los Cafetales",
+        price: "15k",
+        shortComment: "Vive la experiencia cafetera auténtica. Accesible desde un Renault 4",
+        imageUrl: "https://img.freepik.com/foto-gratis/primer-disparo-enfoque-selectivo-frutos-rojos-arbusto-plantas_181624-21522.jpg",
+      },
+      {
+        name: "Descanso en El Edén",
+        price: "4.5k",
+        shortComment: "Relájate en una casa de campo rodeada de naturaleza. Accesible desde un Simca",
+        imageUrl: "https://img.freepik.com/foto-gratis/plano-general-pilas-lena-campo-hierba-rodeado-arboles-atardecer_181624-1618.jpg",
+      },
+      {
+        name: "Naturaleza en Las Palmas",
+        price: "3.9k",
+        shortComment: "Conecta con la naturaleza en un entorno tranquilo. Accesible desde un Austin",
+        imageUrl: "https://img.freepik.com/fotos-premium/vista-palmeras-angulo_1048944-14985921.jpg",
+      },
+      {
+        name: "Reto en La Cumbre",
+        price: "9.2k",
+        shortComment: "Supera un desafiante sendero de montaña. Accesible desde un Jeep",
+        imageUrl: "https://img.freepik.com/foto-gratis/grupo-turistas-camina-montanas-bali_72229-1004.jpg",
+      }
+    ]
+  }
+  
   const [centerSlidePercentage, setCenterSlidePercentage] = useState(
     window.innerWidth < 768 ? 100 : 33.33
   );
@@ -35,17 +78,17 @@ const TopDestination = () => {
     (element) => {
       switch (element) {
         case 0:
-          return "https://img.freepik.com/foto-gratis/delicioso-cafe-organico-naturaleza-muerta_23-2151762390.jpg";
+          return City1;
         case 1:
-          return "https://img.freepik.com/fotos-premium/vista-trasera-mujer-caminando-arboles_1048944-527721.jpg";
+          return City2;
         case 2:
-          return "https://img.freepik.com/foto-gratis/primer-disparo-enfoque-selectivo-frutos-rojos-arbusto-plantas_181624-21522.jpg";
+          return City3;
         case 3:
-          return "https://img.freepik.com/foto-gratis/plano-general-pilas-lena-campo-hierba-rodeado-arboles-atardecer_181624-1618.jpg";
+          return City4;
         case 4:
-          return "https://img.freepik.com/fotos-premium/vista-palmeras-angulo_1048944-14985921.jpg";
+          return City5;
         case 5:
-          return "https://img.freepik.com/foto-gratis/grupo-turistas-camina-montanas-bali_72229-1004.jpg";
+          return City6;
         default:
           return "";
       }
@@ -56,11 +99,8 @@ const TopDestination = () => {
   return (
     <section className="w-full h-auto flex flex-col items-center justify-center relative lg:px-24 md:px-20 px-6 my-20">
 
-      <Text as="p" className="font-light text-base text-white tracking-widest">
-        {TopDestinationTexts.firstText}
-      </Text>
       <Text as="h2" className="md:text-4xl text-2xl font-medium capitalize text-white py-2">
-        {TopDestinationTexts.secondText}
+        {TopDestinationTexts.title}
       </Text>
 
     
@@ -119,25 +159,24 @@ const TopDestination = () => {
           <div key={index} className=" px-6 w-100">
             <Card
               cardClass="overflow-hidden shadow-md rounded-lg cursor-pointer group border border-springgreen border-dashed bg-aquadark"
-              imageAlt={card.country}
-              imageSrc={renderCities(index)}
+              imageAlt={card.name}
+              imageSrc={card.imageUrl}
               imageWrapperClass="w-full h-[250px] overflow-hidden"
               cover="group-hover:scale-125 transition duration-500 ease"
               textWrapperClass="flex flex-col gap-4 w-full px-5 py-5"
             >
              <div className="flex justify-between items-center ">
                 <Text as="h4" className="text-base font-medium text-white">
-                  {card.country}
+                  {card.name}
                 </Text>
                 <Text as="small" className="text-white font-light text-sm">
                   {card.price}
                 </Text>
               </div>
               <div className="w-full flex gap-4 items-center text-white">
-                <AirplaneTilt size={20} className=" text-[#98fb98]" weight="fill" />
-                <Text as="p" className="text-white font-light text-base">
-                  {card.duration}
-                </Text>
+              <Text as="p" className="text-white font-light text-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                {card.shortComment}
+              </Text>
               </div>
             </Card>
           </div>
@@ -149,4 +188,4 @@ const TopDestination = () => {
   );
 };
 
-export default TopDestination;
+export default ServiceList1 ;

@@ -57,6 +57,17 @@ class ProfileSeeder extends Seeder
                 'department' => 'Quindío',
                 'userId' => 4
             ], 
+            [
+                'idNumber' => '3123191919',
+                'lastNames' => 'Rojas',
+                'names' => 'cristina',
+                'phoneNumber' => '32438123938',
+                'phonePrefix' => '+57',
+                'pictureUrl' => 'https://img.freepik.com/foto-gratis/mujer-chaqueta-jeans-camisa-cuadrada-roja_23-2148315342.jpg',
+                'municipality' => 'Génova',
+                'department' => 'Quindío',
+                'userId' => 5
+            ], 
         ]);
     }
 }

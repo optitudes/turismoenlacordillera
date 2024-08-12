@@ -37,7 +37,11 @@ class MicrositeController extends Controller
      */
     public function viewMicrosite($name=null,Request $request)
     {
-        return Inertia::render('Home/Microsites/View/View',['microname'=>$name]);
+        if($name){
+            $micrositeViewInfo = $this->micrositeService->getMicrositeViewInfo($name); 
+            return Inertia::render('Home/Microsites/View/View'.$micrositeViewInfo['theme']->viewIndex,['information'=>$micrositeViewInfo]);
+        }
+        return Redirect::route('login');
     }
 
 }

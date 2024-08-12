@@ -21,7 +21,16 @@ class VentureSeeder extends Seeder
                 'mapLatitude' => 4.206968,
                 'mapLongitude' => -75.789697,
                 'userId' =>3
-            ]
+            ],
+            [
+                'address' => 'Génova - Quindío  calle 90 n 53',
+                'name' => 'Casa vida',
+                'isActive' => true,
+                'isPublish' => true,
+                'mapLatitude' => 4.206968,
+                'mapLongitude' => -75.789697,
+                'userId' =>5
+            ],
         ]);
        
     }

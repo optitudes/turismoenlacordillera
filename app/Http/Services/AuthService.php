@@ -53,12 +53,13 @@ class AuthService {
             $venture->save();
             return $venture;
     }
-    public function createMicrosite($micrositeInfo,$ventureId){
+    public function createMicrosite($micrositeInfo,$ventureId,$userId){
             $microsite = new Microsite;
             $microsite->fill($micrositeInfo);
             $microsite->isActive = false;
             $microsite->isPublish = false;
             $microsite->ventureId = $ventureId;
+            $microsite->userId = $userId;
             $microsite->save();
             return $microsite;
 
@@ -87,7 +88,7 @@ class AuthService {
             $venture = $this->createVenture($request->ventureInfo,$user->id);
 
             //creacion del micrositio
-            $microsite = $this->createMicrosite($request->micrositeInfo, $venture->id);
+            $microsite = $this->createMicrosite($request->micrositeInfo, $venture->id,$user->id);
 
             //creacion de la solicitud de micrositio
             $micrositeSolicitude = $this->createMicrositeSolicitude("PENDIENTE",$user->id,$venture->id,$microsite->id);

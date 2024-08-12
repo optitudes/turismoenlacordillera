@@ -49,7 +49,7 @@ export default function Search() {
     };
 
     return (
-        <div className="container-internal-pages">
+        <div className="container-internal-pages my-32">
            <Head title="Micrositios" />
           <div className="mb-8 flex flex-col md:flex-row justify-between w-full border-b border-black-500">
 

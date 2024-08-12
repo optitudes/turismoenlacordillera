@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\MicrositeController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\BlogController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,9 @@ Route::prefix('home')->group(function() {
         Route::prefix('microsites')->group(function() {
             Route::get('/', [MicrositeController::class, 'microsites'])->name('microsites');
             Route::get('/view/{name}', [MicrositeController::class, 'viewMicrosite'])->name('viewMicrosite');
+        });
+        Route::prefix('experiences')->group(function() {
+            Route::get('/', [ExperienceController::class, 'search'])->name('experiences.search');
         });
 });
 

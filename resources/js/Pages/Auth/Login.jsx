@@ -51,7 +51,7 @@ export default function Login({ status, canResetPassword }) {
     return (
         <>
            <Head title="Inicio de sesión" />
-            <div className='bg-slate-200  rounded-lg shadow-lg w-full max-w-md '>
+            <div className='bg-slate-200  rounded-lg shadow-lg w-full max-w-md   my-32'>
 
                 <form onSubmit={submit} className='m-14' >
 

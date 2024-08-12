@@ -12,8 +12,7 @@ export default function GuestLayout({children}) {
                 }}
          >
             <NavBar />
-            
-            <main className='flex flex-col justify-center items-center min-h-screen'>
+            <main className='flex flex-col justify-center items-center '>
                 {children}
             </main>
         </div>

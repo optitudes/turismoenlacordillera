@@ -37,13 +37,21 @@ class UserSeeder extends Seeder
                 'isActive' => true,
                 'role_id' =>3
             ],
+            
             [
                 'email' => 'client@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make("asdfasdfasdf"),
                 'isActive' => true,
                 'role_id' =>4
-            ]
+            ],
+            [
+                'email' => 'entrepreneur2@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make("asdfasdfasdf"),
+                'isActive' => true,
+                'role_id' =>3
+            ],
         ]);
     }
 }

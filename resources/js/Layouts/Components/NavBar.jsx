@@ -60,8 +60,8 @@ export default function NavBar() {
                         <NavLink href={route('microsites')} active={route().current('microsites')}>
                             Micrositios 
                         </NavLink>
-                        <NavLink href={route('dashboard')} active={route().current('tourisRoutes')}>
-                            Rutas Turísticas 
+                        <NavLink href={route('experiences.search')} active={route().current('experiences.search')}>
+                            Experiencias 
                         </NavLink>
                         {isSessionUser != null?
                         <>

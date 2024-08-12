@@ -7,6 +7,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import General from '@/Pages/Panel/Microsite/Settings/Components/General';
+import Theme from '@/Pages/Panel/Microsite/Settings/Components/Theme';
 import {  MicrositeInfoProvider } from '@/Context/MicrositeInfoContext';
 
 
@@ -16,6 +17,7 @@ export default function Settings({micrositeInfo}) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  useEffect(()=>{console.log(micrositeInfo)},[]);
 
     return (
 
@@ -34,8 +36,8 @@ export default function Settings({micrositeInfo}) {
                       allowScrollButtonsMobile
                       >
                       <Tab label="General" value="1" />
-                      <Tab label="Documentos" value="2" />
-                      <Tab label="Tema" value="3" />
+                      <Tab label="Tema" value="2" />
+                      <Tab label="Documentos" value="3" />
                       <Tab label="Configuracion avanzada" value="4" />
                       <Tab label="Propiedad del micrositio" value="5" />
                     </TabList>
@@ -43,7 +45,9 @@ export default function Settings({micrositeInfo}) {
                   <TabPanel value="1" className='bg-white'>
                     <General />
                   </TabPanel>
-                  <TabPanel value="2">Experiencas</TabPanel>
+                  <TabPanel value="2" className='bg-white'>
+                    <Theme />
+                  </TabPanel>
                   <TabPanel value="3">turs</TabPanel>
                   <TabPanel value="4">Sitios de interes interesantes</TabPanel>
                   <TabPanel value="5">Sitios de interes interesantes</TabPanel>

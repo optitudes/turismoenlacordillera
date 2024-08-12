@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string("bannerImageUrl")->nullable();
             $table->text("description")->nullable();
             $table->string("name")->unique();
-            $table->string("experiences")->nullable();
             $table->boolean('isActive');
             $table->boolean('isPublish');
 
             //relaciones
             $table->foreignId('ventureId')->constrained('ventures');
+            $table->foreignId('userId')->constrained('users');
+            $table->foreignId('themeId')->constrained('microsite_themes');
 
             //comportamientos
             $table->softDeletes();

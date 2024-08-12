@@ -11,6 +11,7 @@ use App\Http\Services\MicrositeSolicitudeService;
 use App\Http\Services\MicrositeService;
 use App\Models\MicrositeSolicitude;
 use App\Models\Microsite;
+use App\Models\MicrositeTheme;
 
 
 
@@ -105,6 +106,19 @@ class MicrositeController extends BaseController
                 return $this->sendError($th->getMessage());
             }
         }
+    public function getThemes()
+        {
+            try {
+                $microsites = MicrositeTheme::whereNull('deleted_at')->get();
+                return $this->sendResponse($microsites,"Temas de micrositios obtenidos correctamente");
+
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+
+
+
 
     }
 

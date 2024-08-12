@@ -91,7 +91,7 @@ export const ServiceTexts = {
 
 export const TopDestinationTexts = {
   firstText: "Lo más buscado",
-  secondText: "Top micro sitios",
+  secondText: "Top micrositios",
   cards: [
     {
         country: "El Paraíso, Colombia",

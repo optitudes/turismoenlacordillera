@@ -19,6 +19,7 @@ export default {
             'salmon':'#d59688',
             'redwinee':'#520120',
             'aquadark':'#217976',
+            'graySoft':'#878787',
             'mediumseagreen':'#3cb371',
             'springgreen':'#00ff7f',
         }
