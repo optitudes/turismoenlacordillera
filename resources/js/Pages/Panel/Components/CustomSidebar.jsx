@@ -3,7 +3,7 @@ import {useState,useEffect} from 'react';
 import {Gear, List, User,UserCircleGear,Desktop,UserList, 
         House, ArchiveBox,PlusCircle,Mountains, Browser,
         FloppyDiskBack,MapPin,ArrowLeft,ArrowRight,
-        Wrench } from '@phosphor-icons/react';
+        Wrench,ShoppingBag } from '@phosphor-icons/react';
 
 import  Colors from "@/Constants/Colors";
 import { Link } from '@inertiajs/react';
@@ -106,6 +106,14 @@ useEffect(() => {
            Ajustes  
          </MenuItem>
 
+        <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<ShoppingBag/>} label="Servicios">
+            <MenuItem
+             rootStyles={{backgroundColor:Colors.primarySoft}}
+             icon={<List/>}
+             component={<Link href={route('panel.microsite.services')} className='h-16 w-full py-2' />}
+
+             > Lista </MenuItem>
+        </SubMenu>
 
 
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Mountains/>} label="Sitios de interés">

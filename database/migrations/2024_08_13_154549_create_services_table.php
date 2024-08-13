@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('microsite_themes', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("demoImageUrl");
-            $table->integer("viewIndex");
-            $table->integer("maxVideos");
-            $table->integer("maxServices");
-            $table->softDeletes();
+            $table->string("description");
+            $table->string("title");
+            $table->string("imageUrl");
+            //relaciones
+            $table->foreignId('categoryId')->constrained('experience_categories');
+            $table->foreignId('micrositeId')->constrained('microsites');
+
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('microsite_themes');
+        Schema::dropIfExists('services');
     }
 };

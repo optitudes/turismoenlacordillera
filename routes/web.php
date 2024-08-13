@@ -63,6 +63,7 @@ Route::prefix('panel')->group(function() {
         Route::prefix('microsite')->group(function() {
                 Route::middleware(HasWebRole::class.":". config('constants.ROLES_ID.ENTREPRENEUR'))->group(function () {
                     Route::get('/settings', [MicrositeController::class, 'entrepreneurSettings'])->name('panel.microsite.settings');
+                    Route::get('/services', [MicrositeController::class, 'serviceList'])->name('panel.microsite.services');
                 });
         });
 

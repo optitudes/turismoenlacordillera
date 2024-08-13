@@ -3,8 +3,23 @@ import Image from "@/Components/Image";
 import { PencilSimple, Trash } from '@phosphor-icons/react';
 import { useMicrositeInfo } from '@/Context/MicrositeInfoContext';
 import httpClient from "@/Utils/httpClient";
+import QuestionPopup from '@/Components/QuestionPopup';
+
+import Loader from '@/Components/Loader';
+
 
 export default function Theme() {
+
+
+  //useStates relacionados al popup
+    const [isOpenPopup, setIsOpenPopup] = useState(false);
+    const [onCancelPopup, setOnCancelPopup] = useState(undefined);
+    const [onAcceptPopup, setOnAcceptPopup] = useState(undefined);
+    const [popupMessage,setPopupMessage] = useState("");
+
+
+
+  const [isLoading,setIsLoading] = useState(false);
   const {micrositeInfo,setMicrositeInfo } = useMicrositeInfo();
   const [themes,setThemes] = useState(null);
   const [selectedTheme, setSelectedTheme] = useState(1);
@@ -19,16 +34,13 @@ export default function Theme() {
   useEffect(() => {
       // With this id, we get the cities list
     httpClient.get('microsites/themes')
-        .then(response => {setThemes(response.data.payload);console.log(themes);console.log(response.data.payload)})
+        .then(response => {setThemes(response.data.payload)})
         .catch(error => console.log(error));
 
-    if (selectedTheme === 'theme1') {
-      setMaxImages(5);
-    } else if (selectedTheme === 'theme2') {
-      setMaxImages(8);
-    }
+  
+    console.log(micrositeInfo.videos);
     setImageFiles([]); // Reset the image files when changing themes
-    console.log(micrositeInfo);
+    setYoutubeLink(micrositeInfo.videos[0].url);
 
   }, [selectedTheme]);
 
@@ -59,9 +71,28 @@ export default function Theme() {
     setImageFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
   const handleSaveChanges = () => {
-
-
+    let youtubeId = getYoutubeVideoId(youtubeLink);
+    setIsLoading(true);
+    httpClient.post("panel/microsite/update/theme",
+                  {
+                    micrositeId:micrositeInfo.id,
+                    youtubeId: youtubeId,
+                    themeId: selectedTheme
+                  })
+    .catch(error =>{
+          console.log("hubo un error");
+          const msg = JSON.parse(error?.request?.response).message || error.message;
+          setPopupMessage(msg);
+          setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+          setIsOpenPopup(true);
+    }).finally(()=>{setIsLoading(false)});
   };
+
+  const getYoutubeVideoId = (link) => {
+    const regex = /[?&]v=([^&]+)/;
+    const match = link.match(regex);
+    return match ? match[1] : null;;
+  }
 
   return (
     <div className="flex flex-col p-4 rounded-lg border border-gray-300 h-full w-full">
@@ -87,7 +118,7 @@ export default function Theme() {
           />
         </div>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 hidden">
         <h3 className="text-lg font-bold mb-2">Imágenes del micrositio (máx. {maxImages})</h3>
         <div className="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 overflow-x-auto">
           {imageFiles.map((file, index) => (
@@ -158,6 +189,16 @@ export default function Theme() {
           >
             Guardar todos los cambios 
           </button>
+
+
+
+      {isLoading?<Loader/>:<></>}
+      <QuestionPopup
+          isOpen = {isOpenPopup}
+          question= {popupMessage}
+          onAccept={onAcceptPopup}
+          onCancel={onCancelPopup}
+      />
         </div>
   );
 }

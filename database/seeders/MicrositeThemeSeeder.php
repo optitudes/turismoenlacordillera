@@ -15,17 +15,18 @@ class MicrositeThemeSeeder extends Seeder
         \DB::table('microsite_themes')->insert([
             [
                 'name' => 'Tema 1',
-                'demoImageUrl' => 'https://api.maloca.co/sitio_templates/letmos/blue/letmos-home.png',
+                'demoImageUrl' => env("APP_URL").':8000/storage/theme1.png',
                 'viewIndex' => 1,
-                'maxImages' => 5,
                 'maxVideos' => 1,
+                'maxServices' => 4,
+
             ],
             [
                 'name' => 'Tema 2',
-                'demoImageUrl' => 'https://api.maloca.co/sitio_templates/space/dark_violet/space-home.png',
+                'demoImageUrl' => env("APP_URL").':8000/storage/theme2.png',
                 'viewIndex' => 2,
-                'maxImages' => 8,
                 'maxVideos' => 1,
+                'maxServices' => 4,
             ],
         ]);
     }

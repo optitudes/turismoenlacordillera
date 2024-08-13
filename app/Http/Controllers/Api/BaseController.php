@@ -33,6 +33,6 @@ class BaseController extends Controller
         if(!empty($errorMessages)){
             $response['payload'] = $errorMessages;
         }
-        return response()->json($response, 200);
+        return response()->json($response, 500);
     }
 }

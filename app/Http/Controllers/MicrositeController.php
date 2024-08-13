@@ -43,5 +43,12 @@ class MicrositeController extends Controller
         }
         return Redirect::route('login');
     }
+    public function serviceList(Request $request)
+    {
+        return Inertia::render('Panel/Microsite/Services/Services');
+        return "servicios";
+    }
+
+
 
 }

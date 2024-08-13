@@ -11,6 +11,7 @@ export default function View1(data) {
   const[theme,setTheme] = useState(data.information.theme);
   const[venture,setVenture] = useState(data.information.venture);
   const[user,setUser] = useState(data.information.user);
+  const[services,setServices] = useState(data.information.services);
 
   useEffect(() => {
     console.log(data.information);

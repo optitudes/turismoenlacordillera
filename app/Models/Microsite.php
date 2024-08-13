@@ -35,6 +35,9 @@ class Microsite extends Model
     public function videos(){
         return $this->hasMany(MicrositeVideo::class,'micrositeId');
     }
+    public function services(){
+        return $this->hasMany(Service::class,'micrositeId');
+    }
 
     public static function updateActive($micrositeId = -1,$isActive=false){
         return DB::table('microsites')

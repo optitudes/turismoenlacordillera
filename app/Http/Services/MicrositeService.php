@@ -5,8 +5,10 @@ namespace App\Http\Services;
 use App\Http\Requests\UpdateMicositeIsPublicRequest;
 use App\Http\Requests\UpdateMicositeDescriptionRequest;
 use App\Http\Requests\UpdateMicrositeImageRequest;
+use App\Http\Requests\UpdateThemeRequest;
 
 use App\Models\Microsite;
+use App\Models\MicrositeVideo;
 use Illuminate\Support\Facades\Auth;
 
 class MicrositeService {
@@ -90,15 +92,32 @@ class MicrositeService {
         $microsite->bannerImageUrl = $fullImagePath;
         $microsite->save();
         return ["success"=>true,"msg"=>"Imagen actualizada correctamente  ".$fullImagePath];
-
     }
+
+
+    public function updateTheme(UpdateThemeRequest $request){
+        $microsite = Microsite::findOrFail($request->micrositeId);
+        $microsite->themeId = $request->themeId;
+        $microsite->save();
+        if($request->youtubeId){
+            //de momento dado que solo hay dos plantillas de micrositio, y en ambas solo
+            //se permite un video, entonces se asume la posicion del video como 1
+            $video = $microsite->videos->first();
+            $video->url = $request->youtubeId;
+            $video->save();
+        }
+        return ['success'=>true,"msg"=>"tema actualizado correctamente"];
+    }
+
     public function getMicrositeViewInfo($name){
-        $info['microsite']  = Microsite::where('name',$name)->where('isActive',true)->where('isPublish',true)->whereNull('deleted_at')->first();
-        $info['theme'] = $info['microsite']->theme;
-        $info['venture'] = $info['microsite']->venture;
-        $info['user'] = $info['microsite']->user;
-        $info['images'] = $info['microsite']->images;
-        $info['videos'] = $info['microsite']->videos;
+        $microsite = Microsite::where('name',$name)->where('isActive',true)->where('isPublish',true)->whereNull('deleted_at')->first();
+        $info['microsite']  = $microsite;
+        $info['theme'] = $microsite->theme;
+        $info['venture'] = $microsite->venture;
+        $info['user'] = $microsite->user;
+        $info['images'] = $microsite->images;
+        $info['videos'] = $microsite->videos;
+        $info['services'] = $microsite->services;
         return $info;
     }
 

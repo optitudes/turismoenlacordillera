@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('microsite_themes', function (Blueprint $table) {
+        Schema::create('experience_categories', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("demoImageUrl");
-            $table->integer("viewIndex");
-            $table->integer("maxVideos");
-            $table->integer("maxServices");
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('microsite_themes');
+        Schema::dropIfExists('experience_categories');
     }
 };

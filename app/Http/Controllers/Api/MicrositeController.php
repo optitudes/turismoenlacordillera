@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Requests\UpdateMicrositeSolicitudeRequest;
 use App\Http\Requests\UpdateMicositeIsPublicRequest;
+use App\Http\Requests\UpdateThemeRequest;
 use App\Http\Requests\UpdateMicositeDescriptionRequest;
 use App\Http\Requests\UpdateMicrositeImageRequest;
 use App\Http\Services\MicrositeSolicitudeService;
@@ -89,12 +90,26 @@ class MicrositeController extends BaseController
                 $status = $this->micrositeService->updateBannerImage($request);
                 if($status['success'])
                     return $this->sendResponse(null,$status['msg'] );
-                return $this->sendError("hola papu");
+                return $this->sendError($status['msg']);
 
             } catch (\Throwable $th) {
                 return $this->sendError($th->getMessage());
             }
         }
+    public function updateTheme(UpdateThemeRequest $request)
+        {
+            try {
+                $status = $this->micrositeService->updateTheme($request);
+                if($status['success'])
+                    return $this->sendResponse(null,$status['msg'] );
+                return $this->sendError($status['msg']);
+
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+
+
 
     public function search($filter = null)
         {
@@ -116,9 +131,6 @@ class MicrositeController extends BaseController
                 return $this->sendError($th->getMessage());
             }
         }
-
-
-
 
     }
 
