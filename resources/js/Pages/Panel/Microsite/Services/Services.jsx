@@ -5,6 +5,7 @@ import Checkbox from '@/Components/Checkbox';
 import QuestionPopup from '@/Components/QuestionPopup';
 import {validateImage} from "@/Validators/validator";
 import httpClient from "@/Utils/httpClient";
+import {Head } from '@inertiajs/react';
 
 export default function Services({information}) {
     const [services,setServices] = useState(information.services);
@@ -147,7 +148,7 @@ export default function Services({information}) {
       
 
     return (<>
-
+           <Head title="Servicios" />
              <div className="bg-white w-dvw justify-center">
                 <h3 className="text-lg font-bold mb-2 text-center">Servicios del micrositio (máx. {theme.maxServices}). La cantidad de servicios depende del tema del micrositio (editalo en el panel de ajustes de micrositio)</h3>
                 <div className="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 overflow-x-auto justify-center">
