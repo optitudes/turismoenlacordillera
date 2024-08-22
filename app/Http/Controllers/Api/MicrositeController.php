@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Http\Requests\UpdateMicrositeSolicitudeRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UpdateServicesRequest;
 use App\Http\Requests\UpdateMicositeIsPublicRequest;
 use App\Http\Requests\UpdateThemeRequest;
 use App\Http\Requests\UpdateMicositeDescriptionRequest;
@@ -128,6 +130,36 @@ class MicrositeController extends BaseController
                 return $this->sendResponse($microsites,"Temas de micrositios obtenidos correctamente");
 
             } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+    public function updateServices(UpdateServicesRequest $request,$micrositeId = null)
+        {
+            try {
+
+                if($micrositeId == null){
+                    $microsite = Microsite::where('userId',Auth::user()->id)->where('isActive',true)->whereNull('deleted_at')->first();
+                    if($microsite){
+                        $micrositeId = $microsite->id;
+                    }else{
+                        return $this->sendError("Error al obtener la información del micrositio, puede que el microsition no esté activo o haya sido borrado, contacte con soporte.");
+                    }
+                }else{
+                    $isAbleToUpdate =  Auth::user()->role_id == config('constants.ROLES_ID.ADMIN') || Auth::user()->role_id == config('constants.ROLES_ID.ROOT'); 
+                    if($isAbleToUpdate == false){
+                        return $this->sendError("Error al obtener la información del micrositio, el usuario no cuenta con los permisos necesarios.");
+                    }
+                }
+
+                $status = $this->micrositeService->updateServices($request,$micrositeId);
+                if($status['success']){
+                    return $this->sendResponse($request->all(),$status['msg']);
+                }
+                return $this->sendError($status['msg']);
+
+
+            } catch (\Throwable $th) {
+                return $th;
                 return $this->sendError($th->getMessage());
             }
         }

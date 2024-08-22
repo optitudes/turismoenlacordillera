@@ -106,14 +106,13 @@ useEffect(() => {
            Ajustes  
          </MenuItem>
 
-        <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<ShoppingBag/>} label="Servicios">
-            <MenuItem
-             rootStyles={{backgroundColor:Colors.primarySoft}}
-             icon={<List/>}
-             component={<Link href={route('panel.microsite.services')} className='h-16 w-full py-2' />}
-
-             > Lista </MenuItem>
-        </SubMenu>
+        <MenuItem 
+          rootStyles={{backgroundColor:Colors.primarySoft}}
+          icon={<ShoppingBag/>} 
+          component={<Link href={route('panel.microsite.services')} className='h-16 w-full py-2' />}
+        >
+          Servicios
+        </MenuItem>
 
 
         <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Mountains/>} label="Sitios de interés">

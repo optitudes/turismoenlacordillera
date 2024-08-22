@@ -6,9 +6,12 @@ use App\Http\Requests\UpdateMicositeIsPublicRequest;
 use App\Http\Requests\UpdateMicositeDescriptionRequest;
 use App\Http\Requests\UpdateMicrositeImageRequest;
 use App\Http\Requests\UpdateThemeRequest;
+use App\Http\Requests\UpdateServicesRequest;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Microsite;
 use App\Models\MicrositeVideo;
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 
 class MicrositeService {
@@ -121,10 +124,6 @@ class MicrositeService {
         return $info;
     }
 
-
-
-
-    
     public function clearDescription($description = ""){
         // Elimina las etiquetas <script> y su contenido
         $description = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $description);
@@ -142,5 +141,131 @@ class MicrositeService {
         $description = preg_replace("/src\s*=\s*'javascript:[^']*'/i", '', $description);
         $description = preg_replace('/src\s*=\s*javascript:[^"]+/i', '', $description);
         return $description;
+    }
+
+    public function getMicrositeServices($micrositeId = null){
+
+        if($micrositeId){
+            $userRole = Auth::user()->role_id; 
+            $isAbleToConsult = $userRole == config('constants.ROLES_ID.ADMIN') || $userRole == config('constants.ROLES_ID.ROOT'); 
+            if($isAbleToConsult){
+                $microsite = Microsite::findOrFail($micrositeId);
+                return ['success'=>true,'services'=>$microsite->services,'msg'=>'Servicios obtenidos con éxito'] ;
+            }else{
+                return ['success'=>false,'services'=>null,'msg'=>'El usuario no tiene los permisos necesarios'];
+            }
+        }else{
+                $microsite = Microsite::where('userId',Auth::user()->id)->where("isActive",true)->whereNull("deleted_at")->first();
+                if($microsite){
+                    return ['success'=>true,'services'=>$microsite->services,'msg'=>'Servicios obtenidos con éxito'] ;
+                }
+                return ['success'=>false,'services'=>null,'msg'=>'Error al obtener los servicios'] ;
+        }
+    }
+    public function getThemeInfo($micrositeId = null){
+
+        if($micrositeId){
+            $userRole = Auth::user()->role_id; 
+            $isAbleToConsult = $userRole == config('constants.ROLES_ID.ADMIN') || $userRole == config('constants.ROLES_ID.ROOT'); 
+            if($isAbleToConsult){
+                $microsite = Microsite::findOrFail($micrositeId);
+                return ['success'=>true,'theme'=>$microsite->theme,'msg'=>'Tema del micrositio obtenido con éxito'] ;
+            }else{
+                return ['success'=>false,'theme'=>null,'msg'=>'El usuario no tiene los permisos necesarios'];
+            }
+        }else{
+                $microsite = Microsite::where('userId',Auth::user()->id)->where("isActive",true)->whereNull("deleted_at")->first();
+                if($microsite){
+                    return ['success'=>true,'theme'=>$microsite->theme,'msg'=>'Tema del micrositio obtenido con éxito'] ;
+                }
+                return ['success'=>false,'theme'=>null,'msg'=>'Error al obtener el tema del micrositio'] ;
+        }
+    }
+
+    public function updateServices(UpdateServicesRequest $request,$micrositeId = -1){
+        $services = $request->services;
+        $newImages = $request->imageFiles;
+        $servicesIdToDel = $request->idsServicesToDel;
+
+        //seccion para la actualizacio'n y creacio'n de servicios
+        if($services){
+            foreach($services as $service){
+                $newImage = $newImages[$service['id']]??null;
+                if($service['id'] > 0){
+                    $this->updateService($service,$newImage['file']??null,$micrositeId);
+                }else{
+                    $this->createService($service,$newImage['file']??null,$micrositeId);
+                }
+            }
+        }
+        //seccio'n para la eliminacion de servicios
+        if($servicesIdToDel){
+            foreach($servicesIdToDel as $idService){
+                $this->deleteService($idService,$micrositeId);
+            }
+        }
+
+        return ['success'=>true,'msg'=>"Todos los cambios se han realizado de manera correcta"];
+    }
+    public function deleteService($idService,$micrositeId){
+        Service::where('id', $idService)
+                   ->where('micrositeId', $micrositeId)
+                   ->delete();
+        $microsite = Microsite::find($micrositeId);
+        if($microsite){
+            $this->removeServiceImage($idService,$microsite->name);
+        }
+    }
+    public function updateService($newServiceInfo,$image=null,$micrositeId=-1){
+        $service = Service::findOrFail($newServiceInfo['id']);
+        $service->fill($newServiceInfo);
+        $service->save();
+        if($image){
+            $microsite = Microsite::find($micrositeId);
+            if($microsite){
+                $service->imageUrl = $this->saveServiceImage($service->id,$microsite->name,$image);
+                $service->save();
+            }
+        }
+    }
+    public function createService($newServiceInfo,$image=null,$micrositeId=-1){
+        $newServiceInfo['micrositeId'] = $micrositeId;
+        $newServiceInfo['isVisible'] = true;
+
+        $service = Service::create($newServiceInfo);
+        if($image){
+            $microsite = Microsite::find($micrositeId);
+            if($microsite){
+                $service->imageUrl = $this->saveServiceImage($service->id,$microsite->name,$image);
+                $service->save();
+            }
+        }
+    }
+    public function saveServiceImage($serviceId,$micrositeName,$image){
+ 
+        // Obtener la extensión original del archivo
+        $extension = $image->getClientOriginalExtension();
+
+        // Nombre deseado para la imagen con la extensión
+        $imageName = $serviceId.'service.'. $extension;
+
+        // Guardar la imagen y obtener su ruta en el servidor
+        $path = $image->storeAs('microsites/'.$micrositeName.'/media/pictures/services', $imageName, 'public');
+        $fullImagePath = url("/")."/storage/".$path;
+        return $fullImagePath;
+    }
+    public function removeServiceImage($serviceId,$micrositeName){
+
+        $directory = 'microsites/' . $micrositeName . '/media/pictures/services/';
+
+        // Filtrar y renombrar los archivos que coinciden con el patrón
+        collect(Storage::disk('public')->files($directory))
+        ->filter(fn($file) => str_starts_with(basename($file), $serviceId . 'service'))
+        ->each(function ($file) use ($directory, $serviceId) {
+            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            $newImagePath = $directory . 'deleted-' . $serviceId . 'service.' . $extension;
+            Storage::disk('public')->move($file, $newImagePath);
+        });
+       
     }
 }

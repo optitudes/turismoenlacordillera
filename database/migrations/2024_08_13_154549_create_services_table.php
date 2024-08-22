@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("description");
             $table->string("title");
             $table->string("imageUrl");
+            $table->boolean("isVisible");
             //relaciones
             $table->foreignId('categoryId')->constrained('experience_categories');
             $table->foreignId('micrositeId')->constrained('microsites');

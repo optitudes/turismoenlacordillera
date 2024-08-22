@@ -53,6 +53,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::post('smallImage', [MicrositeController::class, 'updateSmallImage']);
                 Route::post('bannerImage', [MicrositeController::class, 'updateBannerImage']);
                 Route::post('theme', [MicrositeController::class, 'updateTheme']);
+                Route::post('services/{micrositeId?}', [MicrositeController::class, 'updateServices']);
             });
         });
     });

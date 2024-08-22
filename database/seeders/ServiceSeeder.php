@@ -19,6 +19,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/mujer-joven-arreglando-su-pasteleria_23-2149210428.jpg",
                 "categoryId" => 1,
                 "micrositeId" => 1,
+                "isVisible" => true,
             ],
             [
                 "title" => "Senderismo en Génova, Quindío",
@@ -26,6 +27,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/senderista-camino-bosque_23-2147683099.jpg",
                 "categoryId" => 2,
                 "micrositeId" => 1,
+                "isVisible" => true,
             ],
             [
                 "title" => "Hospedaje en Casas de Campo",
@@ -33,6 +35,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/mujer-joven-mascara-medica-mirando-hermosa-vista-naturaleza_23-2149066296.jpg",
                 "categoryId" => 3,
                 "micrositeId" => 1,
+                "isVisible" => true,
             ],
             [
                 "title" => "Retos de Montaña en Génova",
@@ -40,6 +43,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/vista-trasera-mujer-joven-descendiendo_23-2147617548.jpg",
                 "categoryId" => 4,
                 "micrositeId" => 1,
+                "isVisible" => true,
             ],
             [
                 "title" => "Experiencias de Café",
@@ -47,6 +51,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/mujer-joven-arreglando-su-pasteleria_23-2149210428.jpg",
                 "categoryId" => 1,
                 "micrositeId" => 2,
+                "isVisible" => true,
             ],
             [
                 "title" => "Senderismo en Génova, Quindío",
@@ -54,6 +59,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/senderista-camino-bosque_23-2147683099.jpg",
                 "categoryId" => 2,
                 "micrositeId" => 2,
+                "isVisible" => true,
             ],
             [
                 "title" => "Hospedaje en Casas de Campo",
@@ -61,6 +67,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/mujer-joven-mascara-medica-mirando-hermosa-vista-naturaleza_23-2149066296.jpg",
                 "categoryId" => 3,
                 "micrositeId" => 2,
+                "isVisible" => true,
             ],
             [
                 "title" => "Retos de Montaña en Génova",
@@ -68,6 +75,7 @@ class ServiceSeeder extends Seeder
                 "imageUrl" => "https://img.freepik.com/foto-gratis/vista-trasera-mujer-joven-descendiendo_23-2147617548.jpg",
                 "categoryId" => 4,
                 "micrositeId" => 2,
+                "isVisible" => true,
             ],
         ]);
 

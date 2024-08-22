@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\MicrositeService;
+use App\Http\Services\ExperienceService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,7 +11,11 @@ use Inertia\Inertia;
 class MicrositeController extends Controller
 {
 
-    public function __construct(private MicrositeService $micrositeService  ){}
+    public function __construct(
+        private MicrositeService $micrositeService,
+        private ExperienceService $experienceService
+
+          ){}
 
     /**
      * Display the solicitudes list view.
@@ -45,10 +50,17 @@ class MicrositeController extends Controller
     }
     public function serviceList(Request $request)
     {
-        return Inertia::render('Panel/Microsite/Services/Services');
-        return "servicios";
+        $servicesStatus =$this->micrositeService->getMicrositeServices();
+        $themeStatus =$this->micrositeService->getThemeInfo();
+        $availableCategories = $this->experienceService->getAvailableCategories();
+
+        if($servicesStatus['success'] && $themeStatus['success'] ){
+            $information['services'] = $servicesStatus['services'];
+            $information['theme'] = $themeStatus['theme'];
+            $information['availableCategories'] = $availableCategories;
+            return Inertia::render('Panel/Microsite/Services/Services',['information'=>$information]);
+        }
+        return Redirect::route('dashboard');
     }
-
-
 
 }
