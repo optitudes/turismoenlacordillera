@@ -48,7 +48,7 @@ export default function Services({information}) {
         const randomNegativeId = -Math.floor(Math.random() * 100); 
         setServices(prevServices => [...prevServices, {
 
-            categoryId: -1,
+            categoryId: categories[0].id,
             created_at: null,
             description: '',
             id: randomNegativeId, 
@@ -102,13 +102,9 @@ export default function Services({information}) {
             }
             })
             .then(response => {
-                if(response.data.success){
-                    console.log(response.data);
-                }else{
                 setPopupMessage(response.data.message);
                 setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
                 setIsOpenPopup(true);
-                }
             })
             .catch(error =>{
                 const msg = JSON.parse(error?.request?.response).message || error.message;
