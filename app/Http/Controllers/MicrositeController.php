@@ -48,19 +48,6 @@ class MicrositeController extends Controller
         }
         return Redirect::route('login');
     }
-    public function serviceList(Request $request)
-    {
-        $servicesStatus =$this->micrositeService->getMicrositeServices();
-        $themeStatus =$this->micrositeService->getThemeInfo();
-        $availableCategories = $this->experienceService->getAvailableCategories();
-
-        if($servicesStatus['success'] && $themeStatus['success'] ){
-            $information['services'] = $servicesStatus['services'];
-            $information['theme'] = $themeStatus['theme'];
-            $information['availableCategories'] = $availableCategories;
-            return Inertia::render('Panel/Microsite/Services/Services',['information'=>$information]);
-        }
-        return Redirect::route('dashboard');
-    }
+   
 
 }

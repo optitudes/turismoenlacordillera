@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('microsite_images', function (Blueprint $table) {
+        Schema::create('experience_videos', function (Blueprint $table) {
             $table->id();
-            $table->string("url");
-            $table->integer("position");
+            $table->string("vCode");
+            $table->foreignId('experienceId')->constrained('experiences');
             $table->timestamps();
-            $table->foreignId('micrositeId')->constrained('microsites');
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('microsite_images');
+        Schema::dropIfExists('experience_videos');
     }
 };

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateServicesRequest extends FormRequest
+class UpdateExperienceImagesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,6 @@ class UpdateServicesRequest extends FormRequest
         return true;
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,16 +22,15 @@ class UpdateServicesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'services' => 'nullable|array',
-            'services.*.id' => 'required|integer',
-            'services.*.description' => 'required|string|max:255',
-            'services.*.title' => 'required|string|max:255',
-            'services.*.imageUrl' => 'nullable|string', // or URL validation if needed
-            'services.*.isVisible' => 'required|boolean',
-            'services.*.categoryId' => 'required|integer',
+            'images' => 'nullable|array',
+            'images.*.id' => 'required|integer',
+            'images.*.created_at' => 'nullable',
+            'images.*.updated_at' => 'nullable',
+            'images.*.experienceId' => 'required|integer|min:0',
+            'images.*.url' => 'required', 
 
-            'idsServicesToDel' => 'nullable|array',
-            'idsServicesToDel.*' => 'required|integer',
+            'idsImagesToDel' => 'nullable|array',
+            'idsImagesToDel.*' => 'required|integer',
             
             'imageFiles' => 'nullable|array',
             'imageFiles.*.file' => 'required|file|mimes:jpg,png|max:10240', 

@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
          $this->call(MicrositeVideoSeeder::class);
          $this->call(MicrositeSolicitudeSeeder::class);
          $this->call(ExperienceCategorySeeder::class);
-         $this->call(ServiceSeeder::class);
+         $this->call(ExperienceSeeder::class);
+         $this->call(ExperienceImageSeeder::class);
+         $this->call(ExperienceVideoSeeder::class);
     }
 }

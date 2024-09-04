@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MicrositeController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ExperienceController;
 
 
 use App\Http\Middleware\HasRoles;
@@ -53,7 +54,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::post('smallImage', [MicrositeController::class, 'updateSmallImage']);
                 Route::post('bannerImage', [MicrositeController::class, 'updateBannerImage']);
                 Route::post('theme', [MicrositeController::class, 'updateTheme']);
-                Route::post('services/{micrositeId?}', [MicrositeController::class, 'updateServices']);
+                Route::post('experiences/{micrositeId?}', [ExperienceController::class, 'updateExperiences']);
+            });
+            Route::get('experienceImagesByExperienceId/{id}',[ExperienceController::class, 'getExperienceImagesByExperienceId']);
+        });
+
+        Route::prefix('experience')->group(function() {
+            Route::prefix('update')->group(function() {
+                Route::post('video', [ExperienceController::class, 'updateExperienceVideo']);
+                Route::post('images/{experienceId?}', [ExperienceController::class, 'updateGalleryImages']);
+            });
+            Route::prefix('get')->group(function() {
+                Route::get('video/{experienceId}', [ExperienceController::class, 'experienceVideo']);
             });
         });
     });

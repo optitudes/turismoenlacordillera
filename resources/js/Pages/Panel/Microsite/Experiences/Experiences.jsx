@@ -2,13 +2,17 @@ import {useState,useRef } from "react";
 import Image from "@/Components/Image";
 import { PencilSimple, Trash } from '@phosphor-icons/react';
 import Checkbox from '@/Components/Checkbox';
+import Gallery from '@/Pages/Panel/Microsite/Experiences/Components/Gallery';
+import VideoForm from '@/Pages/Panel/Microsite/Experiences/Components/VideoForm';
+import Itinerary from '@/Pages/Panel/Microsite/Experiences/Components/Itinerary';
 import QuestionPopup from '@/Components/QuestionPopup';
+import Loader from '@/Components/Loader';
 import {validateImage} from "@/Validators/validator";
 import httpClient from "@/Utils/httpClient";
 import {Head } from '@inertiajs/react';
 
-export default function Services({information}) {
-    const [services,setServices] = useState(information.services);
+export default function Experiences({information}) {
+    const [experiences,setExperiences] = useState(information.experiences);
     const [theme] = useState(information.theme);
     const [categories] = useState(information.availableCategories);
 
@@ -17,8 +21,7 @@ export default function Services({information}) {
     const  imageFileInputRef = useRef(null);
     const [imageFiles, setImageFiles] = useState([]);
     //para el manejo de servicios a borrar
-    const [servicesIdToDel,setServicesIdToDel] = useState([]);
-    //para el manejo del loader y el popup
+    const [experiencesIdToDel,setExperiencesIdToDel] = useState([]);
 
     //useStates relacionados al popup
     const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -29,25 +32,25 @@ export default function Services({information}) {
 
 
    
-    const handleServiceChange = (id, field, value) => {
-        setServices((prevServices) =>
-            prevServices.map((service) =>
-                service.id === id ? { ...service, [field]: value } : service
+    const handleExperienceChange = (id, field, value) => {
+        setExperiences((prevExperiences) =>
+            prevExperiences.map((experience) =>
+                experience.id === id ? { ...experience, [field]: value } : experience
             )
         );
     };
 
-    const handleDeleteService = (id) => {
-        setServices((prevServices) =>
-            prevServices.filter((service) => service.id !== id)
+    const handleDeleteExperience = (id) => {
+        setExperiences((prevExperiences) =>
+            prevExperiences.filter((experience) => experience.id !== id)
         );
         if(id != -1){
-            setServicesIdToDel(prevIds =>[...prevIds,id]);
+            setExperiencesIdToDel(prevIds =>[...prevIds,id]);
         }
     };
-    const addService = () => {
+    const addExperience = () => {
         const randomNegativeId = -Math.floor(Math.random() * 100); 
-        setServices(prevServices => [...prevServices, {
+        setExperiences(prevExperiences => [...prevExperiences, {
 
             categoryId: categories[0].id,
             created_at: null,
@@ -59,7 +62,7 @@ export default function Services({information}) {
         }]);
     }
 
-    const handleEditServiceImage = (id) => {
+    const handleEditExperienceImage = (id) => {
         setImageId(id);
         imageFileInputRef.current.click();
 
@@ -78,18 +81,18 @@ export default function Services({information}) {
              // Crear un objeto FormData
             const formData = new FormData();
             
-            servicesIdToDel.forEach((serviceToDel, index) => {
-                formData.append(`idsServicesToDel[${index}]`, serviceToDel);
+            experiencesIdToDel.forEach((experienceToDel, index) => {
+                formData.append(`idsExperiencesToDel[${index}]`, experienceToDel);
             });
 
-            services.forEach((service, index) => {
-                formData.append(`services[${index}][categoryId]`, service.categoryId);
-                formData.append(`services[${index}][description]`, service.description);
-                formData.append(`services[${index}][imageUrl]`, service.imageUrl);
-                formData.append(`services[${index}][id]`, service.id);
-                formData.append(`services[${index}][isVisible]`, service.isVisible);
-                formData.append(`services[${index}][micrositeId]`, service.micrositeId);
-                formData.append(`services[${index}][title]`, service.title);
+            experiences.forEach((experience, index) => {
+                formData.append(`experiences[${index}][categoryId]`, experience.categoryId);
+                formData.append(`experiences[${index}][description]`, experience.description);
+                formData.append(`experiences[${index}][imageUrl]`, experience.imageUrl);
+                formData.append(`experiences[${index}][id]`, experience.id);
+                formData.append(`experiences[${index}][isVisible]`, experience.isVisible);
+                formData.append(`experiences[${index}][micrositeId]`, experience.micrositeId);
+                formData.append(`experiences[${index}][title]`, experience.title);
             });
   
             imageFiles.forEach((image, index) => {
@@ -97,7 +100,7 @@ export default function Services({information}) {
             });
 
             //se hace la peticio[n
-            httpClient.post("panel/microsite/update/services", formData, {
+            httpClient.post("panel/microsite/update/experiences", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -117,7 +120,7 @@ export default function Services({information}) {
         }
     }
 
-    const changeServiceImage = (event) => {
+    const changeExperienceImage = (event) => {
         const imageFile = (Array.from(event.target.files))[0];
         if (imageFile) {
           if (imageId !== null && imageFiles.length !==0) {
@@ -141,32 +144,32 @@ export default function Services({information}) {
               return newFiles;
             });
           }
-          handleServiceChange(imageId, 'imageUrl', URL.createObjectURL(imageFile));
+          handleExperienceChange(imageId, 'imageUrl', URL.createObjectURL(imageFile));
         }
         setImageId(null);
       };
       
 
     return (<>
-           <Head title="Servicios" />
+           <Head title="Experiencias" />
              <div className="bg-white w-dvw justify-center">
-                <h3 className="text-lg font-bold mb-2 text-center">Servicios del micrositio (máx. {theme.maxServices}). La cantidad de servicios depende del tema del micrositio (editalo en el panel de ajustes de micrositio)</h3>
+                <h3 className="text-lg font-bold mb-2 text-center">Experiencias del micrositio (máx. {theme.maxServices})</h3>
                 <div className="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 overflow-x-auto justify-center">
-                    {services.map((service, index) => (
+                    {experiences.map((experience, index) => (
                     <div key={index} className="relative w-64 border border-gray-300 rounded-md p-4 space-y-4">
 
                         <label className="flex justify-around items-center" >
                             <span className="text-sm text-zinc-950 px-3">Hacer visible</span >
                             <Checkbox
                                 name="remember"
-                                checked={service.isVisible}
-                                onChange={(e) => handleServiceChange(service.id, 'isVisible', e.target.checked)}
+                                checked={experience.isVisible}
+                                onChange={(e) => handleExperienceChange(experience.id, 'isVisible', e.target.checked)}
                             />
                         </label>
 
                         <div className="relative w-full h-40 border border-gray-300 rounded-md overflow-hidden">
                             <Image
-                                image={service.imageUrl??"https://img.freepik.com/vector-premium/ilustracion-plana-album_120816-29716.jpg"}
+                                image={experience.imageUrl??"https://img.freepik.com/vector-premium/ilustracion-plana-album_120816-29716.jpg"}
                                 alt={`Vista previa de la imagen ${index + 1}`}
                                 className="object-cover w-full h-full"
                             />
@@ -174,7 +177,7 @@ export default function Services({information}) {
                                 <button
                                     type="button"
                                     className="bg-white p-2 rounded-full shadow-md"
-                                    onClick={() => handleEditServiceImage(service.id)}
+                                    onClick={() => handleEditExperienceImage(experience.id)}
                                 >
                                     <PencilSimple size={40} className="text-yellow-500" />
                                 </button>
@@ -184,44 +187,48 @@ export default function Services({information}) {
                         <input
                             type="text"
                             placeholder="Título"
-                            value={service.title}
-                            onChange={(e) => handleServiceChange(service.id, 'title', e.target.value)}
+                            value={experience.title}
+                            onChange={(e) => handleExperienceChange(experience.id, 'title', e.target.value)}
                             className="w-full border border-gray-300 rounded-md p-2"
                         />
     
                         <textarea
                             placeholder="Descripción"
-                            value={service.description}
-                            onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)}
+                            value={experience.description}
+                            onChange={(e) => handleExperienceChange(experience.id, 'description', e.target.value)}
                             className="w-full border border-gray-300 rounded-md p-2"
                         />
     
                         <select
-                            value={service.categoryId}
-                            onChange={(e) => handleServiceChange(service.id, 'categoryId', e.target.value)}
+                            value={experience.categoryId}
+                            onChange={(e) => handleExperienceChange(experience.id, 'categoryId', e.target.value)}
                             className="w-full border border-gray-300 rounded-md p-2"
                         >
                             {categories.map((category)=>(
                                 <option key={category.id} value={category.id} >{category.name}</option>
                             ))}
                         </select>
+                        <Gallery experienceId={experience.id} />
+                        <VideoForm experienceId={experience.id} />
+                        <Itinerary experienceId={experience.id} />
+
 
                         <button
                             type="button"
                             className="w-full bg-red-500 text-white p-2 rounded-md"
-                            onClick={() => handleDeleteService(service.id)}
+                            onClick={() => handleDeleteExperience(experience.id)}
                         >
-                        Eliminar Servicio
+                        Eliminar Experiencia 
                         </button>
                     </div>
                     ))}
 
 
-                    {(services.length) < theme.maxServices && (
+                    {(experiences.length) < theme.maxServices && (
                         <button
                         type="button"
                         className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                        onClick={addService}
+                        onClick={addExperience}
                         >
                         Añadir un servicio 
                         </button>
@@ -231,7 +238,7 @@ export default function Services({information}) {
                             accept="image/*"
                             ref={imageFileInputRef}
                             style={{ display: 'none' }}
-                            onChange={changeServiceImage}
+                            onChange={changeExperienceImage}
                         />
          
                 </div>

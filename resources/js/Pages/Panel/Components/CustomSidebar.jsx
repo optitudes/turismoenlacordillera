@@ -108,18 +108,12 @@ useEffect(() => {
 
         <MenuItem 
           rootStyles={{backgroundColor:Colors.primarySoft}}
-          icon={<ShoppingBag/>} 
-          component={<Link href={route('panel.microsite.services')} className='h-16 w-full py-2' />}
+          icon={<Mountains/>} 
+          component={<Link href={route('panel.microsite.experiences')} className='h-16 w-full py-2' />}
         >
-          Servicios
+         Experiencias 
         </MenuItem>
 
-
-        <SubMenu rootStyles={{backgroundColor:Colors.primarySoft}} icon={<Mountains/>} label="Sitios de interés">
-            <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<List/>}> Lista </MenuItem>
-            <MenuItem  rootStyles={{backgroundColor:Colors.primarySoft}}icon={<Gear/>}> Ajustes </MenuItem>
-            <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<FloppyDiskBack/>}> Backup </MenuItem>
-        </SubMenu>
 
         <SubMenu icon={<MapPin/>} label="Rutas turísticas">
             <MenuItem rootStyles={{backgroundColor:Colors.primarySoft}} icon={<List/>}> Lista </MenuItem>

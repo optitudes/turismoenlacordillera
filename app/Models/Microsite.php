@@ -16,8 +16,7 @@ class Microsite extends Model
      */
     protected $fillable = [
         'name',
-        'description',
-        'experiences'
+        'description'
     ];
 
     public function venture(){
@@ -35,8 +34,8 @@ class Microsite extends Model
     public function videos(){
         return $this->hasMany(MicrositeVideo::class,'micrositeId');
     }
-    public function services(){
-        return $this->hasMany(Service::class,'micrositeId');
+    public function experiences(){
+        return $this->hasMany(Experience::class,'micrositeId');
     }
 
     public static function updateActive($micrositeId = -1,$isActive=false){
@@ -62,6 +61,13 @@ class Microsite extends Model
             ->where('ven.userId',$userId)
             ->select("microsite.*",)
             ->first();
+    }
+    public static function findByExperienceId($experienceId = -1){
+        return DB::table('experiences as experience')
+                        ->where('experience.id',$experienceId)
+                        ->join('microsites as microsite','microsite.id','=','experience.micrositeId')
+                        ->select('microsite.*')
+                        ->first();
     }
     public static function basicInfoSearch($filter = null){
         return DB::table('microsites', 'microsite')
