@@ -53,13 +53,7 @@ export default function Itinerary ({experienceId}){
                 </button>
               </div>
             </div>
-            <input
-                type="file"
-                accept="image/*"
-                ref={imageFileInputRef}
-                style={{ display: 'none' }}
-                onChange={changeImage}
-            />
+            
           </Modal>
 
           
