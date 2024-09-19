@@ -41,4 +41,8 @@ class ExperienceController extends Controller
         $maps = $this->experienceService->getMapsByExperienceId($experienceId);
         return Inertia::render('Panel/Microsite/Experiences/Components/MapForm',['maps'=>$maps,'experienceId'=>$experienceId]);
     }
+    public function view($experienceId){
+        return Inertia::render('Home/Experiences/View/View',['experienceInfo'=>$experienceId]);
+    }
+
 }

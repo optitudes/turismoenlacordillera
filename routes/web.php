@@ -35,6 +35,7 @@ Route::prefix('home')->group(function() {
         });
         Route::prefix('experiences')->group(function() {
             Route::get('/', [ExperienceController::class, 'search'])->name('experiences.search');
+            Route::get('/view/{experienceId}', [ExperienceController::class, 'view'])->name('home.experiences.view');
         });
 });
 

@@ -3,15 +3,14 @@ import {Head } from '@inertiajs/react';
 import Card from "@/Components/Card";
 import Text from "@/Components/Text";
 import Video from "@/Components/Video";
-import ServiceList1 from '@/Pages/Home/Microsites/View/Components/ServiceList1';
-import Services1 from '@/Pages/Home/Microsites/View/Components/Services1';
+import Experiences from '@/Pages/Home/Microsites/View/Components/Experiences';
 
 export default function View1(data) {
   const[microsite,setMicrosite] = useState(data.information.microsite);
   const[theme,setTheme] = useState(data.information.theme);
   const[venture,setVenture] = useState(data.information.venture);
   const[user,setUser] = useState(data.information.user);
-  const[services,setServices] = useState(data.information.services);
+  const[experiences,setExperiences] = useState(data.information.experiences);
 
   useEffect(() => {
     console.log(data.information);
@@ -46,9 +45,8 @@ export default function View1(data) {
             </div>
 
           </section>
-          <Services1/>       
+          <Experiences experienceList={experiences}/>       
           <Video  videoId="NKealNqjWR8" bannerMode = {true}/>
-          <ServiceList1/>       
         </>
       );
       

@@ -194,6 +194,7 @@ export default function Experiences({information}) {
                                 value={experience.title}
                                 onChange={(e) => handleExperienceChange(experience.id, 'title', e.target.value)}
                                 className="w-full border border-gray-300 rounded-md p-2"
+                                    maxLength={50}  // Limita a 50 caracteres
                             />
                         </div>
 
