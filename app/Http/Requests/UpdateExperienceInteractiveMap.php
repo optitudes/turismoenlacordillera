@@ -7,25 +7,23 @@ use Illuminate\Support\Facades\Auth;
 use App\Helpers\ImageValidator;
 use App\Models\Microsite;
 
-
-
-class UpdateMicrositeImageRequest extends FormRequest
+class UpdateExperienceInteractiveMap extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $sessionUser = Auth::user();
+         $sessionUser = Auth::user();
         if($sessionUser->role_id == config('constants.ROLES_ID.ADMIN') || $sessionUser->role_id == config('constants.ROLES_ID.ROOT')){
             return true;
         }else{
-            $microsite = Microsite::find($this->micrositeId);
+            $microsite = Microsite::findByExperienceId($this->experienceId);
             if($microsite){
-                $ventureAdminId =($microsite->venture)->userId;
-                return $ventureAdminId==$sessionUser->id;
+                $micrositeAdminId =$microsite->userId;
+                return $micrositeAdminId==$sessionUser->id;
             }
-            return false;
+           return false;
         }
     }
 
@@ -37,14 +35,15 @@ class UpdateMicrositeImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'required|file',
-            'micrositeId' => 'required|numeric|min:0|exists:'.Microsite::class.',id',
+            'newInteractiveMap' => 'required|file',
+            'experienceId' => 'required|integer|exists:experiences,id',
         ];
     }
-    public function withValidator($validator)
+
+     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $file = $this->file('image');
+            $file = $this->file('newInteractiveMap');
             if($file == null){
                 $validator->errors()->add('imagen', "Error al cargar la imagen");
             }else{

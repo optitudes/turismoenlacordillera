@@ -9,7 +9,6 @@ export function validateImage(image) {
   const fileExtension = image.name.split('.').pop().toLowerCase();
   const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
 
-  console.log("fileExtension "+fileExtension)
 
   if (!validMimeTypes.includes(fileType)) {
     return {success:false,msg:"El archivo debe ser de tipo imagen"};

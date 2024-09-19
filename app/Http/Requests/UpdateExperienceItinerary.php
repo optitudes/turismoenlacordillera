@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Microsite;
 use App\Models\Experience;
 
-class UpdateExperienceVideoRequest extends FormRequest
+
+class UpdateExperienceItinerary extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,9 +37,8 @@ class UpdateExperienceVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'experienceId' => 'required|numeric|min:0|exists:'.Experience::class.',id',
-            'vCode' => 'required|string',
-            'videoId'=> 'required|numeric'
+            'itinerary' => 'required|file|mimes:pdf|max:40000',
+            'experienceId' => 'required|numeric|min:0|',
         ];
     }
 }

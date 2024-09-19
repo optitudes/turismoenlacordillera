@@ -6,10 +6,12 @@ import Gallery from '@/Pages/Panel/Microsite/Experiences/Components/Gallery';
 import VideoForm from '@/Pages/Panel/Microsite/Experiences/Components/VideoForm';
 import Itinerary from '@/Pages/Panel/Microsite/Experiences/Components/Itinerary';
 import QuestionPopup from '@/Components/QuestionPopup';
+import { Link } from '@inertiajs/react';
 import Loader from '@/Components/Loader';
 import {validateImage} from "@/Validators/validator";
 import httpClient from "@/Utils/httpClient";
 import {Head } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 
 export default function Experiences({information}) {
     const [experiences,setExperiences] = useState(information.experiences);
@@ -107,7 +109,7 @@ export default function Experiences({information}) {
             })
             .then(response => {
                 setPopupMessage(response.data.message);
-                setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});
+                setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);    window.location.reload();});
                 setIsOpenPopup(true);
             })
             .catch(error =>{
@@ -154,7 +156,7 @@ export default function Experiences({information}) {
            <Head title="Experiencias" />
              <div className="bg-white w-dvw justify-center">
                 <h3 className="text-lg font-bold mb-2 text-center">Experiencias del micrositio (máx. {theme.maxServices})</h3>
-                <div className="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 overflow-x-auto justify-center">
+                <div className="flex flex-wrap space-x-2 space-y-2 justify-start">
                     {experiences.map((experience, index) => (
                     <div key={index} className="relative w-64 border border-gray-300 rounded-md p-4 space-y-4">
 
@@ -184,34 +186,62 @@ export default function Experiences({information}) {
                             </div>
                         </div>
 
-                        <input
-                            type="text"
-                            placeholder="Título"
-                            value={experience.title}
-                            onChange={(e) => handleExperienceChange(experience.id, 'title', e.target.value)}
-                            className="w-full border border-gray-300 rounded-md p-2"
-                        />
-    
-                        <textarea
-                            placeholder="Descripción"
-                            value={experience.description}
-                            onChange={(e) => handleExperienceChange(experience.id, 'description', e.target.value)}
-                            className="w-full border border-gray-300 rounded-md p-2"
-                        />
-    
-                        <select
-                            value={experience.categoryId}
-                            onChange={(e) => handleExperienceChange(experience.id, 'categoryId', e.target.value)}
-                            className="w-full border border-gray-300 rounded-md p-2"
-                        >
-                            {categories.map((category)=>(
-                                <option key={category.id} value={category.id} >{category.name}</option>
-                            ))}
-                        </select>
-                        <Gallery experienceId={experience.id} />
-                        <VideoForm experienceId={experience.id} />
-                        <Itinerary experienceId={experience.id} />
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-zinc-950 mb-1">Título</label>
+                            <input
+                                type="text"
+                                placeholder="Título"
+                                value={experience.title}
+                                onChange={(e) => handleExperienceChange(experience.id, 'title', e.target.value)}
+                                className="w-full border border-gray-300 rounded-md p-2"
+                            />
+                        </div>
 
+    
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-zinc-950 mb-1">Descripción</label>
+                            <textarea
+                                placeholder="Descripción"
+                                    maxLength={250}
+                                value={experience.description}
+                                onChange={(e) => handleExperienceChange(experience.id, 'description', e.target.value)}
+                                className="w-full border border-gray-300 rounded-md p-2"
+                            />
+                        </div>
+    
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-zinc-950 mb-1">Categoría</label>
+                            <select
+                                value={experience.categoryId}
+                                onChange={(e) => handleExperienceChange(experience.id, 'categoryId', e.target.value)}
+                                className="w-full border border-gray-300 rounded-md p-2"
+                            >
+                                {categories.map((category)=>(
+                                    <option key={category.id} value={category.id} >{category.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                        {experience.id >0?  
+                            <>
+                                <Gallery experienceId={experience.id} />
+                                <VideoForm experienceId={experience.id} />
+                                <Itinerary experienceId={experience.id} />
+                                <div className="text-center border border-solid text-white bg-yellow-500 rounded-lg p-2">
+                                    <Link href={route('panel.microsite.experience.editMaps', { experienceId: experience.id })} className='h-16 w-full py-2 text-center'>
+                                    Editar mapas 
+                                    </Link>
+                                </div>
+                            </>:
+                            <div className="flex w-full justify-center ">
+                                <button
+                                    type="button"
+                                    className=" bg-blue-500 text-white p-3 my-9 rounded-md "
+                                    onClick={handleSubmit}
+                                >
+                                   Guardar cambios y desbloquear más modificaciones 
+                                </button>
+                            </div>
+                            }
 
                         <button
                             type="button"
@@ -230,7 +260,7 @@ export default function Experiences({information}) {
                         className="bg-blue-500 text-white px-4 py-2 rounded-md"
                         onClick={addExperience}
                         >
-                        Añadir un servicio 
+                        Añadir una experiencia 
                         </button>
                     )}
                       <input

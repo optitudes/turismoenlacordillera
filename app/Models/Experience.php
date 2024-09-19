@@ -24,4 +24,5 @@ class Experience extends Model
     public function images(){
         return $this->hasMany(ExperienceImage::class,'experienceId');
     }
+
 }

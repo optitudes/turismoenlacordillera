@@ -38,7 +38,6 @@ export default function Theme() {
         .catch(error => console.log(error));
 
   
-    console.log(micrositeInfo.videos);
     setImageFiles([]); // Reset the image files when changing themes
     setYoutubeLink(micrositeInfo.videos[0].url);
 
@@ -80,7 +79,6 @@ export default function Theme() {
                     themeId: selectedTheme
                   })
     .catch(error =>{
-          console.log("hubo un error");
           const msg = JSON.parse(error?.request?.response).message || error.message;
           setPopupMessage(msg);
           setOnAcceptPopup(() => ()=> {setIsOpenPopup(false);});

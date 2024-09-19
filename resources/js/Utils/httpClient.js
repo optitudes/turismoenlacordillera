@@ -29,10 +29,9 @@ instance.interceptors.response.use(
     function(error) {
 
       if (error.response.status === 401) {
-        //clearLocalStorage();
+        clearLocalStorage();
         // Ejecutar la función de redirección cuando ocurra un error 401
         window.location.href = "/login";
-        console.log("error 401")
       }
       return Promise.reject(error);
     }

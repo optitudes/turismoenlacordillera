@@ -18,7 +18,7 @@ class MicrositeThemeSeeder extends Seeder
                 'demoImageUrl' => env("APP_URL").':8000/storage/theme1.png',
                 'viewIndex' => 1,
                 'maxVideos' => 1,
-                'maxServices' => 4,
+                'maxServices' => 8,
 
             ],
             [
@@ -26,7 +26,7 @@ class MicrositeThemeSeeder extends Seeder
                 'demoImageUrl' => env("APP_URL").':8000/storage/theme2.png',
                 'viewIndex' => 2,
                 'maxVideos' => 1,
-                'maxServices' => 4,
+                'maxServices' => 8,
             ],
         ]);
     }

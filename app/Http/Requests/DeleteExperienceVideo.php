@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Microsite;
 use App\Models\Experience;
 
-class UpdateExperienceVideoRequest extends FormRequest
+class DeleteExperienceVideo extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-       $sessionUser = Auth::user();
+        $sessionUser = Auth::user();
         if($sessionUser->role_id == config('constants.ROLES_ID.ADMIN') || $sessionUser->role_id == config('constants.ROLES_ID.ROOT')){
             return true;
         }else{
@@ -37,7 +37,6 @@ class UpdateExperienceVideoRequest extends FormRequest
     {
         return [
             'experienceId' => 'required|numeric|min:0|exists:'.Experience::class.',id',
-            'vCode' => 'required|string',
             'videoId'=> 'required|numeric'
         ];
     }

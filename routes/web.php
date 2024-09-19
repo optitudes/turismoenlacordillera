@@ -64,11 +64,12 @@ Route::prefix('panel')->group(function() {
                 Route::middleware(HasWebRole::class.":". config('constants.ROLES_ID.ENTREPRENEUR'))->group(function () {
                     Route::get('/settings', [MicrositeController::class, 'entrepreneurSettings'])->name('panel.microsite.settings');
                     Route::get('/experiences', [ExperienceController::class, 'experienceList'])->name('panel.microsite.experiences');
+                    Route::prefix('experience')->group(function() {
+                        Route::get('/editMaps/{experienceId}', [ExperienceController::class, 'editExperienceMaps'])->name('panel.microsite.experience.editMaps');
+                    });
                 });
         });
-
     });
-
 });
 
 require __DIR__.'/auth.php';

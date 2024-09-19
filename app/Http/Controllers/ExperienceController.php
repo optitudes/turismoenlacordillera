@@ -37,4 +37,8 @@ class ExperienceController extends Controller
         }
         return Redirect::route('dashboard');
     }
+    public function editExperienceMaps($experienceId){
+        $maps = $this->experienceService->getMapsByExperienceId($experienceId);
+        return Inertia::render('Panel/Microsite/Experiences/Components/MapForm',['maps'=>$maps,'experienceId'=>$experienceId]);
+    }
 }

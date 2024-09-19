@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateExperiencesRequest;
 use App\Http\Requests\UpdateExperienceImagesRequest;
 use App\Http\Requests\UpdateExperienceVideoRequest;
+use App\Http\Requests\UpdateExperienceItinerary;
+use App\Http\Requests\UpdateExperienceGpsMap;
+use App\Http\Requests\UpdateExperienceInteractiveMap;
+use App\Http\Requests\DeleteExperienceVideo;
 
 use App\Http\Services\ExperienceService;
 
@@ -94,12 +98,25 @@ class ExperienceController  extends BaseController
 
     }
 
-    public function experienceVideo($experienceId= -1){
+    public function experienceVideos($experienceId= -1){
         try {
 
-                $status = $this->experienceService->getExperienceVideo($experienceId);
+                $status = $this->experienceService->getExperienceVideos($experienceId);
                 if($status['success']){
-                    return $this->sendResponse($status['video'],$status['msg']);
+                    return $this->sendResponse($status['videos'],$status['msg']);
+                }
+                return $this->sendError($status['msg']);
+
+
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+    }
+    public function experienceItinerary($experienceId= -1){
+        try {
+                $status = $this->experienceService->getExperienceItinerary($experienceId);
+                if($status['success']){
+                    return $this->sendResponse($status['itinerary'],$status['msg']);
                 }
                 return $this->sendError($status['msg']);
 
@@ -116,17 +133,58 @@ class ExperienceController  extends BaseController
                 }
                 return $this->sendError($status['msg']);
 
-
             } catch (\Throwable $th) {
-                return $th;
                 return $this->sendError($th->getMessage());
             }
     }
+    public function updateItinerary(UpdateExperienceItinerary $request){
+        try {
+                $status = $this->experienceService->updateItinerary($request);
+                if($status['success']){
+                    return $this->sendResponse(null,$status['msg']);
+                }
+                return $this->sendError($status['msg']);
 
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+    public function updateGpsMap(UpdateExperienceGpsMap $request){
+        try {
 
+                $status = $this->experienceService->updateGpsMap($request);
+                if($status['success']){
+                    return $this->sendResponse(null,$status['msg']);
+                }
+                return $this->sendError($status['msg']);
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+    public function updateInteractiveMap(UpdateExperienceInteractiveMap $request){
+        try {
 
+                $status = $this->experienceService->updateInteractiveMap($request);
+                if($status['success']){
+                    return $this->sendResponse(null,$status['msg']);
+                }
+                return $this->sendError($status['msg']);
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+    public function deleteVideo(DeleteExperienceVideo $request){
+        try {
 
-
+            $status = $this->experienceService->deleteVideo($request);
+            if($status['success']){
+                return $this->sendResponse(null,$status['msg']);
+            }
+            return $this->sendError($status['msg']);
+        } catch (\Throwable $th) {
+            return $this->sendError($th->getMessage());
+        }
+    }
     }
 
 

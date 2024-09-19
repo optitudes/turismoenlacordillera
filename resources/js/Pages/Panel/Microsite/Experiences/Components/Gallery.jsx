@@ -94,7 +94,7 @@ export default function Gallery ({experienceId}){
       setImages((prevImages) =>
           prevImages.filter((image) => image.id !== id)
       );
-      if(id != -1){
+      if(id > 0){
           setImagesToDel(prevIds =>[...prevIds,id]);
       }
   };

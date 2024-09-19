@@ -26,5 +26,8 @@ class DatabaseSeeder extends Seeder
          $this->call(ExperienceSeeder::class);
          $this->call(ExperienceImageSeeder::class);
          $this->call(ExperienceVideoSeeder::class);
+         $this->call(ExperienceItinerarySeeder::class);
+         $this->call(ExperienceGpsMapSeeder::class);
+         $this->call(ExperienceInteractiveMapSeeder::class);
     }
 }

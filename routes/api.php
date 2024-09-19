@@ -63,9 +63,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::prefix('update')->group(function() {
                 Route::post('video', [ExperienceController::class, 'updateExperienceVideo']);
                 Route::post('images/{experienceId?}', [ExperienceController::class, 'updateGalleryImages']);
+                Route::post('itinerary', [ExperienceController::class, 'updateItinerary']);
+                Route::post('gpsMap', [ExperienceController::class, 'updateGpsMap']);
+                Route::post('interactiveMap', [ExperienceController::class, 'updateInteractiveMap']);
+            });
+            Route::prefix('delete')->group(function() {
+                Route::post('video', [ExperienceController::class, 'deleteVideo']);
             });
             Route::prefix('get')->group(function() {
-                Route::get('video/{experienceId}', [ExperienceController::class, 'experienceVideo']);
+                Route::get('videos/{experienceId}', [ExperienceController::class, 'experienceVideos']);
+                Route::get('itinerary/{experienceId}', [ExperienceController::class, 'experienceItinerary']);
             });
         });
     });
