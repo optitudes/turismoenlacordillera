@@ -24,5 +24,20 @@ class Experience extends Model
     public function images(){
         return $this->hasMany(ExperienceImage::class,'experienceId');
     }
+    public function category(){
+        return $this->belongsTo(ExperienceCategory::class,'categoryId');
+    }
+    public function gpsMap(){
+        return $this->hasOne(ExperienceGpsMap::class,'experienceId');
+    }
+    public function interactiveMap(){
+        return $this->hasOne(ExperienceInteractiveMap::class,'experienceId');
+    }
+    public function itinerary(){
+        return $this->hasOne(ExperienceItinerary::class,'experienceId');
+    }
+    public function videos(){
+        return $this->hasMany(ExperienceVideo::class,'experienceId');
+    }
 
 }

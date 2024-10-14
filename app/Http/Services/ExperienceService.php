@@ -325,5 +325,9 @@ class ExperienceService {
        $deleted =  ExperienceVideo::where('experienceId',$request->experienceId)->where('id',$request->videoId)->delete();
         return ['msg'=>'Video de la experiencia borrado correctamente','success'=>true];
     }
+    public function getExperienceById($experienceId){
+        return Experience::where('id',$experienceId)->with(['category','gpsMap','interactiveMap','itinerary','videos','images'])->first();
+
+    }
 }
 

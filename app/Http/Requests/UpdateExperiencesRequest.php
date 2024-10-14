@@ -33,9 +33,9 @@ class UpdateExperiencesRequest extends FormRequest
 
             'idsExperiencesToDel' => 'nullable|array',
             'idsExperiencesToDel.*' => 'required|integer',
-            
+
             'imageFiles' => 'nullable|array',
-            'imageFiles.*.file' => 'required|file|mimes:jpg,png|max:10240', 
+            'imageFiles.*.file' => 'required|file|mimes:jpg,png',
         ];
     }
 }
