@@ -134,11 +134,17 @@ export default function View({experienceInfo}) {
             {experienceInfo.itinerary != null && <iframe className="w-full h-full" src={experienceInfo.itinerary.url} />}
 
       </div>
-      <button class="bg-springgreen hover:bg-green-500 text-white font-bold py-3 px-9 rounded mt-4" > Descargar
 
-      </button>
+     {experienceInfo.itinerary != null &&
+      <a
+          href={experienceInfo.itinerary.url}
+          download
+          className="bg-springgreen hover:bg-green-500 text-white font-bold py-3 px-9 rounded mt-4 inline-block text-center"
+        >
+          Descargar
+        </a>
 
-
+      }
 
       <Text as="h1" className="lg:text-3xl md:text-2xl text-xl text-center text-white lg:w-3/5 w-full py-9">
         Vídeos de la experiencia
